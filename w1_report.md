@@ -1,6 +1,6 @@
 # Breakfast Book Club Week 1 Status Report
-- Team Report
-## Last week’s goals: [omitted as this is the first status report]
+## Team Report
+- Last week’s goals: [omitted as this is the first status report]
 - Progress / Issues: Drafted requirements and team policies document for Breakfast Book Club. We all worked together to work on this document, as well as the document due yesterday evening. Everyone working on their own specific parts, and then working together on the parts that weren’t specific to a team member. We were specific in what we expected each team member to do, and this worked really well. Working together on the parts that were not specified also ended up working well. We didn’t have much trouble on anything, but specifying all of the nitty gritty (but necessary) details was a little bit challenging. We currently don’t have anywhere where we are stuck. We learned that we work together well when there are specific tasks that are expected of each team member. 
 - Goals: Some groups have specific goals that are due next week on Tuesday, so we hope that everyone gets everything done when they said they would get it done. The specific goals of each team member are outlined below. 
 
