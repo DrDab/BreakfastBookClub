@@ -64,28 +64,15 @@ export default function PrimarySearchAppBar() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     let searchQuery = "http://openlibrary.org/search.json?q=" + searchValue.replace(/ /g, '+') + "&limit=20" // ex searchQuery: http://openlibrary.org/search.json?q=the+lord+of+the+rings
-   
     try {
       const response = await fetch(searchQuery);
       const json = await response.json();
-      cleanSearchResults(json);
-     
+      setSearchResults(json);
     } catch (error) {
       console.log("error", error);
     }
 
   };
-
-
-  const cleanSearchResults = (json) => {
-    let cleanResults = "";
-    console.log(json.docs.length)
-    for (let i = 0; i < json.docs.length; i++ ) {
-      console.log(json.docs[i].title + "," + json.docs[i].isbn?.[0])
-      cleanResults += json.docs[i].title + "," + json.docs[i].isbn?.[0] + ";"
-    }
-    setSearchResults(cleanResults);
-  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -100,7 +87,6 @@ export default function PrimarySearchAppBar() {
           >
             <EggAltIcon />
           </IconButton>
-          
           <Typography
             variant="h6"
             noWrap
@@ -139,6 +125,5 @@ export default function PrimarySearchAppBar() {
       </AppBar>
       <SearchResults searchResults={searchResults}/>
     </Box>
-     
   );
 }
