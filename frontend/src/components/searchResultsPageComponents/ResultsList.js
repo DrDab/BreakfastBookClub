@@ -13,8 +13,7 @@ export default function ResultsList(props) {
 
   useEffect(() => {
     const handleFetch = async () => {
-      let searchValue = sessionStorage.getItem('searchValue')
-      let searchQuery = "http://openlibrary.org/search.json?q=" + searchValue.replace(/ /g, '+') + "&limit=20" // ex searchQuery: http://openlibrary.org/search.json?q=the+lord+of+the+rings
+      let searchQuery = "http://openlibrary.org/search.json?q=" + sessionStorage.searchValue.replace(/ /g, '+') + "&limit=20" // ex searchQuery: http://openlibrary.org/search.json?q=the+lord+of+the+rings
       try {
         const response = await fetch(searchQuery);
         const json = await response.json();
@@ -32,14 +31,14 @@ export default function ResultsList(props) {
       let book = searchResults.docs[i];
       let title = book.title;
       let author = book.author_name;
-      let coverUrl = "https://covers.openlibrary.org/b/isbn/" + book.isbn?.[0] + "-M.jpg";
+      let coverUrl = book.cover_i ? "https://covers.openlibrary.org/b/id/" + book.cover_i  + "-M.jpg" : "";
       cleanResults.push({title, author, coverUrl})
     }
   }
 
 
-  const goToBookClub = async (bookTitle) => {
-    sessionStorage.setItem('bookClub', bookTitle);
+  const goToBookClub = async (book) => {
+    sessionStorage.setItem('book', JSON.stringify(book));
     navigate("/book-club")
   };
 
@@ -50,7 +49,7 @@ export default function ResultsList(props) {
           className="search-result" 
           alignItems="flex-start"
           key={index}
-          onClick={() => goToBookClub(book.title)}
+          onClick={() => goToBookClub(book)}
           >
           <ListItemAvatar>
             <Avatar
