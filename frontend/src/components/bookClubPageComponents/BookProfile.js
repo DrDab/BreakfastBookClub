@@ -1,7 +1,7 @@
 import React from 'react';
 import Avatar from '@mui/material/Avatar';
 
-export default function BookInfo() {
+export default function BookProfile() {
   let bookData = JSON.parse(sessionStorage.book)
   return (
     <>

@@ -9,41 +9,14 @@ import { useNavigate } from "react-router-dom";
 
 export default function ResultsList(props) {
   const navigate = useNavigate();
-  const [searchResults, setSearchResults] = useState("");
-
-  useEffect(() => {
-    const handleFetch = async () => {
-      let searchQuery = "http://openlibrary.org/search.json?q=" + sessionStorage.searchValue.replace(/ /g, '+') + "&limit=20" // ex searchQuery: http://openlibrary.org/search.json?q=the+lord+of+the+rings
-      try {
-        const response = await fetch(searchQuery);
-        const json = await response.json();
-        setSearchResults(json)
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-    handleFetch();
-}, []);
-
-  let cleanResults = [];
-  if (searchResults !== "") {
-    for (let i = 0; i < searchResults.docs.length; i++ ) {
-      let book = searchResults.docs[i];
-      let title = book.title;
-      let author = book.author_name;
-      let coverUrl = book.cover_i ? "https://covers.openlibrary.org/b/id/" + book.cover_i  + "-M.jpg" : "";
-      cleanResults.push({title, author, coverUrl})
-    }
-  }
-
-
+  
   const goToBookClub = async (book) => {
     sessionStorage.setItem('book', JSON.stringify(book));
     navigate("/book-club")
   };
 
 	return (
-    cleanResults.map((book, index) => {
+    props.searchResultData.map((book, index) => {
       return (
         <ListItem 
           className="search-result" 

@@ -6,20 +6,10 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { Link, useNavigate } from "react-router-dom";
 
-export default function MembersList(props) {
-
-  let members = [];
-  for (let i = 0; i < 3; i++ ) {
-    members.push("Andrea")
-    members.push("Amanda")
-    members.push("Jocelyn")
-    members.push("Victor")
-    members.push("Sanjana")
-    members.push("Zaynab")
-  }
+export default function PeopleList(props) {
 
 	return (
-    members.map((member, index) => {
+      props.peopleData.map((person, index) => {
       return (
         // <Link to="/user-profile">
         <ListItem 
@@ -29,15 +19,15 @@ export default function MembersList(props) {
           >
           <ListItemAvatar>
             <Avatar
-              alt={member + " avatar"}
+              alt={person + " avatar"}
               sx={{ width: 30, height: 30 }}
             >
-            {member.charAt(0)}
+            {person.charAt(0)}
             </Avatar>
 
           </ListItemAvatar>
           <ListItemText
-            primary={member}
+            primary={person}
             secondary={
               <React.Fragment>
                 <Typography
