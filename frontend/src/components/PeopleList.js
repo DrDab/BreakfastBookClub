@@ -20,7 +20,7 @@ export default function PeopleList(props) {
           <ListItemAvatar>
             <Avatar
               alt={person + " avatar"}
-              sx={{ width: 30, height: 30 }}
+              sx={{ width: 40, height: 40 }}
             >
             {person.charAt(0)}
             </Avatar>
