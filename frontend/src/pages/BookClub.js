@@ -1,5 +1,5 @@
 import React from "react";
-import BookProfile from '../components/bookClubPageComponents/BookProfile';
+import BookClubProfile from '../components/BookClubProfile';
 import PeopleList from '../components/PeopleList';
 import PostFeed from '../components/PostFeed';
 import Box from '@mui/material/Box';
@@ -35,7 +35,7 @@ export default function BookClub() {
     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
         <div className="book-club-info">
-          <BookProfile/>
+          <BookClubProfile/>
         </div>
       </Grid>
       <Grid item xs={8}>

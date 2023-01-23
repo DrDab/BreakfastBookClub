@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from "react-router-dom";
 
 
-export default function ResultsList(props) {
+export default function BookList(props) {
   const navigate = useNavigate();
   
   const goToBookClub = async (book) => {
@@ -16,7 +16,7 @@ export default function ResultsList(props) {
   };
 
 	return (
-    props.searchResultData.map((book, index) => {
+    props.bookData.map((book, index) => {
       return (
         <ListItem 
           className="search-result" 

@@ -9,12 +9,6 @@ body{
 
 
 /* Search results page */
-.results-list {
-  width: 40%;
-  margin: 0 auto;
-  margin-bottom: 5rem;
-}
-
 .search-result {
   background-color: white;
   margin-bottom: 0.5rem;
