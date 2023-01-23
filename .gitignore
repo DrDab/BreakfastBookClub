@@ -1,0 +1,4 @@
+backend/BCAPIServer/.gradle/
+backend/BCAPIServer/.idea/
+backend/BCAPIServer/build/
+backend/BCAPIServer/bin/
