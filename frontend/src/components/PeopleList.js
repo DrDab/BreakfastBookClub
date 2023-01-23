@@ -7,15 +7,21 @@ import Typography from '@mui/material/Typography';
 import { Link, useNavigate } from "react-router-dom";
 
 export default function PeopleList(props) {
+  const navigate = useNavigate();
+  
+  const goToOtherUserProfile = async (person) => {
+    sessionStorage.setItem('otherUser', JSON.stringify(person));
+    navigate("/user-profile")
+  };
 
 	return (
       props.peopleData.map((person, index) => {
       return (
-        // <Link to="/user-profile">
         <ListItem 
           className="search-result" 
           alignItems="flex-start"
           key={index}
+          onClick={() => goToOtherUserProfile(person)}
           >
           <ListItemAvatar>
             <Avatar
@@ -42,7 +48,6 @@ export default function PeopleList(props) {
             }
           />
         </ListItem>
-        // </Link>
       )
     }
   )
