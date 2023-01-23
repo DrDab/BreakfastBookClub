@@ -19,7 +19,7 @@ export default function PostFeed(props) {
           <CardHeader
             avatar={
               <Avatar sx={{ bgcolor: red[500],width: 50, height: 50 }} aria-label={post.user + " avatar"}>
-                A
+                {post.user.charAt(0)}
               </Avatar>
             }
             action={

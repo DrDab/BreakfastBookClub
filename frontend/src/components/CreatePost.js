@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import { red } from '@mui/material/colors';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import { Button } from '@mui/material';
 
 
 export default function CreatePost() {
@@ -58,13 +59,24 @@ export default function CreatePost() {
             label="Title"
             fullWidth={true} 
             margin="normal"
+            size="small"
           />
            <TextField
             id="modal-modal-description"
             label="Thoughts.."
+            multiline
+            rows="4"
             fullWidth={true} 
             margin="normal"
+           
+
           />
+          <Button>
+            Post
+          </Button>
+          <Button>
+            Cancel
+          </Button>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Tags: Opinion, Theory, Spoiler, Analysis, Prediction
           </Typography>
