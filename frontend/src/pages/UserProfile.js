@@ -122,7 +122,7 @@ export default function UserProfile() {
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
-        <UserProfileBanner/>
+        <UserProfileBanner userData={clickedUserData}/>
         <Button onClick={() => setShowFollowersModal(true)}>{999 + " Followers"}</Button>
         <Button onClick={() => setShowFollowingModal(true)}>{881 + " Following"}</Button>
         {clickedUserData === yourUserData? <Button variant="outlined">Edit Profile</Button>: <Button variant="outlined">Follow</Button> }

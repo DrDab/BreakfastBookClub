@@ -8,8 +8,6 @@ import BookClub from './pages/BookClub';
 
 
 function App() {
-  let clickedUser = JSON.parse(sessionStorage.clickedUser||'{"name":"John", "age":30, "car":null}')
-  let book = JSON.parse(sessionStorage.book||'{"name":"John", "age":30, "car":null}')
 
   return (
     <div className="App">
@@ -18,8 +16,8 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="search-results" element={<SearchResults />} />
-            <Route path={"user-profile/"+clickedUser} element={<UserProfile />} />
-            <Route path={"book-club"+book.key} element={<BookClub />} />
+            <Route path="user-profile/:id" element={<UserProfile />} />
+            <Route path="book-club/works/:id" element={<BookClub />} />
           </Route>
         </Routes>
       </BrowserRouter>

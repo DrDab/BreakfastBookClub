@@ -3,8 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 
-export default function UserProfileBanner() {
-  let clickedUserData = JSON.parse(sessionStorage.clickedUser)
+export default function UserProfileBanner(props) {
   return (
     <>
       <Stack
@@ -13,12 +12,12 @@ export default function UserProfileBanner() {
       >
       <Box>      
         <Avatar
-          alt={clickedUserData + " avatar"}
+          alt={props.userData + " avatar"}
           sx={{ width: 100, height: 100 }}
         >
-          {clickedUserData.charAt(0)}
+          {props.userData.charAt(0)}
         </Avatar>
-        <h1>{clickedUserData}</h1>
+        <h1>{props.userData}</h1>
       </Box>
       <Box sx={{padding: '0rem 5rem', display: 'flex', alignItems: 'center'}}>
         <span>I walked through the door with you, the air was cold But somethin' 'bout it felt like home somehow And I left my scarf there at your sister's house And you've still got it in your drawer, even now</span> 
