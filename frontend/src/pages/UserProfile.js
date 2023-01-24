@@ -53,8 +53,7 @@ export default function UserProfile() {
   let clickedUserData = JSON.parse(sessionStorage.clickedUser)
   let yourUserData = JSON.parse(sessionStorage.yourUser)
   const [value, setValue] = React.useState(0);
-  const [showFollowersModal, setShowFollowersModal] = React.useState(false);
-  const [showFollowingModal, setShowFollowingModal] = React.useState(false);
+  const [showFriendsModal, setShowFriendsModal] = React.useState(false);
 
   const style = {
     position: 'absolute',
@@ -98,19 +97,11 @@ export default function UserProfile() {
     bookClubsJoinedData.push({key, title, author, coverUrl})
   }
 
-  let followersData = [];
+  let friendsData = [];
   for (let i = 0; i < 1; i++ ) {
-    followersData.push("Andrea")
-    followersData.push("Amanda")
-    followersData.push("Jocelyn")
-  }
-
-  let followingData = [];
-  for (let i = 0; i < 1; i++ ) {
-    followingData.push("Jocelyn")
-    followingData.push("Victor")
-    followingData.push("Sanjana")
-    followingData.push("Zaynab")
+    friendsData.push("Andrea")
+    friendsData.push("Amanda")
+    friendsData.push("Jocelyn")
   }
 
   const handleChange = (event, newValue) => {
@@ -123,9 +114,8 @@ export default function UserProfile() {
     <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
         <UserProfileBanner userData={clickedUserData}/>
-        <Button onClick={() => setShowFollowersModal(true)}>{999 + " Followers"}</Button>
-        <Button onClick={() => setShowFollowingModal(true)}>{881 + " Following"}</Button>
-        {clickedUserData === yourUserData? <Button variant="outlined">Edit Profile</Button>: <Button variant="outlined">Follow</Button> }
+        <Button onClick={() => setShowFriendsModal(true)}>{888 + " Friends"}</Button>
+        {clickedUserData === yourUserData? <Button variant="outlined">Edit Profile</Button>: <Button variant="outlined">Add Friend</Button> }
       </Grid>
       <Grid item xs={8}>
         {clickedUserData === yourUserData? <CreatePost/> : <></> }
@@ -156,30 +146,16 @@ export default function UserProfile() {
   </Box>
 
   <Modal
-    open={showFollowersModal}
-    onClose={() => setShowFollowersModal(false)}
+    open={showFriendsModal}
+    onClose={() => setShowFriendsModal(false)}
     aria-labelledby="modal-modal-title"
     aria-describedby="modal-modal-description"
   >
     <Box sx={style}>
       <Typography id="modal-modal-title" variant="h6" component="h2">
-        Followers
+        Friends
       </Typography>
-      <PeopleList peopleData={followersData}/>
-    </Box>
-  </Modal>
-
-  <Modal
-    open={showFollowingModal}
-    onClose={() => setShowFollowingModal(false)}
-    aria-labelledby="modal-modal-title"
-    aria-describedby="modal-modal-description"
-  >
-    <Box sx={style}>
-      <Typography id="modal-modal-title" variant="h6" component="h2">
-        Following
-      </Typography>
-      <PeopleList peopleData={followingData}/>
+      <PeopleList peopleData={friendsData}/>
     </Box>
   </Modal>
   </>
