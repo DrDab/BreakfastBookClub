@@ -69,18 +69,15 @@ export default function CustomAppBar() {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = React.useState(null);
 
-
   const goToUserProfile = async (user) => {
     sessionStorage.setItem('clickedUser', JSON.stringify(user));
     navigate("/user-profile")
     window.location.reload(); 
-   
   };
 
   const goToSearchResults = async () => {
     sessionStorage.setItem('searchValue', searchValue);
     navigate("/search-results")
-
   };
 
   return (

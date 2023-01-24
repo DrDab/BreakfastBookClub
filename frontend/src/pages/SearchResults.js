@@ -44,8 +44,6 @@ function a11yProps(index) {
 
 export default function SearchResults() {
   const [value, setValue] = React.useState(0);
-
-
   const [searchResultsBooks, setSearchResultsBooks] = useState("");
 
   useEffect(() => {
@@ -82,8 +80,7 @@ export default function SearchResults() {
     searchResultPeopleData.push("Sanjana")
     searchResultPeopleData.push("Zaynab")
   }
-
-
+  
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };

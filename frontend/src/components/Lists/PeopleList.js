@@ -8,10 +8,10 @@ import { useNavigate } from "react-router-dom";
 
 export default function PeopleList(props) {
   const navigate = useNavigate();
-  
-  const goToUserProfile = async (person) => {
+  const goToUserProfile = (person) => {
     sessionStorage.setItem('clickedUser', JSON.stringify(person));
     navigate("/user-profile")
+    window.location.reload();
   };
 
 	return (
@@ -21,7 +21,7 @@ export default function PeopleList(props) {
           className="search-result" 
           alignItems="flex-start"
           key={index}
-          onClick={() => goToUserProfile(person)}
+          onClick={() => goToUserProfile(person, navigate)}
           >
           <ListItemAvatar>
             <Avatar
@@ -30,7 +30,6 @@ export default function PeopleList(props) {
             >
             {person.charAt(0)}
             </Avatar>
-
           </ListItemAvatar>
           <ListItemText
             primary={person}
