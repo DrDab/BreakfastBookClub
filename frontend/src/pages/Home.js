@@ -12,7 +12,7 @@ import Stack from '@mui/material/Stack';
 export default function Home() {
   sessionStorage.setItem('yourUser', JSON.stringify("Amanda"));
   const [popularBooks, setPopularBooks] = useState("");
-  
+
   useEffect(() => {
     const handleFetch = async () => {
       let searchQuery = "http://openlibrary.org/search.json?q=lord+of+the+rings&limit=3" // ex searchQuery: http://openlibrary.org/search.json?q=the+lord+of+the+rings
@@ -31,10 +31,11 @@ export default function Home() {
   if (popularBooks !== "") {
     for (let i = 0; i < popularBooks.docs.length; i++ ) {
       let book = popularBooks.docs[i];
+      let key = book.key;
       let title = book.title;
       let author = book.author_name;
       let coverUrl = book.cover_i ? "https://covers.openlibrary.org/b/id/" + book.cover_i  + "-M.jpg" : "";
-      popularBooksData.push({title, author, coverUrl})
+      popularBooksData.push({key, title, author, coverUrl})
     }
   }
   

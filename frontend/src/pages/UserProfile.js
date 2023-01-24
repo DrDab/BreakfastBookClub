@@ -91,10 +91,11 @@ export default function UserProfile() {
   let bookClubsJoinedData = [];
   for (let i = 0; i < 10; i++ ) {
     // let book = searchResultsBooks.docs[i];
+    let key = "/works/000000"
     let title = "Harry Potter Fake"
     let author = "Jk Rowling"
     let coverUrl = "";
-    bookClubsJoinedData.push({title, author, coverUrl})
+    bookClubsJoinedData.push({key, title, author, coverUrl})
   }
 
   let followersData = [];
@@ -119,7 +120,7 @@ export default function UserProfile() {
   return (
     <>
     <Box sx={{ width: '70%', margin: '0 auto' }}>
-    <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+    <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
         <UserProfileBanner/>
         <Button onClick={() => setShowFollowersModal(true)}>{999 + " Followers"}</Button>
@@ -128,8 +129,6 @@ export default function UserProfile() {
       </Grid>
       <Grid item xs={8}>
         {clickedUserData === yourUserData? <CreatePost/> : <></> }
-      </Grid>
-      <Grid item xs={8}>
         <Stack sx={{ marginBottom: '5rem' }} spacing={2}>
           <Box>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

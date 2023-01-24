@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from "react-router-dom";
+import {goToUserProfile} from '../Utils'
 
 export default function PeopleList(props) {
   const navigate = useNavigate();
-  const goToUserProfile = (person) => {
-    sessionStorage.setItem('clickedUser', JSON.stringify(person));
-    navigate("/user-profile")
-    window.location.reload();
-  };
 
 	return (
       props.peopleData.map((person, index) => {

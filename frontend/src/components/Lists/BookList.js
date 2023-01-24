@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -12,7 +12,8 @@ export default function BookList(props) {
   
   const goToBookClub = async (book) => {
     sessionStorage.setItem('book', JSON.stringify(book));
-    navigate("/book-club")
+    navigate("/book-club" + book.key)
+    window.location.reload();
   };
 
 	return (

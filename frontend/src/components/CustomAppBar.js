@@ -11,6 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Link, useNavigate } from "react-router-dom";
+import {goToUserProfile} from './Utils'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -66,14 +67,8 @@ const theme = createTheme({
 
 
 export default function CustomAppBar() {
-  const navigate = useNavigate();
   const [searchValue, setSearchValue] = React.useState(null);
-
-  const goToUserProfile = async (user) => {
-    sessionStorage.setItem('clickedUser', JSON.stringify(user));
-    navigate("/user-profile")
-    window.location.reload(); 
-  };
+  const navigate = useNavigate();
 
   const goToSearchResults = async () => {
     sessionStorage.setItem('searchValue', searchValue);
@@ -113,7 +108,7 @@ export default function CustomAppBar() {
                   placeholder="Search…"
                   inputProps={{ 'aria-label': 'search' }}
                   onChange={e => setSearchValue(e.target.value)}
-                  value={searchValue !== null ? searchValue : sessionStorage.getItem('searchValue') || ""}
+                  value={searchValue || ""}
                 />
               </form>
             </Search>
@@ -126,7 +121,7 @@ export default function CustomAppBar() {
                 aria-controls="profile-icon"
                 aria-haspopup="true"
                 color="secondary"
-                onClick={() => goToUserProfile(JSON.parse(sessionStorage.yourUser))}
+                onClick={() => goToUserProfile(JSON.parse(sessionStorage.yourUser), navigate)}
               >
                 <AccountCircle />
               </IconButton>

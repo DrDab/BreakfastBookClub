@@ -64,10 +64,11 @@ export default function SearchResults() {
   if (searchResultsBooks !== "") {
     for (let i = 0; i < searchResultsBooks.docs.length; i++ ) {
       let book = searchResultsBooks.docs[i];
+      let key = book.key;
       let title = book.title;
       let author = book.author_name;
       let coverUrl = book.cover_i ? "https://covers.openlibrary.org/b/id/" + book.cover_i  + "-M.jpg" : "";
-      searchResultBookData.push({title, author, coverUrl})
+      searchResultBookData.push({key, title, author, coverUrl})
     }
   }
 

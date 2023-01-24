@@ -15,15 +15,10 @@ import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import RecommendIcon from '@mui/icons-material/Recommend';
 import ContactlessRoundedIcon from '@mui/icons-material/ContactlessRounded';
 import { useNavigate } from "react-router-dom";
+import {goToUserProfile} from '../Utils'
 
 export default function PostFeed(props) {
   const navigate = useNavigate();
-  const goToUserProfile = (person) => {
-    sessionStorage.setItem('clickedUser', JSON.stringify(person));
-    navigate("/user-profile")
-    window.location.reload();
-  };
-
 	return (
     props.postsData.map((post, index) => {
       return (
@@ -33,7 +28,7 @@ export default function PostFeed(props) {
               <Avatar 
                 sx={{ bgcolor: red[500],width: 50, height: 50 }} 
                 aria-label={post.user + " avatar"}
-                onClick={() => goToUserProfile(post.user)}
+                onClick={() => goToUserProfile(post.user, navigate)}
               >
                 {post.user.charAt(0)}
               </Avatar>
@@ -50,9 +45,9 @@ export default function PostFeed(props) {
             <Typography mb={2}  variant="h6" color="text.secondary">
               {post.title} 
               <Chip
-              icon={post.tag == "Spoiler"? <NewReleasesIcon/> : post.tag == "Recomendation"? <RecommendIcon/> : <ContactlessRoundedIcon/> }
+              icon={post.tag === "Spoiler"? <NewReleasesIcon/> : post.tag === "Recomendation"? <RecommendIcon/> : <ContactlessRoundedIcon/> }
               label={post.tag}
-              color={post.tag == "Spoiler"? "warning" : post.tag == "Recomendation"? "success" : "secondary" }
+              color={post.tag === "Spoiler"? "warning" : post.tag === "Recomendation"? "success" : "secondary" }
               size="small"
               sx={{marginLeft:'1rem'}}
               />
