@@ -1,9 +1,10 @@
 # BreakfastBookClub
 
 Breakfast Book Club is a social media site for book lovers. 
-Users can display the books they have read, review other books,
-follow other users, make reading lists and recommend books to 
-other users. 
+Users can join books clubs,
+make post about theories, opinion, reviews, within th book club,
+friend other users, and recommend books. 
 
 The project directory is subdivided into frontend and backend folders. 
+The frontend is broken into page components and resusable components such as people lists and book lists.
 These subdirectories are further subdivided into their respective features. 
