@@ -63,13 +63,24 @@ const theme = createTheme({
   },
 });
 
+
+
 export default function CustomAppBar() {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = React.useState(null);
 
+
+  const goToUserProfile = async (user) => {
+    sessionStorage.setItem('clickedUser', JSON.stringify(user));
+    navigate("/user-profile")
+    window.location.reload(); 
+   
+  };
+
   const goToSearchResults = async () => {
     sessionStorage.setItem('searchValue', searchValue);
     navigate("/search-results")
+
   };
 
   return (
@@ -111,7 +122,6 @@ export default function CustomAppBar() {
             </Search>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <Link to="/user-profile">
               <IconButton
                 size="large"
                 edge="end"
@@ -119,10 +129,10 @@ export default function CustomAppBar() {
                 aria-controls="profile-icon"
                 aria-haspopup="true"
                 color="secondary"
+                onClick={() => goToUserProfile(JSON.parse(sessionStorage.yourUser))}
               >
                 <AccountCircle />
               </IconButton>
-            </Link>
             </Box>
           </Toolbar>
         </AppBar>

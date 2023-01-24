@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import PostFeed from '../components/PostFeed';
-import PeopleList from '../components/PeopleList';
+import PostFeed from '../components/Posts/PostFeed';
+import PeopleList from '../components/Lists/PeopleList';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import CreatePost from '../components/CreatePost';
-import BookList from '../components/BookList';
+import CreatePost from '../components/Posts/CreatePost';
+import BookList from '../components/Lists/BookList';
 import Stack from '@mui/material/Stack';
 
 
 export default function Home() {
+  sessionStorage.setItem('yourUser', JSON.stringify("Amanda"));
+  
   let homePostsData = [];
   const [popularBooks, setPopularBooks] = useState("");
   for (let i = 0; i < 20; i++ ) {

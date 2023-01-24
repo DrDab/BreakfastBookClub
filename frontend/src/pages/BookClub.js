@@ -1,12 +1,12 @@
 import React from "react";
-import BookClubProfile from '../components/BookClubProfile';
-import PeopleList from '../components/PeopleList';
-import PostFeed from '../components/PostFeed';
+import BookClubBanner from '../components/Banners/BookClubBanner';
+import PeopleList from '../components/Lists/PeopleList';
+import PostFeed from '../components/Posts/PostFeed';
 import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import CreatePost from "../components/CreatePost";
+import CreatePost from "../components/Posts/CreatePost";
 
 export default function BookClub() {
   let bookData = JSON.parse(sessionStorage.book)
@@ -34,9 +34,7 @@ export default function BookClub() {
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
-        <div className="book-club-info">
-          <BookClubProfile/>
-        </div>
+        <BookClubBanner/>
       </Grid>
       <Grid item xs={8}>
         <CreatePost/>

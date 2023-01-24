@@ -1,5 +1,6 @@
 body{
   background-color: #f4f4f4;
+
 }
 
 .custom-app-bar{
@@ -21,20 +22,6 @@ body{
   margin-right: 1rem;
 }
 
-
-/* Home Page */
-.main-feed {
-  width: 40%;
-  margin: 0 auto;
-  margin-bottom: 5rem;
-}
-
 .main-feed-post{
   margin-bottom: 0.5rem;
-}
-
-/* Book club  */
-
-.book-club-info {
-  padding: 1rem 0rem 1rem 0rem;
 }

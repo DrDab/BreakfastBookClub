@@ -4,8 +4,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import BookList from '../components/BookList';
-import PeopleList from '../components/PeopleList';
+import BookList from '../components/Lists/BookList';
+import PeopleList from '../components/Lists/PeopleList';
 import Stack from '@mui/material/Stack';
 
 

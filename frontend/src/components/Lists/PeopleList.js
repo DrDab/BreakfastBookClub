@@ -4,13 +4,13 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function PeopleList(props) {
   const navigate = useNavigate();
   
-  const goToOtherUserProfile = async (person) => {
-    sessionStorage.setItem('otherUser', JSON.stringify(person));
+  const goToUserProfile = async (person) => {
+    sessionStorage.setItem('clickedUser', JSON.stringify(person));
     navigate("/user-profile")
   };
 
@@ -21,7 +21,7 @@ export default function PeopleList(props) {
           className="search-result" 
           alignItems="flex-start"
           key={index}
-          onClick={() => goToOtherUserProfile(person)}
+          onClick={() => goToUserProfile(person)}
           >
           <ListItemAvatar>
             <Avatar

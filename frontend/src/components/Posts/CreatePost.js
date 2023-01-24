@@ -32,7 +32,7 @@ export default function CreatePost() {
         <CardContent>
           <Stack direction="row" spacing={2}>
             <Avatar sx={{ bgcolor: red[500],width: 50, height: 50 }} aria-label={" avatar"}>
-              A
+             {sessionStorage.yourUser.charAt(1)}
             </Avatar>
             <TextField
               disabled

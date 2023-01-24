@@ -1,7 +1,7 @@
 import React from 'react';
 import Avatar from '@mui/material/Avatar';
 
-export default function BookClubProfile() {
+export default function BookClubBanner() {
   let bookData = JSON.parse(sessionStorage.book)
   return (
     <>
