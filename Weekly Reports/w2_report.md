@@ -54,9 +54,9 @@
     - Helped justify software toolset used for Breakfast Book Club project.
     - Justified my role and specified the schedule that I will follow pursuant to my role.
     - Zaynab Khan:
-    - Added some non-functional requirements of our project
-    - Wrote a use case for adding books to reading lists
-    - Defined and justified my role 
+    - Improved justification of my role
+    - Helped design database tables for users
+    - Technical writing for the README
     
     Amanda Ha: 
     - Wrote timeline for completing the frontend, backend and API parts of the project
@@ -64,5 +64,6 @@
     - Defined my role as frontend developer and features that I would focus on
 
 - Goals: 
-    
+    Zaynab Khan:
+    - Continue working on user creation and login system
 
