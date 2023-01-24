@@ -45,9 +45,9 @@ export default function PostFeed(props) {
             <Typography mb={2}  variant="h6" color="text.secondary">
               {post.title} 
               <Chip
-              icon={post.tag === "Spoiler"? <NewReleasesIcon/> : post.tag === "Recomendation"? <RecommendIcon/> : <ContactlessRoundedIcon/> }
+              icon={post.tag === "Spoiler"? <NewReleasesIcon/> : post.tag === "Recommendation"? <RecommendIcon/> : <ContactlessRoundedIcon/> }
               label={post.tag}
-              color={post.tag === "Spoiler"? "warning" : post.tag === "Recomendation"? "success" : "secondary" }
+              color={post.tag === "Spoiler"? "warning" : post.tag === "Recommendation"? "success" : "secondary" }
               size="small"
               sx={{marginLeft:'1rem'}}
               />
