@@ -127,16 +127,6 @@ public class SparkServer
             }
         });
 
-        Spark.post("/api/forgot_password", new Route()
-        {
-            @Override
-            public Object handle(Request request,
-                                 Response response) throws Exception
-            {
-                return gson.toJson(null);
-            }
-        });
-
         Spark.post("/api/login", new Route()
         {
             @Override
@@ -157,7 +147,7 @@ public class SparkServer
             }
         });
 
-        Spark.get("/api/key_valid", new Route()
+        Spark.get("/api/auth_token_valid", new Route()
         {
             @Override
             public Object handle(Request request,
