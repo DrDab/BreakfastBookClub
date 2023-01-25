@@ -1,11 +1,11 @@
 # Breakfast Book Club Week 2 Status Report
 ## Team Report
-- Last week’s goals: (See last week's goals in Contributions of Individual Team Members)
+- Last week’s goals: Some groups have specific goals that are due next week on Tuesday, so we hope that everyone gets everything done when they said they would get it done. The specific goals of each team member are outlined below.
 - Progress / Issues: 
 - Goals: 
 
 ## Contributions of Individual Team Members
-- Last week’s goals:
+Last week’s goals:
     Amanda Ha:
     - Set up new react project and install basic packages (npm, material ui)
     - Find API or dataset for a library of books with titles, cover photo, and genre
@@ -34,13 +34,13 @@
     - Help design databases
     - Start user creation and login features
 
-- Progress / Issues: 
+Progress / Issues: 
     Andrea Ha
     - Defined a project use case for finding books by genre. Explored the possibilities of search, filter, and sorting functionalities. 
     - Defined my role on the backend development team where I will be focusing on SQL scripts and database design. 
     
     Jocelyn Thomson
-    - Contributed to the project description through helping write the product description, writing use cases, helping with non-functional requirements, helping with figuring out the technologies that we will use, justifying these technologies, defining and justifying my personal role, and helping with milestones. I also submitted the assignment due yesterday. 
+    - Contributed to the project description through helping write the product description, writing use cases, helping with non-functional requirements,        helping with figuring out the technologies that we will use, justifying these technologies, defining and justifying my personal role, and helping with      milestones. I also submitted the assignment due yesterday. 
     
     Sanjana Janakiraman:
     - Contributed to the project description through adding use cases, adding features, and researching software toolset
@@ -62,8 +62,12 @@
     - Wrote timeline for completing the frontend, backend and API parts of the project
     - Defined 2 major project features : a home page to display books to search and a profile page for books and profile page for users
     - Defined my role as frontend developer and features that I would focus on
-
-- Goals: 
+ 
     Zaynab Khan:
     - Continue working on user creation and login system
+
+Goals:
+
+    Jocelyn Thomson
+    - x
 
