@@ -65,7 +65,7 @@ Progress / Issues:
     
     Amanda Ha: 
     - Set up react frontend divided into reusable components (book list, user lists, banner)
-    - Implimented book search bar using OpenLibrary API
+    - Implemented book search bar using OpenLibrary API
     - Created home, book profiles, user profiles, search results page
 
 Goals:
