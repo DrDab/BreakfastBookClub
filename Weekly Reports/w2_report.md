@@ -11,7 +11,8 @@ Last week’s goals:
     - Set up new react project and install basic packages (npm, material ui)
     - Find API or dataset for a library of books with titles, cover photo, and genre
     - Define UI design for home page, book profiles, and user profiles
-    - Andrea Ha:
+    
+    Andrea Ha:
     - Finalize the data entries we want to track and create and create an ERD for the tables
     - Research existing book data sources or a way to generate dummy data
 
@@ -63,9 +64,9 @@ Progress / Issues:
     - Technical writing for the README
     
     Amanda Ha: 
-    - Wrote timeline for completing the frontend, backend and API parts of the project
-    - Defined 2 major project features : a home page to display books to search and a profile page for books and profile page for users
-    - Defined my role as frontend developer and features that I would focus on
+    - Set up react frontend divided into reusable components (book list, user lists, banner)
+    - Implimented book search bar using OpenLibrary API
+    - Created home, book profiles, user profiles, search results page
 
 Goals:
 
@@ -79,4 +80,9 @@ Goals:
 
     Zaynab Khan:
     - Continue working on user creation and login system
+    
+    Amanda Ha: 
+    - Define API routes for getting books, users, posts, and making posts, sending recommendations
+    - Make links to book and user profiles sharable
+    - Finish the create post and send recommendation modal
 
