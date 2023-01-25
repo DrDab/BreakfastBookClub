@@ -43,7 +43,7 @@ Progress / Issues:
     - Defined my role on the backend development team where I will be focusing on SQL scripts and database design. 
     
     Jocelyn Thomson
-    - Contributed to the project description through helping write the product description, writing use cases, helping with non-functional requirements,        helping with figuring out the technologies that we will use, justifying these technologies, defining and justifying my personal role, and helping with      milestones. I also submitted the assignment due yesterday. 
+    - Contributed to the project description through helping write the product description, writing use cases, helping with non-functional requirements, helping with figuring out the technologies that we will use, justifying these technologies, defining and justifying my personal role, and helping with milestones. I also submitted the assignment due yesterday. 
     
     Sanjana Janakiraman:
     - Set up software toolset
@@ -52,11 +52,11 @@ Progress / Issues:
     - Began writing the necessary SQL statements
     
     Victor Du:
-    - Added features to project description.
-    - Wrote two use cases for Breakfast Book software: user-to-user book recommendation and the friend request process.
-    - Wrote two non-functional requirements for project.
-    - Helped justify software toolset used for Breakfast Book Club project.
-    - Justified my role and specified the schedule that I will follow pursuant to my role.
+    - Drafted possible REST API calls supported by Spark-based Breakfast Book Club backend REST server in development.
+    - Helped identify distinct webpages of Breakfast Book Club, their functionalities, and the API calls used.
+    - Set up backend server Spark project (Gradle project) and committed files to GitHub repository.
+    - Configured and installed Java, MySQL and Node on Debian GCP Compute Engine instance in preparation for backend API server development.
+    - Discussed SQL table layouts
     
     Zaynab Khan:
     - Improved justification of my role
@@ -85,4 +85,9 @@ Goals:
     - Define API routes for getting books, users, posts, and making posts, sending recommendations
     - Make links to book and user profiles sharable
     - Finish the create post and send recommendation modal
+
+    Victor Du:
+    - Revise and document proposed REST API calls.
+    - Get Breakfast Book Club Spark backend server software running on GCP Compute Engine instance.
+    - Implement REST API routes on Spark project once fully documented and agreed upon.
 
