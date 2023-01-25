@@ -43,9 +43,10 @@ Progress / Issues:
     - Contributed to the project description through helping write the product description, writing use cases, helping with non-functional requirements,        helping with figuring out the technologies that we will use, justifying these technologies, defining and justifying my personal role, and helping with      milestones. I also submitted the assignment due yesterday. 
     
     Sanjana Janakiraman:
-    - Contributed to the project description through adding use cases, adding features, and researching software toolset
-    - Defined and justified my role in the project as both a frontend and backend developer focusing on displaying and the backend logic on book pages, selecting books, adding new books, and adding book reviews.
-    Defined a timeline for frontend and database milestones throughout the project
+    - Set up software toolset
+    - Helped design necessary databases and format of the necessary data
+    - Set design for book profile and new book pages
+    - Began writing the necessary SQL statements
     
     Victor Du:
     - Added features to project description.
@@ -70,4 +71,9 @@ Goals:
 
     Jocelyn Thomson
     - x
+    
+    Sanjana Janakiraman:
+    - Continue writing necessary SQL statements
+    - Assist with setting up the database
+    - Investigate and begin connecting database backend to frontend
 
