@@ -6,6 +6,7 @@
 
 ## Contributions of Individual Team Members
 Last week’s goals:
+
     Amanda Ha:
     - Set up new react project and install basic packages (npm, material ui)
     - Find API or dataset for a library of books with titles, cover photo, and genre
@@ -13,7 +14,7 @@ Last week’s goals:
     - Andrea Ha:
     - Finalize the data entries we want to track and create and create an ERD for the tables
     - Research existing book data sources or a way to generate dummy data
-    
+
     Jocelyn Thomson:
     - Figure out which database software we want to use
     - Figure out which data we will be using for our search feature of the website
@@ -35,6 +36,7 @@ Last week’s goals:
     - Start user creation and login features
 
 Progress / Issues: 
+
     Andrea Ha
     - Defined a project use case for finding books by genre. Explored the possibilities of search, filter, and sorting functionalities. 
     - Defined my role on the backend development team where I will be focusing on SQL scripts and database design. 
@@ -54,7 +56,8 @@ Progress / Issues:
     - Wrote two non-functional requirements for project.
     - Helped justify software toolset used for Breakfast Book Club project.
     - Justified my role and specified the schedule that I will follow pursuant to my role.
-    - Zaynab Khan:
+    
+    Zaynab Khan:
     - Improved justification of my role
     - Helped design database tables for users
     - Technical writing for the README
@@ -63,9 +66,6 @@ Progress / Issues:
     - Wrote timeline for completing the frontend, backend and API parts of the project
     - Defined 2 major project features : a home page to display books to search and a profile page for books and profile page for users
     - Defined my role as frontend developer and features that I would focus on
- 
-    Zaynab Khan:
-    - Continue working on user creation and login system
 
 Goals:
 
@@ -76,4 +76,7 @@ Goals:
     - Continue writing necessary SQL statements
     - Assist with setting up the database
     - Investigate and begin connecting database backend to frontend
+
+    Zaynab Khan:
+    - Continue working on user creation and login system
 
