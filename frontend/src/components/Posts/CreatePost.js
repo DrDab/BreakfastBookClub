@@ -11,6 +11,10 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { useNavigate} from "react-router-dom";
 import { goToUserProfile } from '../Utils'
+import Chip from '@mui/material/Chip';
+import NewReleasesIcon from '@mui/icons-material/NewReleases';
+import RecommendIcon from '@mui/icons-material/Recommend';
+import ContactlessRoundedIcon from '@mui/icons-material/ContactlessRounded';
 
 export default function CreatePost() {
   const [showPostModal, setShowPostModal] = React.useState(false);
@@ -76,15 +80,35 @@ export default function CreatePost() {
             fullWidth={true} 
             margin="normal"
           />
-          <Button>
+          <Button size="small" variant='contained'>
             Post
           </Button>
-          <Button>
+          <Button size="small" onClick={() => setShowPostModal(false)}>
             Cancel
           </Button>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Tags: Opinion, Theory, Spoiler, Recomendation
-          </Typography>
+
+          <Stack sx={{margin:'1rem 0rem 1rem 0rem'}} direction="row" spacing={1}>
+            <Chip
+              icon={<NewReleasesIcon/>}
+              label="Spoiler"
+              color="warning"
+              size="small"
+              />
+              
+              <Chip
+              icon={<RecommendIcon/>}
+              label={"Recommendation"}
+              color={"success"}
+              size="small"
+              />
+              
+              <Chip
+              icon={<ContactlessRoundedIcon/>}
+              label={"Opinion"}
+              color="secondary"
+              size="small"
+              />
+          </Stack>
         </Box>
       </Modal>
     </>

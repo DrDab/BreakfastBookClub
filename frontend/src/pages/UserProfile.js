@@ -6,15 +6,10 @@ import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Stack from '@mui/material/Stack';
-import Modal from '@mui/material/Modal';
 import UserProfileBanner from '../components/Banners/UserProfileBanner';
 import BookList from '../components/Lists/BookList';
-import PeopleList from '../components/Lists/PeopleList';
 import CreatePost from "../components/Posts/CreatePost";
 import PostFeed from '../components/Posts/PostFeed';
-import Button from '@mui/material/Button';
-
-
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -53,19 +48,6 @@ export default function UserProfile() {
   let clickedUserData = JSON.parse(sessionStorage.clickedUser)
   let yourUserData = JSON.parse(sessionStorage.yourUser)
   const [value, setValue] = React.useState(0);
-  const [showFriendsModal, setShowFriendsModal] = React.useState(false);
-
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 700,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    outline: 'none',
-    p: 4,
-  };
 
   let userPostsData = [];
   for (let i = 0; i < 20; i++ ) {
@@ -88,13 +70,23 @@ export default function UserProfile() {
   }
 
   let bookClubsJoinedData = [];
-  for (let i = 0; i < 10; i++ ) {
+  for (let i = 0; i < 6; i++ ) {
     // let book = searchResultsBooks.docs[i];
     let key = "/works/000000"
     let title = "Harry Potter Fake"
     let author = "Jk Rowling"
     let coverUrl = "";
     bookClubsJoinedData.push({key, title, author, coverUrl})
+  }
+
+  let booksFavoritedData = [];
+  for (let i = 0; i < 5; i++ ) {
+    // let book = searchResultsBooks.docs[i];
+    let key = "/works/000000"
+    let title = "Harry Potter Fake"
+    let author = "Jk Rowling"
+    let coverUrl = "";
+    booksFavoritedData.push({key, title, author, coverUrl})
   }
 
   let friendsData = [];
@@ -113,9 +105,7 @@ export default function UserProfile() {
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
-        <UserProfileBanner userData={clickedUserData}/>
-        <Button onClick={() => setShowFriendsModal(true)}>{888 + " Friends"}</Button>
-        {clickedUserData === yourUserData? <Button variant="outlined">Edit Profile</Button>: <Button variant="outlined">Add Friend</Button> }
+        <UserProfileBanner userData={clickedUserData} friendsData={friendsData}/>
       </Grid>
       <Grid item xs={8}>
         {clickedUserData === yourUserData? <CreatePost/> : <></> }
@@ -137,27 +127,17 @@ export default function UserProfile() {
         </Stack>
       </Grid>
       <Grid item xs={4}>
-        <Typography>
-          Book Clubs
-        </Typography>
-         <BookList bookData={bookClubsJoinedData}/>
+        <div>
+          <Typography>Book Clubs</Typography>
+          <BookList bookData={bookClubsJoinedData}/>
+        </div>
+         <div>
+          <Typography>Favorited Books</Typography>
+          <BookList bookData={booksFavoritedData}/>
+          </div>
       </Grid>
     </Grid>
   </Box>
-
-  <Modal
-    open={showFriendsModal}
-    onClose={() => setShowFriendsModal(false)}
-    aria-labelledby="modal-modal-title"
-    aria-describedby="modal-modal-description"
-  >
-    <Box sx={style}>
-      <Typography id="modal-modal-title" variant="h6" component="h2">
-        Friends
-      </Typography>
-      <PeopleList peopleData={friendsData}/>
-    </Box>
-  </Modal>
   </>
 
   );
