@@ -37,10 +37,6 @@ Last week’s goals:
     - Start user creation and login features
 
 Progress / Issues: 
-
-    Andrea Ha
-    - Defined a project use case for finding books by genre. Explored the possibilities of search, filter, and sorting functionalities. 
-    - Defined my role on the backend development team where I will be focusing on SQL scripts and database design. 
     
     Jocelyn Thomson
     - Contributed to the project description through helping write the product description, writing use cases, helping with non-functional requirements, helping with figuring out the technologies that we will use, justifying these technologies, defining and justifying my personal role, and helping with milestones. I also submitted the assignment due yesterday. 
@@ -68,6 +64,11 @@ Progress / Issues:
     - Implemented book search bar using OpenLibrary API
     - Created home, book profiles, user profiles, search results page
 
+    Andrea Ha:
+    - Created Book profile page, which  cover photo, post feed and members list
+    - Added book covers to search results page
+    - Created reusable people list component 
+
 Goals:
 
     Jocelyn Thomson
@@ -90,4 +91,9 @@ Goals:
     - Revise and document proposed REST API calls.
     - Get Breakfast Book Club Spark backend server software running on GCP Compute Engine instance.
     - Implement REST API routes on Spark project once fully documented and agreed upon.
+
+    Andrea Ha:
+    - Add notifications list to app bar
+    - Clean up code and move redundant functions to utils.js
+    - Agree on API routes and data model for returned objects
 
