@@ -11,16 +11,17 @@ import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import NewReleasesIcon from '@mui/icons-material/NewReleases';
-import RecommendIcon from '@mui/icons-material/Recommend';
-import ContactlessRoundedIcon from '@mui/icons-material/ContactlessRounded';
 import { useNavigate } from "react-router-dom";
-import {goToUserProfile} from '../Utils'
+import { goToUserProfile } from '../Utils';
+import { tagsList } from '../Constants';
 
 export default function PostFeed(props) {
   const navigate = useNavigate();
+
 	return (
     props.postsData.map((post, index) => {
+      let tagIcon = tagsList.filter(tag => tag.label === post.tag)[0]["icon"]
+      let tagColor  = tagsList.filter(tag => tag.label === post.tag)[0]["color"]
       return (
         <Card key={index} elevation={0} className="main-feed-post">
           <CardHeader
@@ -42,20 +43,19 @@ export default function PostFeed(props) {
             subheader="September 14, 2016"
           />
           <CardContent>
-            <Typography mb={2}  variant="h6" color="text.secondary">
-              {post.title} 
+            <Typography gutterBottom variant="h6" color="text.secondary">
+              {post.title}
               <Chip
-              icon={post.tag === "Spoiler"? <NewReleasesIcon/> : post.tag === "Recommendation"? <RecommendIcon/> : <ContactlessRoundedIcon/> }
-              label={post.tag}
-              color={post.tag === "Spoiler"? "warning" : post.tag === "Recommendation"? "success" : "secondary" }
-              size="small"
-              sx={{marginLeft:'1rem'}}
+                icon={tagIcon}
+                label={post.tag}
+                color={tagColor}
+                size="small"
+                sx={{marginLeft:'1rem'}}
               />
             </Typography>
             <Typography variant="body2" color="text.secondary">
               {post.content}
             </Typography>
-          
           </CardContent>
           <CardActions disableSpacing>
             <IconButton aria-label="like">
