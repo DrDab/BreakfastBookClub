@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import PostFeed from '../components/Posts/PostFeed';
-import PeopleList from '../components/Lists/PeopleList';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import CreatePost from '../components/Posts/CreatePost';
-import BookList from '../components/Lists/BookList';
 import Stack from '@mui/material/Stack';
+import PeopleList from '../components/Lists/PeopleList';
+import BookList from '../components/Lists/BookList';
+import CreatePost from '../components/CreatePost';
+import PostFeed from '../components/PostFeed';
 
 
 export default function Home() {

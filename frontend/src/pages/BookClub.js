@@ -1,12 +1,12 @@
 import React from "react";
-import BookClubBanner from '../components/Banners/BookClubBanner';
-import PeopleList from '../components/Lists/PeopleList';
-import PostFeed from '../components/Posts/PostFeed';
 import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import CreatePost from "../components/Posts/CreatePost";
+import PeopleList from '../components/Lists/PeopleList';
+import BookClubBanner from '../components/Banners/BookClubBanner';
+import CreatePost from "../components/CreatePost";
+import PostFeed from '../components/PostFeed';
 
 export default function BookClub() {
   let bookData = JSON.parse(sessionStorage.book)

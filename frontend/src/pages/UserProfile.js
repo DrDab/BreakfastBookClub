@@ -8,8 +8,8 @@ import Tab from '@mui/material/Tab';
 import Stack from '@mui/material/Stack';
 import UserProfileBanner from '../components/Banners/UserProfileBanner';
 import BookList from '../components/Lists/BookList';
-import CreatePost from "../components/Posts/CreatePost";
-import PostFeed from '../components/Posts/PostFeed';
+import CreatePost from "../components/CreatePost";
+import PostFeed from '../components/PostFeed';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

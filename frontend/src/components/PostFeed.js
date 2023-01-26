@@ -12,8 +12,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from "react-router-dom";
-import { goToUserProfile } from '../Utils';
-import { tagsList } from '../Constants';
+import { goToUserProfile } from './Utils';
+import { tagsList } from './Constants';
 
 export default function PostFeed(props) {
   const navigate = useNavigate();

@@ -14,10 +14,10 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { red } from '@mui/material/colors';
 import { useNavigate} from "react-router-dom";
-import { goToUserProfile } from '../Utils'
-import { tagsList } from '../Constants';
-import { CustomFormControl } from '../Inputs/CustomFormControl';
-import { CustomTextField } from '../Inputs/CustomTextField';
+import { goToUserProfile } from './Utils'
+import { tagsList } from './Constants';
+import { CustomFormControl } from './Inputs/CustomFormControl';
+import { CustomTextField } from './Inputs/CustomTextField';
 
 export default function CreatePost() {
   const [showPostModal, setShowPostModal] = React.useState(false);
