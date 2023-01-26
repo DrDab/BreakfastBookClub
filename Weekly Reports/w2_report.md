@@ -72,7 +72,9 @@ Progress / Issues:
 Goals:
 
     Jocelyn Thomson
-    - x
+    - Finish the schema document
+    - Finish SQL backend statements for all of the tables
+    - Help connect database from backend to frontend and set up the SQL queries in the backend of the database
     
     Sanjana Janakiraman:
     - Continue writing necessary SQL statements
