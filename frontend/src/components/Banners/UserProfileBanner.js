@@ -14,18 +14,6 @@ export default function UserProfileBanner(props) {
   let yourUserData = JSON.parse(sessionStorage.yourUser)
   const [showFriendsModal, setShowFriendsModal] = React.useState(false);
 
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 700,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    outline: 'none',
-    p: 4,
-  };
-
   return (
     <>
     <Box sx={{ flexGrow: 1 }}>
@@ -35,15 +23,14 @@ export default function UserProfileBanner(props) {
             {props.userData.charAt(0)}
           </Avatar>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={8}>
           <Stack spacing={3}>
             <Typography variant="h5">{props.userData}</Typography>
             <Stack spacing={2} direction="row">
               {clickedUserData === yourUserData? <Button variant="contained" size="small">Edit Profile</Button>: <Button variant="contained" size="small">Add Friend</Button>} 
               <Button variant="outlined" size="small" onClick={() => setShowFriendsModal(true)}>{888 + " Friends"}</Button>
             </Stack>
-            <Typography>I walked through the door with you, the air was cold But somethin' 'bout it felt like home somehow</Typography>
-          </Stack>
+            <Typography>I walked through the door with you, the air was cold. One for the money, two for the show I never was ready, so I watch you go.</Typography>          </Stack>
         </Grid>
       </Grid>
     </Box>
@@ -53,7 +40,7 @@ export default function UserProfileBanner(props) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box className="basic-modal friends-list-modal">
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Friends
         </Typography>

@@ -1,6 +1,5 @@
 body{
   background-color: #f4f4f4;
-
 }
 
 .custom-app-bar{
@@ -22,6 +21,35 @@ body{
   margin-right: 1rem;
 }
 
+
+/* Home page */
 .main-feed-post{
   margin-bottom: 0.5rem;
+}
+
+
+/* modals */
+.basic-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30rem;
+  background-color: white;
+  box-shadow: 2rem;
+  outline: none;
+  padding: 1rem 2rem 1rem 2rem;
+  border-radius: 0.3rem;
+}
+
+.recommend-modal {
+  width: 30rem;
+}
+
+.create-post-modal{
+  width: 35rem;
+}
+
+.friends-list-modal{
+  width: 20rem;
 }

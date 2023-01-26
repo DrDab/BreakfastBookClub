@@ -27,18 +27,6 @@ export default function CreatePost() {
   const navigate = useNavigate();
   let yourUser = JSON.parse(sessionStorage.yourUser);
 
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 700,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    outline: 'none',
-    p: 4,
-  };
-
   let bookClubsJoinedData = [
     {title: "Harry Potter"}, 
     {title: "Twilight"},
@@ -51,7 +39,7 @@ export default function CreatePost() {
         <CardContent>
           <Stack direction="row" spacing={2}>
             <Avatar 
-              sx={{ bgcolor: red[500],width: 50, height: 50 }}
+              sx={{ bgcolor: red[500], width: 50, height: 50 }}
               aria-label={yourUser + " avatar"}
               onClick={() => goToUserProfile(yourUser, navigate)}
             >
@@ -73,7 +61,7 @@ export default function CreatePost() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box className="basic-modal create-post-modal">
           <Stack spacing={2}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Create Post

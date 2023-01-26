@@ -39,8 +39,6 @@ export default function BookClub() {
       </Grid>
       <Grid item xs={8}>
         <CreatePost/>
-      </Grid>
-      <Grid item xs={8}>
         <PostFeed postsData={bookClubPostsData} />
       </Grid>
       <Grid item xs={4}>
