@@ -8,6 +8,7 @@ import BookClub from './pages/BookClub';
 
 
 function App() {
+  sessionStorage.setItem('yourUser', JSON.stringify("Amanda"));
 
   return (
     <div className="App">
@@ -16,8 +17,8 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="search-results" element={<SearchResults />} />
-            <Route path="user-profile/:id" element={<UserProfile />} />
-            <Route path="book-club/works/:id" element={<BookClub />} />
+            <Route path="user-profile/:uid" element={<UserProfile />} />
+            <Route path="book-club/:bid" element={<BookClub />} />
           </Route>
         </Routes>
       </BrowserRouter>

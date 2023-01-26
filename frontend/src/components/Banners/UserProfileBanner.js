@@ -10,7 +10,6 @@ import Grid from '@mui/material/Grid';
 
 
 export default function UserProfileBanner(props) {
-  let clickedUserData = JSON.parse(sessionStorage.clickedUser)
   let yourUserData = JSON.parse(sessionStorage.yourUser)
   const [showFriendsModal, setShowFriendsModal] = React.useState(false);
 
@@ -19,15 +18,15 @@ export default function UserProfileBanner(props) {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={30}>
         <Grid item xs={2}>
-          <Avatar alt={props.userData + " avatar"} sx={{ width: 150, height: 150 }}>
-            {props.userData.charAt(0)}
+          <Avatar alt={props.clickedUserData + " avatar"} sx={{ width: 150, height: 150 }}>
+            {props.clickedUserData.charAt(0)}
           </Avatar>
         </Grid>
         <Grid item xs={8}>
           <Stack spacing={3}>
             <Typography variant="h5">{props.userData}</Typography>
             <Stack spacing={2} direction="row">
-              {clickedUserData === yourUserData? <Button variant="contained" size="small">Edit Profile</Button>: <Button variant="contained" size="small">Add Friend</Button>} 
+              {props.clickedUserData === yourUserData? <Button variant="contained" size="small">Edit Profile</Button>: <Button variant="contained" size="small">Add Friend</Button>} 
               <Button variant="outlined" size="small" onClick={() => setShowFriendsModal(true)}>{888 + " Friends"}</Button>
             </Stack>
             <Typography>I walked through the door with you, the air was cold. One for the money, two for the show I never was ready, so I watch you go.</Typography>          </Stack>

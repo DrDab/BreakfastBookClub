@@ -10,6 +10,7 @@ import UserProfileBanner from '../components/Banners/UserProfileBanner';
 import BookList from '../components/Lists/BookList';
 import CreatePost from "../components/CreatePost";
 import PostFeed from '../components/PostFeed';
+import { useParams } from "react-router-dom";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -45,8 +46,11 @@ function a11yProps(index) {
 }
 
 export default function UserProfile() {
-  let clickedUserData = JSON.parse(sessionStorage.clickedUser)
+  let { uid } = useParams();
+
+  let clickedUserData = uid  // will have user object here get(uid)
   let yourUserData = JSON.parse(sessionStorage.yourUser)
+
   const [value, setValue] = React.useState(0);
 
   let userPostsData = [];
@@ -105,7 +109,7 @@ export default function UserProfile() {
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
-        <UserProfileBanner userData={clickedUserData} friendsData={friendsData}/>
+        <UserProfileBanner clickedUserData={clickedUserData} friendsData={friendsData}/>
       </Grid>
       <Grid item xs={8}>
         {clickedUserData === yourUserData? <CreatePost/> : <></> }

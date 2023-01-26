@@ -6,13 +6,12 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from "react-router-dom";
 
-
 export default function BookList(props) {
   const navigate = useNavigate();
   
   const goToBookClub = async (book) => {
-    sessionStorage.setItem('book', JSON.stringify(book));
-    navigate("/book-club" + book.key)
+    sessionStorage.setItem('book', JSON.stringify(book)); // should not need after book api is done
+    navigate("/book-club/" + book.key.split("/")[2]);
     window.location.reload();
   };
 

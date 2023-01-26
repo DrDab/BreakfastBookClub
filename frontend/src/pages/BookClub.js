@@ -9,7 +9,7 @@ import CreatePost from "../components/CreatePost";
 import PostFeed from '../components/PostFeed';
 
 export default function BookClub() {
-  let bookData = JSON.parse(sessionStorage.book)
+  let bookData = JSON.parse(sessionStorage.book) // should come from our API later
 
   let bookClubPostsData = [];
   for (let i = 0; i < 20; i++ ) {

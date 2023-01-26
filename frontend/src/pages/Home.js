@@ -10,7 +10,6 @@ import PostFeed from '../components/PostFeed';
 
 
 export default function Home() {
-  sessionStorage.setItem('yourUser', JSON.stringify("Amanda"));
   const [popularBooks, setPopularBooks] = useState("");
 
   useEffect(() => {
