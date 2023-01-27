@@ -14,7 +14,7 @@ export default function NotificationList(props) {
     props.notificationData.map((notif, index) => {
       return (
         <MenuItem
-          sx={{whiteSpace: 'normal'}}
+          sx={{whiteSpace: 'normal', backgroundColor: '#fafafa'}}
           key={index}
           onClick={() => goToBookClub(notif.book, navigate)}
         >
@@ -28,6 +28,7 @@ export default function NotificationList(props) {
           </ListItemAvatar>
           <ListItemText>
             <Typography><strong>{notif.recommender}</strong> recommended <strong>{notif.book.title}</strong> to you </Typography>
+            <Typography variant="caption">{notif.time}</Typography>
           </ListItemText>
         </MenuItem>
       )

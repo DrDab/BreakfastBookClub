@@ -41,8 +41,8 @@ export default function BookClubBanner(props) {
               <Typography variant="h5">{props.bookData.title}</Typography>
               <Typography variant="p1">{props.bookData.author}</Typography>
               <Stack spacing={2} direction="row">
-                <Button variant="contained" size="small">Favorite</Button> 
-                <Button variant="outlined" size="small"  onClick={() => setShowRecomendModal(true)}> Recommend</Button>
+                <Button disableElevation variant="contained" size="small">Favorite</Button> 
+                <Button disableElevation variant="outlined" size="small"  onClick={() => setShowRecomendModal(true)}> Recommend</Button>
               </Stack>
               <Typography>I walked through the door with you, the air was cold. One for the money, two for the show I never was ready, so I watch you go.</Typography>
             </Stack>
@@ -86,10 +86,10 @@ export default function BookClubBanner(props) {
               variant="filled"
             />
             <Stack justifyContent="end" direction="row" spacing={1}>
-              <Button size="small" variant="contained">
+              <Button disableElevation size="small" variant="contained">
                 Send
               </Button>
-              <Button size="small" variant='outlined' onClick={() => setShowRecomendModal(false)}>
+              <Button disableElevation size="small" variant='outlined' onClick={() => setShowRecomendModal(false)}>
                 Cancel
               </Button>
             </Stack>

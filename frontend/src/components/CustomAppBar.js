@@ -15,6 +15,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Link, useNavigate} from "react-router-dom";
 import { goToUserProfile } from './Utils'
 import NotificationList from '../components/Lists/NotificationList';
+import Badge from '@mui/material/Badge';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -74,7 +75,7 @@ export default function CustomAppBar() {
 
   let notificationData = [];
   for (let i = 0; i < 3; i++) {
-    notificationData.push({recommender: "Andrea", book: {
+    notificationData.push({recommender: "Andrea", time: "2h", book: {
       "key": "/works/OL18417W",
       "title": "The Wonderful Wizard of Oz",
       "author": [
@@ -89,7 +90,7 @@ export default function CustomAppBar() {
       "coverUrl": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
     }})
 
-    notificationData.push({recommender: "Victor", book: {
+    notificationData.push({recommender: "Victor", time: "1h", book: {
       "key": "/works/OL27479W",
       "title": "The Two Towers",
       "author": [
@@ -160,7 +161,9 @@ export default function CustomAppBar() {
                 color="secondary"
                 onClick={(e) => setAnchorEl(e.currentTarget)}
               >
-                <NotificationsNoneOutlinedIcon />
+                <Badge badgeContent={notificationData.length} color="error">
+                  <NotificationsNoneOutlinedIcon />
+                </Badge>
               </IconButton>
               <IconButton
                 size="large"
@@ -187,7 +190,10 @@ export default function CustomAppBar() {
             },
           }}
         >
-          <Typography ml={2} mt={1} mb={2}> Notifications </Typography>
+          <Stack direction="row">
+            <Typography ml={2} mt={1} mb={2}> Notifications </Typography>
+            <Typography onClick={()=> console.log("clear notifs")} variant="caption" ml={30} mt={1} mb={2}> Clear </Typography>
+          </Stack>
           <NotificationList notificationData={notificationData}/>
         </Menu>
       </ThemeProvider>

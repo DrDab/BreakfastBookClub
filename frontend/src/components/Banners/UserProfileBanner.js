@@ -26,10 +26,11 @@ export default function UserProfileBanner(props) {
           <Stack spacing={3}>
             <Typography variant="h5">{props.userData}</Typography>
             <Stack spacing={2} direction="row">
-              {props.clickedUserData === yourUserData? <Button variant="contained" size="small">Edit Profile</Button>: <Button variant="contained" size="small">Add Friend</Button>} 
-              <Button variant="outlined" size="small" onClick={() => setShowFriendsModal(true)}>{888 + " Friends"}</Button>
+              {props.clickedUserData === yourUserData? <Button disableElevation variant="contained" size="small">Edit Profile</Button>: <Button disableElevation variant="contained" size="small">Add Friend</Button>} 
+              <Button disableElevation variant="outlined" size="small" onClick={() => setShowFriendsModal(true)}>{888 + " Friends"}</Button>
             </Stack>
-            <Typography>I walked through the door with you, the air was cold. One for the money, two for the show I never was ready, so I watch you go.</Typography>          </Stack>
+            <Typography>I walked through the door with you, the air was cold. One for the money, two for the show I never was ready, so I watch you go.</Typography> 
+          </Stack>
         </Grid>
       </Grid>
     </Box>

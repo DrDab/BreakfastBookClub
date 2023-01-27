@@ -110,10 +110,10 @@ export default function CreatePost() {
               })}
             </Stack>
             <Stack justifyContent="end" direction="row" spacing={1}>
-              <Button size="small" variant='contained'>
+              <Button disableElevation size="small" variant='contained'>
                 Post
               </Button>
-              <Button size="small" variant='outlined' onClick={() => setShowPostModal(false)}>
+              <Button disableElevation size="small" variant='outlined' onClick={() => setShowPostModal(false)}>
                 Cancel
               </Button>
             </Stack>
