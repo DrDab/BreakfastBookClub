@@ -2,16 +2,20 @@ import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
+import Menu from '@mui/material/Menu';
 import EggAltIcon from '@mui/icons-material/EggAlt';
 import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';import AccountCircle from '@mui/icons-material/AccountCircle';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Link, useNavigate } from "react-router-dom";
-import {goToUserProfile} from './Utils'
+import { Link, useNavigate} from "react-router-dom";
+import { goToUserProfile } from './Utils'
+import NotificationList from '../components/Lists/NotificationList';
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -65,9 +69,42 @@ const theme = createTheme({
 });
 
 
-
 export default function CustomAppBar() {
+  let yourUserData = JSON.parse(sessionStorage.yourUser)
+
+  let notificationData = [];
+  for (let i = 0; i < 3; i++) {
+    notificationData.push({recommender: "Andrea", book: {
+      "key": "/works/OL18417W",
+      "title": "The Wonderful Wizard of Oz",
+      "author": [
+          "L. Frank Baum",
+          "R. D. Kori",
+          "Kenneth Grahame",
+          "J. T. Barbarese",
+          "Pablo Pino",
+          "Jenny Sánchez",
+          "Michael Foreman"
+      ],
+      "coverUrl": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
+    }})
+
+    notificationData.push({recommender: "Victor", book: {
+      "key": "/works/OL27479W",
+      "title": "The Two Towers",
+      "author": [
+          "J.R.R. Tolkien"
+      ],
+      "coverUrl": "https://covers.openlibrary.org/b/id/8167231-M.jpg"
+    }
+    })
+  }
+
+
   const [searchValue, setSearchValue] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
   const navigate = useNavigate();
 
   const goToSearchResults = async () => {
@@ -113,7 +150,7 @@ export default function CustomAppBar() {
               </form>
             </Search>
             <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Stack direction="row" spacing={2}>
               <IconButton
                 size="large"
                 edge="end"
@@ -121,13 +158,38 @@ export default function CustomAppBar() {
                 aria-controls="profile-icon"
                 aria-haspopup="true"
                 color="secondary"
-                onClick={() => goToUserProfile(JSON.parse(sessionStorage.yourUser), navigate)}
+                onClick={(e) => setAnchorEl(e.currentTarget)}
+              >
+                <NotificationsNoneOutlinedIcon />
+              </IconButton>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls="profile-icon"
+                aria-haspopup="true"
+                color="secondary"
+                onClick={() => goToUserProfile(yourUserData, navigate)}
               >
                 <AccountCircle />
               </IconButton>
-            </Box>
+            </Stack>
           </Toolbar>
         </AppBar>
+        <Menu
+          anchorEl={anchorEl}
+          open={open}
+          onClose={() => setAnchorEl(null)}
+          PaperProps={{
+            style: {
+              maxHeight: 250,
+              width: '40ch'
+            },
+          }}
+        >
+          <Typography ml={2} mt={1} mb={2}> Notifications </Typography>
+          <NotificationList notificationData={notificationData}/>
+        </Menu>
       </ThemeProvider>
     </Box>
   );

@@ -1,32 +1,29 @@
-body{
+body {
   background-color: #f4f4f4;
 }
 
-.custom-app-bar{
-  padding: 0.3rem;
+.custom-app-bar {
   margin-bottom: 3rem;
 }
 
-
-/* Search results page */
-.search-result {
+/* list */
+.list-item {
   background-color: white;
   margin-bottom: 0.5rem;
 }
-.search-result:hover {
+
+.list-item:hover {
   background-color: #fafaff;
 }
 
-.search-results-book-cover{
+.list-item-book-cover {
   margin-right: 1rem;
 }
 
-
-/* Home page */
-.main-feed-post{
+/* post */
+.post {
   margin-bottom: 0.5rem;
 }
-
 
 /* modals */
 .basic-modal {

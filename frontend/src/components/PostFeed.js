@@ -23,11 +23,11 @@ export default function PostFeed(props) {
       let tagIcon = tagsList.filter(tag => tag.label === post.tag)[0]["icon"]
       let tagColor  = tagsList.filter(tag => tag.label === post.tag)[0]["color"]
       return (
-        <Card key={index} elevation={0} className="main-feed-post">
+        <Card key={index} elevation={0} className="post">
           <CardHeader
             avatar={
-              <Avatar 
-                sx={{ bgcolor: red[500],width: 50, height: 50 }} 
+              <Avatar
+                sx={{ bgcolor: red[500],width: 50, height: 50 }}
                 aria-label={post.user + " avatar"}
                 onClick={() => goToUserProfile(post.user, navigate)}
               >

@@ -5,28 +5,23 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from "react-router-dom";
+import { goToBookClub } from "../Utils"
 
 export default function BookList(props) {
   const navigate = useNavigate();
-  
-  const goToBookClub = async (book) => {
-    sessionStorage.setItem('book', JSON.stringify(book)); // should not need after book api is done
-    navigate("/book-club/" + book.key.split("/")[2]);
-    window.location.reload();
-  };
 
 	return (
     props.bookData.map((book, index) => {
       return (
-        <ListItem 
-          className="search-result" 
+        <ListItem
+          className="list-item"
           alignItems="flex-start"
           key={index}
-          onClick={() => goToBookClub(book)}
+          onClick={() => goToBookClub(book, navigate)}
           >
           <ListItemAvatar>
             <Avatar
-              className="search-results-book-cover"
+              className="list-item-book-cover"
               variant="rounded"
               alt={book.title + " cover"}
               src={book.coverUrl}
@@ -52,6 +47,5 @@ export default function BookList(props) {
       )
     }
   )
-
   );
 }

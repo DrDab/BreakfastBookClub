@@ -13,8 +13,8 @@ export default function PeopleList(props) {
 	return (
       props.peopleData.map((person, index) => {
       return (
-        <ListItem 
-          className="search-result" 
+        <ListItem
+          className="list-item"
           alignItems="flex-start"
           key={index}
           onClick={() => goToUserProfile(person, navigate)}
@@ -46,6 +46,5 @@ export default function PeopleList(props) {
       )
     }
   )
-
   );
 }
