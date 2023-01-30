@@ -2,14 +2,18 @@ import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import InputBase from '@mui/material/InputBase';
 import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import EggAltIcon from '@mui/icons-material/EggAlt';
 import SearchIcon from '@mui/icons-material/Search';
+import Logout from '@mui/icons-material/Logout';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';import AccountCircle from '@mui/icons-material/AccountCircle';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Link, useNavigate} from "react-router-dom";
@@ -103,8 +107,10 @@ export default function CustomAppBar() {
 
 
   const [searchValue, setSearchValue] = React.useState(null);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
+  const openNotifications = Boolean(anchorElNotifications);
+  const [anchorElAccount, setAnchorElAccount] = React.useState(null);
+  const openAccount = Boolean(anchorElAccount);
 
   const navigate = useNavigate();
 
@@ -159,7 +165,7 @@ export default function CustomAppBar() {
                 aria-controls="profile-icon"
                 aria-haspopup="true"
                 color="secondary"
-                onClick={(e) => setAnchorEl(e.currentTarget)}
+                onClick={(e) => setAnchorElNotifications(e.currentTarget)}
               >
                 <Badge badgeContent={notificationData.length} color="error">
                   <NotificationsNoneOutlinedIcon />
@@ -172,17 +178,42 @@ export default function CustomAppBar() {
                 aria-controls="profile-icon"
                 aria-haspopup="true"
                 color="secondary"
-                onClick={() => goToUserProfile(yourUserData, navigate)}
+                onClick={(e) => setAnchorElAccount(e.currentTarget)}
               >
-                <AccountCircle />
+                <Avatar>{yourUserData.charAt(0)}</Avatar>
               </IconButton>
             </Stack>
           </Toolbar>
         </AppBar>
+
         <Menu
-          anchorEl={anchorEl}
-          open={open}
-          onClose={() => setAnchorEl(null)}
+          anchorEl={anchorElAccount}
+          open={openAccount}
+          onClose={() => setAnchorElAccount(null)}
+          PaperProps={{
+            sx: {
+              maxHeight: 100,
+              width: '13ch'
+            },
+          }}
+        >
+          <MenuItem onClick={() => goToUserProfile(yourUserData, navigate)}>
+            <ListItemIcon>
+              <AccountCircle fontSize="small" />
+            </ListItemIcon>
+            Profile
+          </MenuItem>
+          <MenuItem onClick={() => console.log("logout (set to default user settings? make new API calls for posts etc?)")}>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
+        </Menu>
+        <Menu
+          anchorEl={anchorElNotifications}
+          open={openNotifications}
+          onClose={() => setAnchorElNotifications(null)}
           PaperProps={{
             style: {
               maxHeight: 250,
