@@ -1,5 +1,5 @@
 weekly report!
-# Breakfast Book Club Week 2 Status Report
+# Breakfast Book Club Week 3 Status Report
 ## Team Report
 - Last week’s goals: Set up database and API server. Agree on all API routes. Refine frontend and complete modals and popups. Establish SQL database tables and relations between them.
 
@@ -37,7 +37,14 @@ weekly report!
     - Clean up code and move redundant functions to utils.js
     - Agree on API routes and data model for returned objects
     
-- Progress / Issues:
+-Progress / Issues:
+    
+    Zaynab Khan:
+    - Setup basic create user functionality
+    - Started login functionality setup
+    - Explored integration of Google SSO
 
 - Goals:
-
+  - Zaynab Khan:
+    - Finish login functionality.
+    - Try to integrate Google SSO
