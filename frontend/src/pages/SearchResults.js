@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
@@ -7,43 +6,11 @@ import Box from '@mui/material/Box';
 import BookList from '../components/Lists/BookList';
 import PeopleList from '../components/Lists/PeopleList';
 import Stack from '@mui/material/Stack';
-
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
+import TabPanel from "../components/TabPanel";
+import { a11yProps } from '../components/Utils';
 
 export default function SearchResults() {
-  const [value, setValue] = React.useState(0);
+  const [tabIndexValue, setTabIndexValue] = React.useState(0);
   const [searchResultsBooks, setSearchResultsBooks] = useState("");
 
   useEffect(() => {
@@ -82,24 +49,20 @@ export default function SearchResults() {
     searchResultPeopleData.push("Zaynab")
   }
   
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
   return (
     <Stack sx={{ width: '70%', margin: '0 auto', marginBottom: '5rem' }} spacing={2}>
       <Typography>{"Showing search results for '" + sessionStorage.searchValue + "'"}</Typography>
       <Box sx={{ width: '70%', margin: '0 auto' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="basic tabs example">
             <Tab label="Books" {...a11yProps(0)} />
             <Tab label="People" {...a11yProps(1)} />
           </Tabs>
         </Box>
-        <TabPanel value={value} index={0}>
+        <TabPanel value={tabIndexValue} index={0}>
           <BookList bookData={searchResultBookData}/>
         </TabPanel>
-        <TabPanel value={value} index={1}>
+        <TabPanel value={tabIndexValue} index={1}>
           <PeopleList peopleData={searchResultPeopleData}/>
         </TabPanel>
       </Box>

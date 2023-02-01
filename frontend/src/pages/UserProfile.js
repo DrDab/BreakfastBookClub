@@ -2,7 +2,6 @@ import React from "react";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Stack from '@mui/material/Stack';
@@ -10,48 +9,19 @@ import UserProfileBanner from '../components/Banners/UserProfileBanner';
 import BookList from '../components/Lists/BookList';
 import CreatePost from "../components/CreatePost";
 import PostFeed from '../components/PostFeed';
+import TabPanel from "../components/TabPanel";
+import { a11yProps } from '../components/Utils';
 import { useParams } from "react-router-dom";
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
 
 export default function UserProfile() {
   let { uid } = useParams();
 
   let clickedUserData = uid  // will have user object here get(uid)
   let yourUserData = JSON.parse(sessionStorage.yourUser)
-
-  const [value, setValue] = React.useState(0);
+  
+  const [tabIndexValue, setTabIndexValue] = React.useState(0);
 
   let userPostsData = [];
   for (let i = 0; i < 20; i++ ) {
@@ -100,10 +70,6 @@ export default function UserProfile() {
     friendsData.push("Jocelyn")
   }
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
   return (
     <>
     <Box sx={{ width: '70%', margin: '0 auto' }}>
@@ -116,15 +82,15 @@ export default function UserProfile() {
         <Stack sx={{ marginBottom: '5rem' }} spacing={2}>
           <Box>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+              <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="basic tabs example">
                 <Tab label="Posts" {...a11yProps(0)} />
                 <Tab label="Liked Posts" {...a11yProps(1)} />
               </Tabs>
             </Box>
-            <TabPanel value={value} index={0}>
+            <TabPanel value={tabIndexValue} index={0}>
               <PostFeed postsData={userPostsData} />
             </TabPanel>
-            <TabPanel value={value} index={1}>
+            <TabPanel value={tabIndexValue} index={1}>
               <PostFeed postsData={likedPostsData} />
             </TabPanel>
           </Box>
