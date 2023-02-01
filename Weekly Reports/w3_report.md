@@ -14,7 +14,7 @@ weekly report!
     - Finish the schema document
     - Finish SQL backend statements for all of the tables
     - Help connect database from backend to frontend and set up the SQL queries in the backend of the database
-    
+
     Sanjana Janakiraman:
     - Continue writing necessary SQL statements
     - Assist with setting up the database
@@ -22,8 +22,8 @@ weekly report!
 
     Zaynab Khan:
     - Continue working on user creation and login system
-    
-    Amanda Ha: 
+
+    Amanda Ha:
     - Define API routes for getting books, users, posts, and making posts, sending recommendations
     - Make links to book and user profiles sharable
     - Finish the create post and send recommendation modal
@@ -37,25 +37,34 @@ weekly report!
     - Add notifications list to app bar
     - Clean up code and move redundant functions to utils.js
     - Agree on API routes and data model for returned objects
-    
+
 -Progress / Issues:
-    
+
     Zaynab Khan:
     - Setup basic create user functionality
     - Started login functionality setup
     - Explored integration of Google SSO
-    
+
     Jocelyn Thomson:
     - Finished schema document
     - Finished 95% of the SQL queries we need to use
     - Started working with backend API where queries will live
 
+    Andrea Ha:
+    - Added notifications list to app bar
+    - Moved redundant functions to utils.js
+    - Agreed on API routes, milestone goals, and defined risks and documentation plan in Architecture design doc
+
 - Goals:
+
     Zaynab Khan:
     - Finish login functionality.
     - Try to integrate Google SSO
 
-
     Jocelyn Thomson:
     - Finish rest of queries
     - Work with backend server software and put already written queries into this to get queries working with real data
+
+    Andrea Ha:
+    - Design login/sign up user flow
+    - Integrate at least one Breakfast Book club API (most likely create/get posts)
