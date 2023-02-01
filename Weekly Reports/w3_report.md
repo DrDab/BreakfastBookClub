@@ -38,7 +38,7 @@ weekly report!
     - Clean up code and move redundant functions to utils.js
     - Agree on API routes and data model for returned objects
     
--Progress / Issues:
+- Progress / Issues:
     
     Zaynab Khan:
     - Setup basic create user functionality
@@ -50,12 +50,22 @@ weekly report!
     - Finished 95% of the SQL queries we need to use
     - Started working with backend API where queries will live
 
+    Amanda Ha:
+    - Defined queries/backend functionalities mapped to frontend components
+    - Make links user profiles sharable, set up book profiles to be shareable
+    - Modals: finished the create post and send recommendation modal
+    - App bar: styled notifications dropdown, added logout button
+
 - Goals:
+
     Zaynab Khan:
     - Finish login functionality.
     - Try to integrate Google SSO
 
-
     Jocelyn Thomson:
     - Finish rest of queries
     - Work with backend server software and put already written queries into this to get queries working with real data
+
+    Amanda Ha:
+    - Create login/sign up page frontend
+    - Integrate login/sign up API if complete
