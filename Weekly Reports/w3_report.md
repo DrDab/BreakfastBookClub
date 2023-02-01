@@ -4,7 +4,7 @@ weekly report!
 - Last week’s goals: Set up database and API server. Agree on all API routes. Refine frontend and complete modals and popups. Establish SQL database tables and relations between them.
 
 - Progress / Issues: 
-- Goals: 
+- Goals: Revise API routes before implementation based on finalized expected functionality. Revise SQL database schemas to accomodate functionality requirements. Get a functional prototype of the backend working with routes for authentication, joining book clubs, adding posts to book clubs, following users.
 
 ## Contributions of Individual Team Members
 - Last week’s goals:
@@ -44,7 +44,16 @@ weekly report!
     - Started login functionality setup
     - Explored integration of Google SSO
 
+    Victor Du:
+    - Revised and added more proposed API calls.
+    - Installed and got Breakfast Book Club frontend WIP running on GCP Compute Engine server.
+
 - Goals:
   - Zaynab Khan:
     - Finish login functionality.
     - Try to integrate Google SSO
+
+  - Victor Du:
+    - Get login functionality implemented in backend API in accordance with proposed API call.
+    - Implement sample routes on backend API for getting book club data.
+    - Add basic CI tests for backend code.
