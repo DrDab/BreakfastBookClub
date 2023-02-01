@@ -3,8 +3,9 @@ weekly report!
 ## Team Report
 - Last week’s goals: Set up database and API server. Agree on all API routes. Refine frontend and complete modals and popups. Establish SQL database tables and relations between them.
 
-- Progress / Issues: 
-- Goals: Revise API routes before implementation based on finalized expected functionality. Revise SQL database schemas to accomodate functionality requirements. Get a functional prototype of the backend working with routes for authentication, joining book clubs, adding posts to book clubs, following users.
+- Progress / Issues: Set up the backend API and database within the API. Also solidified all specific components of the backend and where they will live. Finished 95% of queries for the backend. Created API for backend database and connected all backend group members to this API so they have access to it on their local computer.
+
+- Goals: Get backend setup finished - make sure the API is all set where all necessary group members have access to everything they need to work with the API. Start adding established queries into the API and start replacing some of the fake data on the frontend with real stored data.
 
 ## Contributions of Individual Team Members
 - Last week’s goals:
@@ -43,17 +44,18 @@ weekly report!
     - Setup basic create user functionality
     - Started login functionality setup
     - Explored integration of Google SSO
-
-    Victor Du:
-    - Revised and added more proposed API calls.
-    - Installed and got Breakfast Book Club frontend WIP running on GCP Compute Engine server.
+    
+    Jocelyn Thomson:
+    - Finished schema document
+    - Finished 95% of the SQL queries we need to use
+    - Started working with backend API where queries will live
 
 - Goals:
-  - Zaynab Khan:
+    Zaynab Khan:
     - Finish login functionality.
     - Try to integrate Google SSO
 
-  - Victor Du:
-    - Get login functionality implemented in backend API in accordance with proposed API call.
-    - Implement sample routes on backend API for getting book club data.
-    - Add basic CI tests for backend code.
+
+    Jocelyn Thomson:
+    - Finish rest of queries
+    - Work with backend server software and put already written queries into this to get queries working with real data
