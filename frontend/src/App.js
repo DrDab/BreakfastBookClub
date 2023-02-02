@@ -1,25 +1,33 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./Layout";
+import LoggedInLayout from "./layouts/LoggedInLayout";
+import LoggedOutLayout from "./layouts/LoggedOutLayout";
 import Home from "./pages/Home";
 import SearchResults from "./pages/SearchResults";
 import UserProfile from "./pages/UserProfile";
 import BookClub from './pages/BookClub';
-
+import LogIn from './pages/LogIn';
+import SignUp from './pages/SignUp';
 
 function App() {
-  sessionStorage.setItem('yourUser', JSON.stringify("Amanda"));
+  const loggedOut = sessionStorage?.yourUser == undefined || sessionStorage.yourUser == JSON.stringify("loggedout");
 
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="search-results" element={<SearchResults />} />
-            <Route path="user-profile/:uid" element={<UserProfile />} />
-            <Route path="book-club/:bid" element={<BookClub />} />
-          </Route>
+          {loggedOut ? 
+            <Route path="/" element={<LoggedOutLayout />}>
+              <Route index element={<LogIn />} />
+              <Route path="sign-up" element={<SignUp />} />
+            </Route> :
+            <Route path="/" element={<LoggedInLayout />}>
+              <Route index element={<Home />} />
+              <Route path="search-results" element={<SearchResults />} />
+              <Route path="user-profile/:uid" element={<UserProfile />} />
+              <Route path="book-club/:bid" element={<BookClub />} />
+            </Route>
+          }
         </Routes>
       </BrowserRouter>
     </div>

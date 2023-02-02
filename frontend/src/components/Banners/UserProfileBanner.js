@@ -8,7 +8,6 @@ import Button from '@mui/material/Button';
 import PeopleList from '../Lists/PeopleList';
 import Grid from '@mui/material/Grid';
 
-
 export default function UserProfileBanner(props) {
   let yourUserData = JSON.parse(sessionStorage.yourUser)
   const [showFriendsModal, setShowFriendsModal] = React.useState(false);
@@ -24,7 +23,7 @@ export default function UserProfileBanner(props) {
         </Grid>
         <Grid item xs={8}>
           <Stack spacing={3}>
-            <Typography variant="h5">{props.userData}</Typography>
+            <Typography variant="h5">{props.clickedUserData}</Typography>
             <Stack spacing={2} direction="row">
               {props.clickedUserData === yourUserData? <Button disableElevation variant="contained" size="small">Edit Profile</Button>: <Button disableElevation variant="contained" size="small">Add Friend</Button>} 
               <Button disableElevation variant="outlined" size="small" onClick={() => setShowFriendsModal(true)}>{888 + " Friends"}</Button>
