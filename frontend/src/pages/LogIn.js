@@ -21,10 +21,10 @@ export default function LogIn() {
     window.location.reload();
   }
   return (
-    <Box sx={{ width: '20%', padding: '5rem 3rem 5rem 3rem', borderRadius: '0.3rem', margin: '0 auto', backgroundColor: 'white' }}>
+    <Box className="login-signup">
       <Stack spacing={2}>
         <EggAltIcon sx={{ margin: '0 auto', color: '#ffa925' }} />
-        <Typography id="modal-modal-title" variant="h6" component="h2" align="center">
+        <Typography id="modal-modal-title" variant="h5" align="center">
           Welcome Back
         </Typography>
         <CustomTextField
