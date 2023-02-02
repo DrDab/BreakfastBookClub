@@ -56,6 +56,10 @@ weekly report!
     - Modals: finished the create post and send recommendation modal
     - App bar: styled notifications dropdown, added logout button
 
+    Victor Du:
+    - Revised and added more proposed API calls to backend REST API spec.
+    - Installed and got Breakfast Book Club frontend WIP running on GCP Compute Engine server.
+
 - Goals:
 
     Zaynab Khan:
@@ -69,3 +73,8 @@ weekly report!
     Amanda Ha:
     - Create login/sign up page frontend
     - Integrate login/sign up API if complete
+
+    Victor Du:
+    - Get login functionality implemented in backend API in accordance with proposed API call.
+    - Implement sample routes on backend API for getting book club data.
+    - Add basic CI tests for backend code.
