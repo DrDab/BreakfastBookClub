@@ -38,7 +38,7 @@ weekly report!
     - Clean up code and move redundant functions to utils.js
     - Agree on API routes and data model for returned objects
 
--Progress / Issues:
+- Progress / Issues:
 
     Zaynab Khan:
     - Setup basic create user functionality
