@@ -55,6 +55,12 @@ weekly report!
     - Moved redundant functions to utils.js
     - Agreed on API routes, milestone goals, and defined risks and documentation plan in Architecture design doc
 
+    Amanda Ha:
+    - Defined queries/backend functionalities mapped to frontend components
+    - Make links user profiles sharable, set up book profiles to be shareable
+    - Modals: finished the create post and send recommendation modal
+    - App bar: styled notifications dropdown, added logout button
+
 - Goals:
 
     Zaynab Khan:
@@ -68,3 +74,7 @@ weekly report!
     Andrea Ha:
     - Design login/sign up user flow
     - Integrate at least one Breakfast Book club API (most likely create/get posts)
+
+    Amanda Ha:
+    - Create login/sign up page frontend
+    - Integrate login/sign up API if complete
