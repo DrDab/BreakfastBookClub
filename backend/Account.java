@@ -16,13 +16,23 @@ public class Account {
 
     // Check username exists
     private static final String CHECK_USERNAME = 
-        "SELECT COUNT(*) AS count FROM Users AS U WHERE U.username = ?";
+        "SELECT COUNT(*) AS count FROM user_info AS U WHERE U.username = ?";
     private PreparedStatement checkUsernameStatement;
 
     // Create User
     private static final String ADD_USER = 
         "INSERT INTO Users VALUES (?, ?, ?)";
     private PreparedStatement addUserStatement;
+
+    // Get a user's salt
+    private static final String GET_USER_SALT = 
+        "SELECT salt FROM user_info AS U WHERE U.id = ?";
+    private PreparedStatement getUserSaltStatement;
+
+    // Get a user's hash
+    private static final String GET_USER_HASH = 
+        "SELECT hash FROM user_info AS U WHERE U.id = ?";
+    private PreparedStatement getUserHashStatement;
 
     /**
      * Creates an Account instance which handles new user creation and user login.
@@ -81,6 +91,46 @@ public class Account {
         return "New user account created.";
     }
 
+    /**
+     * Login the user.
+     * @param username username that the user gave
+     * @param password password that the user gave
+     * @return "User does not exist." if username is not in the database
+     *         "Failed to login user." if an SQLException is caught
+     *         "Incorrect password." if the password doesn't match the database
+     *         "User logged in." if login was successful
+     */
+    public String login(String username, String password) {
+        try {
+            if(!userExists(username)) { // User doesn't exist
+                return "User does not exist.";
+            } else {
+                getUserSaltStatement.clearParameters();
+                getUserSaltStatement.setString(1, username);
+                ResultSet rs = getUserSaltStatement.executeQuery();
+                rs.next();
+                byte[] salt = rs.getBytes("salt");
+                rs.close();
+
+                byte[] hash = getHash(password, salt);
+                getUserHashStatement.clearParameters();
+                getUserHashStatement.setString(1, user);
+                ResultSet rSet = getUserHashStatement.executeQuery();
+                rSet.next();
+                byte[] realHash = rSet.getBytes("hash");
+                rSet.close();
+
+                if (Arrays.equals(realHash, hash)) {
+                    return "User logged in.";
+                }
+                return "Incorrect password.";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Failed to login user.";
+        }
+    }
+
     // True if user is in the Users SQL table
     private boolean userExists(String username) {
         try {
@@ -123,5 +173,8 @@ public class Account {
     private void prepareStatements() throws SQLException {
         checkUsernameStatement = conn.prepareStatement(CHECK_USERNAME);
         addUserStatement = conn.prepareStatement(ADD_USER);
+        
+        getUserSaltStatement = conn.prepareStatement(GET_USER_SALT);
+        getUserHashStatement = conn.prepareStatement(GET_USER_HASH);
     }
 }
