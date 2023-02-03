@@ -1,23 +1,22 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 import EggAltIcon from '@mui/icons-material/EggAlt';
-import { useNavigate } from "react-router-dom";
-import { CustomTextField } from '../components/Inputs/CustomTextField';
-import { goToSignUp } from '../components/Utils';
-
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 export default function LogIn() {
-  const navigate = useNavigate();
+  let navigate = useNavigate();
 
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   const loginUser = () => {
     sessionStorage.setItem('yourUser', JSON.stringify(username))
+    navigate("/");
     window.location.reload();
   }
   return (
@@ -27,13 +26,15 @@ export default function LogIn() {
         <Typography id="modal-modal-title" variant="h5" align="center">
           Welcome Back
         </Typography>
-        <CustomTextField
+        <TextField
+          InputProps={{ disableUnderline: true }}
           label="Username"
           variant="filled"
           size="small"
-            onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
         />
-        <CustomTextField
+        <TextField
+          InputProps={{ disableUnderline: true }}
           label="Password"
           variant="filled"
           size="small"
@@ -48,13 +49,8 @@ export default function LogIn() {
         </Button>
         <Typography variant="caption">
           New to The Breakfast Book Club?
-          <Link
-            sx={{marginLeft:'0.2rem'}}
-            component="button"
-            variant="caption"
-            onClick={() => goToSignUp(navigate)}
-          >
-            Sign up
+          <Link variant="caption" component={RouterLink} to="/sign-up" ml={0.5}>
+            Sign Up
           </Link>
         </Typography>
       </Stack>

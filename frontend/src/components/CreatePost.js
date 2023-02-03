@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
 import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -13,18 +14,14 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { red } from '@mui/material/colors';
-import { useNavigate} from "react-router-dom";
-import { goToUserProfile } from './Utils'
+import { Link as RouterLink } from "react-router-dom";
 import { tagsList } from './Constants';
-import { CustomFormControl } from './Inputs/CustomFormControl';
-import { CustomTextField } from './Inputs/CustomTextField';
 
 export default function CreatePost() {
   const [showPostModal, setShowPostModal] = React.useState(false);
   const [indexOfTagSelected, setIndexOfTagSelected] = React.useState(-1);
   const [bookClub, setBookClub] = React.useState('');
 
-  const navigate = useNavigate();
   let yourUser = JSON.parse(sessionStorage.yourUser);
 
   let bookClubsJoinedData = [
@@ -39,17 +36,19 @@ export default function CreatePost() {
         <CardContent>
           <Stack direction="row" spacing={2}>
             <Avatar 
-              sx={{ bgcolor: red[500], width: 50, height: 50 }}
+              component={RouterLink}
+              to={"/user-profile/" + yourUser}
+              sx={{ bgcolor: red[500], width: 50, height: 50, textDecoration: "none" }}
               aria-label={yourUser + " avatar"}
-              onClick={() => goToUserProfile(yourUser, navigate)}
             >
              {yourUser.charAt(0)}
             </Avatar>
             <TextField
+              InputProps={{ disableUnderline: true }}
               disabled
-              id="outlined-disabled"
+              fullWidth
               label="Write a post"
-              fullWidth={true} 
+              variant="filled"
               onClick={() => setShowPostModal(true)}
             />
           </Stack>
@@ -66,8 +65,10 @@ export default function CreatePost() {
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Create Post
             </Typography>
-            <CustomFormControl sx={{ width:'50%' }} size="small" variant="filled">
-              <InputLabel required id="select-book-club-label">Book Club</InputLabel>
+            <FormControl size="small" variant="filled">
+              <InputLabel required id="select-book-club-label">
+                Book Club
+              </InputLabel>
               <Select
                 labelId="select-book-club-label"
                 value={bookClub}
@@ -82,13 +83,15 @@ export default function CreatePost() {
                   return (<MenuItem key={index} value={bookClub.title}>{bookClub.title}</MenuItem>)
                 })}
               </Select>
-            </CustomFormControl>
-            <CustomTextField
+            </FormControl>
+            <TextField
+              InputProps={{ disableUnderline: true }}
               required
               label="Title"
               variant="filled"
             />
-            <CustomTextField
+            <TextField
+              InputProps={{ disableUnderline: true }}
               required
               label="Thoughts"
               multiline
@@ -99,12 +102,12 @@ export default function CreatePost() {
               {tagsList.map((tag, index) => {
                 return (
                   <Chip
-                  variant= {indexOfTagSelected === index ? "filled": "outlined" }
-                  key={index}
-                  icon={tag.icon}
-                  label={tag.label}
-                  color={tag.color}
-                  onClick={() => setIndexOfTagSelected(indexOfTagSelected === index ? -1 : index)}
+                    variant= {indexOfTagSelected === index ? "filled": "outlined" }
+                    key={index}
+                    icon={tag.icon}
+                    label={tag.label}
+                    color={tag.color}
+                    onClick={() => setIndexOfTagSelected(indexOfTagSelected === index ? -1 : index)}
                   />
                 )
               })}

@@ -1,16 +1,14 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 import EggAltIcon from '@mui/icons-material/EggAlt';
-import { useNavigate } from "react-router-dom";
-import { CustomTextField } from '../components/Inputs/CustomTextField';
-import { goToLogin } from '../components/Utils';
+import { Link as RouterLink } from "react-router-dom";
 
 export default function SignUp() {
-  const navigate = useNavigate();
 
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -26,35 +24,27 @@ export default function SignUp() {
         <Typography id="modal-modal-title" variant="h5" align="center">
           Sign Up
         </Typography>
-        
-        <CustomTextField
+        <TextField
+          InputProps={{ disableUnderline: true }}
           label="Create Username"
           variant="filled"
           size="small"
           onChange={(e) => setUsername(e.target.value)}
         />
-        <CustomTextField
+        <TextField
+          InputProps={{ disableUnderline: true }}
           label="Create Password"
           variant="filled"
           size="small"
           type="password"
         />
-        <Button 
-          onClick={signUpUser}
-          disableElevation 
-          size="small" 
-          variant='contained'>
+        <Button disableElevation onClick={signUpUser} size="small" variant='contained'>
           Sign Up
         </Button>
         <Typography variant="caption">
           Already have an account?
-          <Link
-            sx={{marginLeft:'0.2rem'}}
-            component="button"
-            variant="caption"
-            onClick={() => goToLogin(navigate)}
-          >
-            Login
+          <Link variant="caption" component={RouterLink} to="/log-in" ml={0.5}>
+            Log in
           </Link>
         </Typography>
       </Stack>

@@ -8,7 +8,6 @@ import BookList from '../components/Lists/BookList';
 import CreatePost from '../components/CreatePost';
 import PostFeed from '../components/PostFeed';
 
-
 export default function Home() {
   const [popularBooks, setPopularBooks] = useState("");
 
@@ -70,14 +69,14 @@ export default function Home() {
       <Grid item xs={4}>
         <Stack spacing={2}>
           <div>
-            <Typography>
+            <Typography variant="overline">
               Trending Books
             </Typography>
             <BookList bookData={popularBooksData}/>
           </div>
           <div>
-            <Typography>
-              Trending People
+            <Typography variant="overline">
+              Trending Readers
             </Typography>
             <PeopleList peopleData={popularPeopleData}/>
           </div>

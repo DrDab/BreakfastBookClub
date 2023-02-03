@@ -13,8 +13,6 @@ import TabPanel from "../components/TabPanel";
 import { a11yProps } from '../components/Utils';
 import { useParams } from "react-router-dom";
 
-
-
 export default function UserProfile() {
   let { uid } = useParams();
 
@@ -98,13 +96,17 @@ export default function UserProfile() {
       </Grid>
       <Grid item xs={4}>
         <div>
-          <Typography>Book Clubs</Typography>
-          <BookList bookData={bookClubsJoinedData}/>
+          <Typography variant="overline">
+            Book Clubs
+          </Typography>
+          <BookList bookData={bookClubsJoinedData} />
         </div>
-         <div>
-          <Typography>Favorited Books</Typography>
-          <BookList bookData={booksFavoritedData}/>
-          </div>
+        <div>
+          <Typography variant="overline">
+            Saved Books
+          </Typography>
+          <BookList bookData={booksFavoritedData} />
+        </div>
       </Grid>
     </Grid>
   </Box>

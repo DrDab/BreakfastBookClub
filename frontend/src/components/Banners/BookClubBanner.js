@@ -4,14 +4,13 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import Modal from '@mui/material/Modal';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import { CustomFormControl } from '../Inputs/CustomFormControl';
-import { CustomTextField } from '../Inputs/CustomTextField';
-
 
 export default function BookClubBanner(props) {
   const [showRecomendModal, setShowRecomendModal] = React.useState(false);
@@ -38,13 +37,23 @@ export default function BookClubBanner(props) {
           </Grid>
           <Grid item xs={8}>
             <Stack spacing={3}>
-              <Typography variant="h5">{props.bookData.title}</Typography>
-              <Typography variant="p1">{props.bookData.author}</Typography>
+              <Typography variant="h5">
+                {props.bookData.title}
+              </Typography>
+              <Typography variant="p1">
+                {props.bookData.author}
+              </Typography>
               <Stack spacing={2} direction="row">
-                <Button disableElevation variant="contained" size="small">Favorite</Button> 
-                <Button disableElevation variant="outlined" size="small"  onClick={() => setShowRecomendModal(true)}> Recommend</Button>
+                <Button disableElevation variant="contained" size="small">
+                  Save
+                </Button>
+                <Button disableElevation variant="outlined" size="small" onClick={() => setShowRecomendModal(true)}> 
+                  Recommend
+                </Button>
               </Stack>
-              <Typography>I walked through the door with you, the air was cold. One for the money, two for the show I never was ready, so I watch you go.</Typography>
+              <Typography>
+                I walked through the door with you, the air was cold. One for the money, two for the show I never was ready, so I watch you go.
+              </Typography>
             </Stack>
           </Grid>
         </Grid>
@@ -61,7 +70,7 @@ export default function BookClubBanner(props) {
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Recommend to
             </Typography>
-            <CustomFormControl sx={{ width:'50%' }} size="small" variant="filled">
+            <FormControl size="small" variant="filled">
               <InputLabel required id="select-friend-label">Friend</InputLabel>
               <Select
                 labelId="select-friend-label"
@@ -77,8 +86,9 @@ export default function BookClubBanner(props) {
                   return (<MenuItem key={index} value={friend.name}>{friend.name}</MenuItem>)
                 })}
               </Select>
-            </CustomFormControl>
-            <CustomTextField
+            </FormControl>
+            <TextField
+              InputProps={{ disableUnderline: true }}
               required
               label="Thoughts"
               multiline

@@ -9,37 +9,33 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useNavigate } from "react-router-dom";
-import { goToUserProfile } from './Utils';
+import { Link as RouterLink } from "react-router-dom";
 import { tagsList } from './Constants';
 
 export default function PostFeed(props) {
-  const navigate = useNavigate();
 
 	return (
     props.postsData.map((post, index) => {
       let tagIcon = tagsList.filter(tag => tag.label === post.tag)[0]["icon"]
-      let tagColor  = tagsList.filter(tag => tag.label === post.tag)[0]["color"]
+      let tagColor = tagsList.filter(tag => tag.label === post.tag)[0]["color"]
       return (
         <Card key={index} elevation={0} className="post">
           <CardHeader
             avatar={
-              <Avatar
-                sx={{ bgcolor: red[500],width: 50, height: 50 }}
+              <Avatar 
+                component={RouterLink}
+                to={"/user-profile/" + post.user}
+                sx={{ bgcolor: red[500], width: 50, height: 50, textDecoration: "none" }}
                 aria-label={post.user + " avatar"}
-                onClick={() => goToUserProfile(post.user, navigate)}
               >
                 {post.user.charAt(0)}
               </Avatar>
             }
-            action={
-              <IconButton aria-label="settings">
-                <MoreVertIcon />
-              </IconButton>
+            title={
+              <Typography gutterBottom variant="p4">
+                <strong>{post.user}</strong> in the <strong>{post.club}</strong> Book Club
+              </Typography>
             }
-            title={post.user + " in the " + post.club + " Book Club"}
             subheader="September 14, 2016"
           />
           <CardContent>
@@ -60,9 +56,6 @@ export default function PostFeed(props) {
           <CardActions disableSpacing>
             <IconButton aria-label="like">
               <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="share">
-              <ShareIcon />
             </IconButton>
           </CardActions>
         </Card>

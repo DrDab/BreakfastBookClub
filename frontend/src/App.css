@@ -2,10 +2,43 @@ body {
   background-color: #f4f4f4;
 }
 
-/* list */
+/* search */
+.search-box {
+  position: relative;
+  border-radius: 0.2rem;
+  background-color: rgba(0, 0, 0, 0.07);
+  margin-left: 2rem;
+  width: 17rem;
+  transition: background-color 0.2s;
+}
+
+.search-box:hover {
+  background-color: rgba(0, 0, 0, 0.10);
+}
+
+.search-icon {
+  padding: 0rem 1rem;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.search-input {
+  color: inherit;
+  padding: 0.3rem 0.3rem 0.3rem 3rem;
+  transition: width 2s;
+  width: 100%;
+  color: rgba(0, 0, 0, 0.99);
+}
+
+/* lists */
 .list-item {
   background-color: white;
   margin-bottom: 0.5rem;
+  color: #000000;
 }
 
 .list-item:hover {
@@ -21,13 +54,12 @@ body {
   margin-bottom: 0.5rem;
 }
 
-/* modals */
+/* recommend, create-post, friends-list modals */
 .basic-modal {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 30rem;
   background-color: white;
   box-shadow: 2rem;
   outline: none;
@@ -35,19 +67,21 @@ body {
   border-radius: 0.3rem;
 }
 
+.friends-list-modal {
+  width: 20%;
+}
+
 .recommend-modal {
-  width: 30rem;
+  width: 30%;
 }
 
-.create-post-modal{
-  width: 35rem;
+.create-post-modal {
+  width: 40%;
 }
 
-.friends-list-modal{
-  width: 20rem;
-}
 
-/* login signup */
+
+/* login signup modals */
 .login-signup {
   width: 25%;
   background-color: #ffffff;
@@ -57,4 +91,20 @@ body {
   padding: 5rem 3rem 5rem 3rem;
   border-radius: 0.3rem;
   margin: 0 auto;
+}
+
+/* form inputs */
+.MuiFilledInput-root, .MuiInputBase-formControl {
+  background-color: #fcfcfb !important;
+  border: 1px solid #e2e2e1;
+  overflow: hidden;
+  border-radius: 0.2rem;
+  transition: border-color 0.5s, background-color 0.2s, box-shadow 0.5s;
+}
+
+.MuiFilledInput-root:hover,
+.MuiFilledInput-root.Mui-focused,
+.MuiInputBase-formControl:hover,
+.MuiInputBase-formControl.Mui-focused {
+  background-color: transparent !important;
 }

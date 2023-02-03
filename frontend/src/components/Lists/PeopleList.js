@@ -4,21 +4,20 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from "react-router-dom";
-import {goToUserProfile} from '../Utils'
+import { Link as RouterLink } from "react-router-dom";
 
 export default function PeopleList(props) {
-  const navigate = useNavigate();
 
 	return (
       props.peopleData.map((person, index) => {
       return (
         <ListItem
+          component={RouterLink}
+          to={"/user-profile/" + person}
           className="list-item"
           alignItems="flex-start"
           key={index}
-          onClick={() => goToUserProfile(person, navigate)}
-          >
+        >
           <ListItemAvatar>
             <Avatar
               alt={person + " avatar"}

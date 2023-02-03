@@ -1,68 +1,25 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
+import { red } from '@mui/material/colors';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import InputBase from '@mui/material/InputBase';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import EggAltIcon from '@mui/icons-material/EggAlt';
+import EggAltOutlinedIcon from '@mui/icons-material/EggAltOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import Logout from '@mui/icons-material/Logout';
-import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';import AccountCircle from '@mui/icons-material/AccountCircle';
-import { Link, useNavigate } from "react-router-dom";
-import { goToUserProfile } from '../Utils'
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import NotificationList from '../Lists/NotificationList';
 import Badge from '@mui/material/Badge';
-
-
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.black, 0.07),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.black, 0.10),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: alpha(theme.palette.common.black, 0.30),
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    color: alpha(theme.palette.common.black, 1.0),
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
-
 
 export default function LoggedInAppBar() {
   let yourUserData = JSON.parse(sessionStorage.yourUser)
@@ -95,7 +52,6 @@ export default function LoggedInAppBar() {
     })
   }
 
-
   const [searchValue, setSearchValue] = React.useState(null);
   const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
   const openNotifications = Boolean(anchorElNotifications);
@@ -104,14 +60,14 @@ export default function LoggedInAppBar() {
 
   const navigate = useNavigate();
 
-  const goToSearchResults = async () => {
+  const handleSearchSubmission = () => {
     sessionStorage.setItem('searchValue', searchValue);
     navigate("/search-results");
   };
 
-  const goToLogin = async () => {
+  const handleLogOut = () => {
     sessionStorage.setItem('yourUser', JSON.stringify("loggedout"));
-    navigate("/");
+    navigate("/log-in");
     window.location.reload();
   };
 
@@ -119,32 +75,28 @@ export default function LoggedInAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar elevation={0} position="fixed" sx={{backgroundColor: '#ffffff'}}>
         <Toolbar>
-          <Link to="/">
-            <IconButton
-              size="large"
-              edge="start"
-              aria-label="icon"
-              sx={{ mr: 2 }}
-            >
-              <EggAltIcon sx={{ color: '#ffa925' }} />
+          <Link component={RouterLink} to="/">
+            <IconButton size="large" edge="start" aria-label="icon">
+              <EggAltOutlinedIcon sx={{ color: '#ffa925' }} />
             </IconButton>
           </Link>
-          <Typography variant="h6" sx={{ color: "#000000" }}>
+          <Typography variant="h6" sx={{ color: '#000000' }}>
             The Breakfast Book Club
           </Typography>
-          <Search>
-            <SearchIconWrapper>
+          <div className='search-box'>
+            <div className='search-icon'>
               <SearchIcon />
-            </SearchIconWrapper>
-            <form onSubmit={goToSearchResults}>
-              <StyledInputBase
+            </div>
+            <form onSubmit={handleSearchSubmission}>
+              <InputBase
+                className='search-input'
                 placeholder="Search…"
                 inputProps={{ 'aria-label': 'search' }}
                 onChange={e => setSearchValue(e.target.value)}
                 value={searchValue || ""}
               />
             </form>
-          </Search>
+          </div>
           <Box sx={{ flexGrow: 1 }} />
           <Stack direction="row" spacing={2}>
             <IconButton
@@ -169,7 +121,7 @@ export default function LoggedInAppBar() {
               color="secondary"
               onClick={(e) => setAnchorElAccount(e.currentTarget)}
             >
-              <Avatar>{yourUserData.charAt(0)}</Avatar>
+              <Avatar sx={{bgcolor: red[500]}}>{yourUserData.charAt(0)}</Avatar>
             </IconButton>
           </Stack>
         </Toolbar>
@@ -186,13 +138,13 @@ export default function LoggedInAppBar() {
           },
         }}
       >
-        <MenuItem onClick={() => goToUserProfile(yourUserData, navigate)}>
+        <MenuItem component={RouterLink} to={"/user-profile/" + yourUserData}>
           <ListItemIcon>
             <AccountCircle fontSize="small" />
           </ListItemIcon>
           Profile
         </MenuItem>
-        <MenuItem onClick={goToLogin}>
+        <MenuItem onClick={handleLogOut}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
@@ -211,9 +163,13 @@ export default function LoggedInAppBar() {
           },
         }}
       >
-        <Stack direction="row">
-          <Typography ml={2} mt={1} mb={2}> Notifications </Typography>
-          <Typography onClick={()=> console.log("clear notifs")} variant="caption" ml={30} mt={1} mb={2}> Clear </Typography>
+        <Stack direction="row" justifyContent="space-between" m={1.5}>
+          <Typography>
+            Notifications
+          </Typography>
+          <Link component="button" variant="caption" onClick={()=> console.log("clear notifs")}>
+            Clear
+          </Link>
         </Stack>
         <NotificationList notificationData={notificationData}/>
       </Menu>

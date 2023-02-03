@@ -1,5 +1,6 @@
 import React from 'react';
 import Avatar from '@mui/material/Avatar';
+import { red } from '@mui/material/colors';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -17,7 +18,7 @@ export default function UserProfileBanner(props) {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={30}>
         <Grid item xs={2}>
-          <Avatar alt={props.clickedUserData + " avatar"} sx={{ width: 150, height: 150 }}>
+          <Avatar alt={props.clickedUserData + " avatar"} sx={{ bgcolor: red[500], width: 150, height: 150 }}>
             {props.clickedUserData.charAt(0)}
           </Avatar>
         </Grid>
@@ -25,8 +26,19 @@ export default function UserProfileBanner(props) {
           <Stack spacing={3}>
             <Typography variant="h5">{props.clickedUserData}</Typography>
             <Stack spacing={2} direction="row">
-              {props.clickedUserData === yourUserData? <Button disableElevation variant="contained" size="small">Edit Profile</Button>: <Button disableElevation variant="contained" size="small">Add Friend</Button>} 
-              <Button disableElevation variant="outlined" size="small" onClick={() => setShowFriendsModal(true)}>{888 + " Friends"}</Button>
+              {props.clickedUserData === yourUserData?
+                <Button disableElevation variant="contained" size="small">
+                  Edit Profile
+                </Button>:
+                <Button disableElevation variant="contained" size="small">
+                  Add Friend
+                </Button>
+              } 
+              <Button 
+                disableElevation variant="outlined" size="small" onClick={() => setShowFriendsModal(true)}
+              >
+                {888 + " Friends"}
+              </Button>
             </Stack>
             <Typography>I walked through the door with you, the air was cold. One for the money, two for the show I never was ready, so I watch you go.</Typography> 
           </Stack>

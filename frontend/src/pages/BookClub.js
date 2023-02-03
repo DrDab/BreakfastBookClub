@@ -44,13 +44,10 @@ export default function BookClub() {
         <PostFeed postsData={bookClubPostsData} />
       </Grid>
       <Grid item xs={4}>
-        <Button
-          disableElevation
-          sx={{ width: '100%', marginBottom: '1rem' }}
-          variant="contained">
-            Join the club
+        <Button disableElevation sx={{ width: '100%', marginBottom: '1rem' }} variant="contained">
+          Join the club
         </Button>
-        <Typography>
+        <Typography variant="overline">
           Members
         </Typography>
         <PeopleList peopleData={membersData}/>

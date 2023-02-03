@@ -27,8 +27,12 @@ export default function NotificationList(props) {
             </Avatar>
           </ListItemAvatar>
           <ListItemText>
-            <Typography><strong>{notif.recommender}</strong> recommended <strong>{notif.book.title}</strong> to you </Typography>
-            <Typography variant="caption">{notif.time}</Typography>
+            <Typography>
+              <strong>{notif.recommender}</strong> recommended <strong>{notif.book.title}</strong> to you
+            </Typography>
+            <Typography variant="caption">
+              {notif.time}
+            </Typography>
           </ListItemText>
         </MenuItem>
       )
