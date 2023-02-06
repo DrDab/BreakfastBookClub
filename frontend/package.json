@@ -12,6 +12,7 @@
     "firebase": "^9.17.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-firebase-hooks": "^5.1.1",
     "react-router-dom": "^6.7.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
@@ -42,18 +43,24 @@
     ]
   },
   "babel": {
-     "presets": [
+    "presets": [
       "@babel/preset-env",
-      ["@babel/preset-react", {"runtime": "automatic"}]
+      [
+        "@babel/preset-react",
+        {
+          "runtime": "automatic"
+        }
+      ]
     ]
   },
   "jest": {
-   "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-        "<rootDir>/__mocks__/fileMock.js",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
       "\\.(css|less)$": "identity-obj-proxy"
     },
-    "setupFilesAfterEnv": ["mock-local-storage"]
+    "setupFilesAfterEnv": [
+      "mock-local-storage"
+    ]
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
