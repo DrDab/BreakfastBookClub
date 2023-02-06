@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 import EggAltIcon from '@mui/icons-material/EggAlt';
 import { Link as RouterLink } from "react-router-dom";
+//import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function SignUp() {
 
