@@ -25,4 +25,4 @@ jobs:
       - name: Gradle build backend
         run: cd backend/BCAPIServer && ./gradlew build
       - name: Run unit tests
-        run: cd backend/BCAPIServer && ./gradlew tests
+        run: cd backend/BCAPIServer && ./gradlew test
