@@ -7,7 +7,9 @@ import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 import EggAltIcon from '@mui/icons-material/EggAlt';
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { auth, logIn } from "../../FirebaseConfig";
+import { db, auth, logIn } from "../../FirebaseConfig";
+import {useAuthState} from "react-firebase-hooks/auth";
+import { collection, query, where, doc, getDoc } from "firebase/firestore";
 // import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function LogIn() {
@@ -15,12 +17,17 @@ export default function LogIn() {
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [user] = useAuthState(auth);
 
   const loginUser = () => {
     logIn(email, password);
-    // sessionStorage.setItem('yourUser', JSON.stringify())
-    navigate("/");
-    window.location.reload();
+    sessionStorage.setItem('yourUser', JSON.stringify(user.uid));
+    if (user) {
+      navigate("/");
+      window.location.reload();
+    } else {
+      console.log("log in", email);
+    }
   }
 
   return (

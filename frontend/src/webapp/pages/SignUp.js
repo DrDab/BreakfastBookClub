@@ -8,6 +8,7 @@ import Link from '@mui/material/Link';
 import EggAltIcon from '@mui/icons-material/EggAlt';
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { auth, register } from "../../FirebaseConfig";
+import {useAuthState} from "react-firebase-hooks/auth";
 // import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function SignUp() {
@@ -16,10 +17,12 @@ export default function SignUp() {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [user] = useAuthState(auth);
 
   const signUpUser = () => {
     console.log("sign up", email);
     register(name, email, password);
+    if (user) navigate("/");
   }
 
   // TODO: Edit sign up button to navigate to profile page on click. Wait for firebase to finish register first.
