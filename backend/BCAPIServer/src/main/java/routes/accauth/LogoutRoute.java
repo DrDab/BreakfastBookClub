@@ -1,19 +1,31 @@
 package routes.accauth;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import utils.TokenStore;
 
 public class LogoutRoute implements Route {
-    private Gson gson;
+    private TokenStore tokenStore;
 
-    public LogoutRoute(Gson gson) {
-        this.gson = gson;
+    public LogoutRoute(TokenStore tokenStore) {
+        this.tokenStore = tokenStore;
     }
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        return null;
+        JsonObject jsonObject = new JsonObject();
+
+        String token = request.queryParams("token");
+
+        if (token == null) {
+            jsonObject.addProperty("status", "failure");
+            return jsonObject;
+        }
+
+        jsonObject.addProperty("status", tokenStore.deauthToken(token));
+        return jsonObject;
     }
 }

@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     implementation files('lib/mysql-connector-j-8.0.32.jar')
+    implementation 'org.json:json:20220924'
     implementation "com.google.code.gson:gson:2.8.5"
     implementation "com.sparkjava:spark-core:2.8.0"
     implementation "org.slf4j:slf4j-simple:1.7.21"

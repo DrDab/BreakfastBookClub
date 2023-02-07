@@ -8,6 +8,7 @@ import spark.Response;
 import spark.Route;
 import spark.Spark;
 import utils.BCCORSFilter;
+import utils.TokenStore;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,20 +17,12 @@ import java.sql.SQLException;
 public class SparkServerMain
 {
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
         BCCORSFilter corsFilter = new BCCORSFilter();
         corsFilter.apply();
 
+        Class.forName("com.mysql.cj.jdbc.Driver");
         Connection sqlConnection = null;
-
-        try
-        {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        }
-        catch (ClassNotFoundException cnfe)
-        {
-            cnfe.printStackTrace();
-        }
 
         try {
             sqlConnection = DriverManager.getConnection("jdbc:mysql://localhost" +
@@ -45,16 +38,17 @@ public class SparkServerMain
         }
 
         Account account = new Account(sqlConnection);
+        TokenStore tokenStore = new TokenStore();
+
         //String res = account.createUser("MyUsername", "MyPassword");
-        String res = account.login("MyUsername", "MyPassword");
-        System.out.println(res);
+        //String res = account.login("MyUsername", "MyPassword");
+        //System.out.println(res);
 
-        Gson gson = new Gson();
+        Spark.post("/api/login", new LoginRoute(account, tokenStore));
+        Spark.delete("/api/logout", new LogoutRoute(tokenStore));
+        Spark.get("/api/auth_token_valid", new AuthTokenValidRoute(tokenStore));
 
-        Spark.post("/api/login", new LoginRoute(gson));
-        Spark.delete("/api/logout", new LogoutRoute(gson));
-        Spark.get("/api/auth_token_valid", new AuthTokenValidRoute(gson));
-
+        /*
         Spark.get("/api/search_books", new Route()
         {
             @Override
@@ -134,6 +128,7 @@ public class SparkServerMain
                 return gson.toJson(null);
             }
         });
+         */
     }
 
 }
