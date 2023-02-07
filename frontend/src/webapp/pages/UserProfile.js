@@ -18,7 +18,7 @@ export default function UserProfile() {
 
   let clickedUserData = uid  // will have user object here get(uid)
   let yourUserData = JSON.parse(sessionStorage.yourUser)
-  
+
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
 
   let userPostsData = [];
@@ -95,22 +95,23 @@ export default function UserProfile() {
         </Stack>
       </Grid>
       <Grid item xs={4}>
-        <div>
-          <Typography variant="overline">
-            Book Clubs
-          </Typography>
-          <BookList bookData={bookClubsJoinedData} />
-        </div>
-        <div>
-          <Typography variant="overline">
-            Saved Books
-          </Typography>
-          <BookList bookData={booksFavoritedData} />
-        </div>
+        <Stack spacing={2}>
+          <div>
+            <Typography variant="overline">
+              Book Clubs
+            </Typography>
+            <BookList bookData={bookClubsJoinedData} />
+          </div>
+          <div>
+            <Typography variant="overline">
+              Saved Books
+            </Typography>
+            <BookList bookData={booksFavoritedData} />
+          </div>
+        </Stack>
       </Grid>
     </Grid>
   </Box>
   </>
-
   );
 };

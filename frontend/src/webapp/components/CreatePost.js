@@ -19,23 +19,43 @@ import { tagsList } from './Constants';
 
 export default function CreatePost() {
   const [showPostModal, setShowPostModal] = React.useState(false);
+  const [bookClub, setBookClub] = React.useState("");
+  const [title, setTitle] = React.useState("");
+  const [thoughts, setThoughts] = React.useState("");
   const [indexOfTagSelected, setIndexOfTagSelected] = React.useState(-1);
-  const [bookClub, setBookClub] = React.useState('');
 
   let yourUser = JSON.parse(sessionStorage.yourUser);
 
   let bookClubsJoinedData = [
-    {title: "Harry Potter"}, 
+    {title: "Harry Potter"},
     {title: "Twilight"},
     {title: "Wonder"}
   ];
+
+  const clearFormValues = () => {
+    setBookClub("");
+    setTitle("");
+    setThoughts("");
+    setIndexOfTagSelected(-1);
+  }
+
+  const handleCancelPost = () => {
+    setShowPostModal(false);
+    clearFormValues();
+  };
+
+  const handlePost = () => {
+    setShowPostModal(false);
+    console.log("sending to API", {bookClub, title, thoughts,indexOfTagSelected})
+    clearFormValues();
+  };
 
   return (
     <>
       <Card elevation={0} className="main-feed-post">
         <CardContent>
           <Stack direction="row" spacing={2}>
-            <Avatar 
+            <Avatar
               component={RouterLink}
               to={"/user-profile/" + yourUser}
               sx={{ bgcolor: red[500], width: 50, height: 50, textDecoration: "none" }}
@@ -80,7 +100,11 @@ export default function CreatePost() {
                   <em>Choose Book Club</em>
                 </MenuItem>
                 {bookClubsJoinedData.map((bookClub, index) => {
-                  return (<MenuItem key={index} value={bookClub.title}>{bookClub.title}</MenuItem>)
+                  return (
+                    <MenuItem key={index} value={bookClub.title}>
+                      {bookClub.title}
+                    </MenuItem>
+                  )
                 })}
               </Select>
             </FormControl>
@@ -89,6 +113,8 @@ export default function CreatePost() {
               required
               label="Title"
               variant="filled"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
             <TextField
               InputProps={{ disableUnderline: true }}
@@ -97,12 +123,14 @@ export default function CreatePost() {
               multiline
               rows="4"
               variant="filled"
+              value={thoughts}
+              onChange={(e) => setThoughts(e.target.value)}
             />
             <Stack direction="row" spacing={1}>
               {tagsList.map((tag, index) => {
                 return (
                   <Chip
-                    variant= {indexOfTagSelected === index ? "filled": "outlined" }
+                    variant= {indexOfTagSelected === index ? "filled": "outlined"}
                     key={index}
                     icon={tag.icon}
                     label={tag.label}
@@ -113,10 +141,10 @@ export default function CreatePost() {
               })}
             </Stack>
             <Stack justifyContent="end" direction="row" spacing={1}>
-              <Button disableElevation size="small" variant='contained'>
+              <Button disableElevation size="small" variant='contained' onClick={handlePost}>
                 Post
               </Button>
-              <Button disableElevation size="small" variant='outlined' onClick={() => setShowPostModal(false)}>
+              <Button disableElevation size="small" variant='outlined' onClick={handleCancelPost}>
                 Cancel
               </Button>
             </Stack>
