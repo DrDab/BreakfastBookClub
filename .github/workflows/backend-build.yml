@@ -7,7 +7,7 @@
 # To get a newer version, you will need to update the SHA.
 # You can also reference a tag or branch, but the action may change without warning.
 
-name: Java CI
+name: Backend Java CI
 
 on: [push]
 
@@ -22,5 +22,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-      - name: Build with Gradle
-        run: cd backend/BCAPIServer; ./gradlew build
+      - name: Gradle build backend
+        run: cd backend/BCAPIServer && ./gradlew build
+      - name: Run unit tests
+        run: cd backend/BCAPIServer && ./gradlew tests
