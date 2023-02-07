@@ -6,14 +6,14 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoggedInLayout from "./layouts/LoggedInLayout";
-import LoggedOutLayout from "./layouts/LoggedOutLayout";
-import Home from "./pages/Home";
-import SearchResults from "./pages/SearchResults";
-import UserProfile from "./pages/UserProfile";
-import BookClub from './pages/BookClub';
-import LogIn from './pages/LogIn';
-import SignUp from './pages/SignUp';
+import LoggedInLayout from "./webapp/layouts/LoggedInLayout";
+import LoggedOutLayout from "./webapp/layouts/LoggedOutLayout";
+import Home from "./webapp/pages/Home";
+import SearchResults from "./webapp/pages/SearchResults";
+import UserProfile from "./webapp/pages/UserProfile";
+import BookClub from './webapp/pages/BookClub';
+import LogIn from './webapp/pages/LogIn';
+import SignUp from './webapp/pages/SignUp';
 //
 //import FirebaseConfig;
 //import * as firebase from 'firebase/app';
