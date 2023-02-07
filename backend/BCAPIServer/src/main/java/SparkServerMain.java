@@ -1,11 +1,7 @@
-import com.google.gson.Gson;
 import daos.Account;
 import routes.accauth.AuthTokenValidRoute;
 import routes.accauth.LoginRoute;
 import routes.accauth.LogoutRoute;
-import spark.Request;
-import spark.Response;
-import spark.Route;
 import spark.Spark;
 import utils.BCCORSFilter;
 import utils.TokenStore;

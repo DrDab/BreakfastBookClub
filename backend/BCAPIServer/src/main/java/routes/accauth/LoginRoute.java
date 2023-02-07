@@ -1,6 +1,5 @@
 package routes.accauth;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import daos.Account;
 import spark.Request;
@@ -9,8 +8,8 @@ import spark.Route;
 import utils.TokenStore;
 
 public class LoginRoute implements Route {
-    private Account account;
-    private TokenStore tokenStore;
+    private final Account account;
+    private final TokenStore tokenStore;
 
     public LoginRoute(Account account, TokenStore tokenStore) {
         this.account = account;
@@ -18,7 +17,7 @@ public class LoginRoute implements Route {
     }
 
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response)  {
         JsonObject jsonObject = new JsonObject();
 
         String username = request.queryParams("username");
