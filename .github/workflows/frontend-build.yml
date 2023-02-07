@@ -35,7 +35,7 @@ jobs:
 
       # Install required deps for action
       - name: Install Dependencies
-        run: cd frontend && npm install
+        run: cd frontend && npm install @mui/material @emotion/react @emotion/styled
 
       # Run tests
       - name: Run the tests
