@@ -8,7 +8,7 @@ import Link from '@mui/material/Link';
 import EggAltIcon from '@mui/icons-material/EggAlt';
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { auth, logIn } from "../FirebaseConfig";
-import { useAuthState } from "react-firebase-hooks/auth";
+// import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function LogIn() {
   let navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function LogIn() {
 
   const loginUser = () => {
     logIn(email, password);
-    //sessionStorage.setItem('yourUser', JSON.stringify())
+    // sessionStorage.setItem('yourUser', JSON.stringify())
     navigate("/");
     window.location.reload();
   }

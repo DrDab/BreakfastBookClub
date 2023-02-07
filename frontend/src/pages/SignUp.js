@@ -8,7 +8,7 @@ import Link from '@mui/material/Link';
 import EggAltIcon from '@mui/icons-material/EggAlt';
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { auth, register } from "../FirebaseConfig";
-import { useAuthState } from "react-firebase-hooks/auth";
+// import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function SignUp() {
   let navigate = useNavigate();
@@ -53,7 +53,7 @@ export default function SignUp() {
           type="password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button disableElevation onClick={signUp} size="small" variant='contained'>
+        <Button disableElevation onClick={signUpUser} size="small" variant='contained'>
           Sign Up
         </Button>
         <Typography variant="caption">
