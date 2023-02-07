@@ -23,3 +23,21 @@ npm start
 ```
 ssh [username]@34.145.15.228
 ```
+
+### Build backend
+```
+cd backend/BCAPIServer
+./gradlew build
+```
+
+### Run backend tests
+```
+cd backend/BCAPIServer
+./gradlew test
+```
+
+### Run backend server
+```
+cd backend/BCAPIServer
+./gradlew run
+```
