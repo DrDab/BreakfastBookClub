@@ -39,4 +39,4 @@ jobs:
 
       # Run tests
       - name: Run the tests
-        run: npm test
+        run: cd frontend && npm test
