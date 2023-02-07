@@ -7,18 +7,22 @@ import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 import EggAltIcon from '@mui/icons-material/EggAlt';
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { auth, logIn } from "../FirebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function LogIn() {
   let navigate = useNavigate();
 
-  const [username, setUsername] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   const loginUser = () => {
-    sessionStorage.setItem('yourUser', JSON.stringify(username))
+    logIn(email, password);
+    //sessionStorage.setItem('yourUser', JSON.stringify())
     navigate("/");
     window.location.reload();
   }
+
   return (
     <Box className="login-signup">
       <Stack spacing={2}>
@@ -28,10 +32,10 @@ export default function LogIn() {
         </Typography>
         <TextField
           InputProps={{ disableUnderline: true }}
-          label="Username"
+          label="Email"
           variant="filled"
           size="small"
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <TextField
           InputProps={{ disableUnderline: true }}
@@ -39,6 +43,7 @@ export default function LogIn() {
           variant="filled"
           size="small"
           type="password"
+          onChange={(e) => setPassword(e.target.value)}
         />
         <Button 
           onClick={loginUser}
