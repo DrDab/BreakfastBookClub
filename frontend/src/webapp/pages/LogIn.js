@@ -18,7 +18,7 @@ export default function LogIn() {
 
   const loginUser = () => {
     logIn(email, password);
-    sessionStorage.setItem('yourUser', JSON.stringify("Amanda"))
+    // sessionStorage.setItem('yourUser', JSON.stringify())
     navigate("/");
     window.location.reload();
   }
