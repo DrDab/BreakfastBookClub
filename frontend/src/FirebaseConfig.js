@@ -1,9 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import {
     getAuth,
-    signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     signOut,
 } from "firebase/auth";
@@ -27,7 +25,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
@@ -47,16 +44,6 @@ const register = async (name, email, password) => {
   }
 };
 
-// User is already registered
-const logIn = async (email, password) => {
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
-  }
-};
-
 // Logout
 const logout = () => {
   signOut(auth);
@@ -66,6 +53,5 @@ export {
     auth,
     db,
     register,
-    logIn,
     logout,
 };
