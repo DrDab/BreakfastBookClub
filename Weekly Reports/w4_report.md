@@ -53,6 +53,10 @@
   - Got login/logout/account creation functionality implemented in backend API in accordance with proposed API call.
   - Setup GitHub actions CI pipeline to run JUnit tests for backend server code.
 
+  Andrea Ha:
+  - Designed login/sign up pages and user flow
+  - Set up create post component to build data object for create post
+
 - Goals:
 
   Zaynab Khan:
@@ -71,3 +75,7 @@
   Victor Du:
   - Implement routes on backend API for adding and getting book data.
   - Implement routes on backend API for getting book club posting data.
+
+  Andrea Ha:
+  - Write jest tests for book club page and search results page
+  - Mock OpenLibrary API call for search results page
