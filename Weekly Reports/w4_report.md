@@ -2,9 +2,10 @@
 ## Team Report
 - Last week’s goals: Get backend setup finished - make sure the API is all set where all necessary group members have access to everything they need to work with the API. Start adding established queries into the API and start replacing some of the fake data on the frontend with real stored data.
 
-- Progress / Issues: 
+- Progress / Issues: We set up CI tests for the frontend and the backend API. We also implimented Firebase Authentication for user login and sign up. 
 
-- Goals: 
+- Goals: Complete API routes for getting posts, and creating user profiles in the database. Film beta release presentation.
+
 ## Contributions of Individual Team Members
 - Last week’s goals:
   
@@ -38,9 +39,18 @@
 
   Zaynab Khan:
   - Helped setup Firebase for authentication
+  
+  Amanda Ha:
+  - Create login/sign up page frontend
+  - Helped integrate login/sign up through Firebase into frontend
+  - Set up basic CI tests for frontend pages
 
 - Goals:
 
   Zaynab Khan:
   - Write Java classes and SQL queries to implement other functionality
   - Connect Firestore to MySQL server with a common user id
+  
+  Amanda Ha:
+  - Integrate user profile and post data from Breakfast book club API into frontend
+  - Write tests for home page and user profile page
