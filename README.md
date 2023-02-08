@@ -13,13 +13,19 @@ These subdirectories are further subdivided into their respective features.
 
 ## Set up
 
-#### Run frontend
+### Run frontend
 ```
 cd frontend
 npm start
 ```
 
-#### SSH into remote server
+### Run frontend tests
+```
+cd frontend
+npm test
+```
+
+### SSH into remote server
 ```
 ssh [username]@34.145.15.228
 ```
