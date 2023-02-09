@@ -8,7 +8,8 @@ import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 import EggAltIcon from '@mui/icons-material/EggAlt';
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../FirebaseConfig";
 
 export default function LogIn() {
   let navigate = useNavigate();
@@ -18,10 +19,8 @@ export default function LogIn() {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [isError, setIsError] = React.useState(false);
 
-
-  const loginUser = async () => {
+  const handleLogin = async () => {
     try {
-      const auth = getAuth();
       await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -62,7 +61,7 @@ export default function LogIn() {
             {errorMessage}
           </Alert>}
         <Button 
-          onClick={loginUser}
+          onClick={handleLogin}
           disableElevation 
           size="small" 
           variant='contained'>

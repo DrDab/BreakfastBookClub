@@ -1,5 +1,6 @@
 import React from 'react';
 import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -7,9 +8,9 @@ import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 import EggAltIcon from '@mui/icons-material/EggAlt';
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { auth, register } from "../../FirebaseConfig";
-import {useAuthState} from "react-firebase-hooks/auth";
-// import { useAuthState } from "react-firebase-hooks/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { collection, addDoc } from "firebase/firestore"
+import { auth, db} from "../../FirebaseConfig";
 
 export default function SignUp() {
   let navigate = useNavigate();
@@ -17,15 +18,28 @@ export default function SignUp() {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [user] = useAuthState(auth);
+  const [errorMessage, setErrorMessage] = React.useState("");
+  const [isError, setIsError] = React.useState(false);
 
-  const signUpUser = () => {
-    console.log("sign up", email);
-    register(name, email, password);
-    if (user) navigate("/");
-  }
-
-  // TODO: Edit sign up button to navigate to profile page on click. Wait for firebase to finish register first.
+  const handleSignUp = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        addDoc(collection(db, "users"), {
+          uid: user.uid,
+          name,
+          email,
+        })
+        sessionStorage.setItem('yourUser', JSON.stringify(user.uid));
+        navigate("/");
+        window.location.reload();
+      })
+    } catch (err) {
+      setIsError(true);
+      setErrorMessage("Error when creating account");
+    }
+  };
 
   return (
     <Box className="login-signup">
@@ -56,7 +70,11 @@ export default function SignUp() {
           type="password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button disableElevation onClick={signUpUser} size="small" variant='contained'>
+        {isError &&
+          <Alert severity="error">
+            {errorMessage}
+          </Alert>}
+        <Button disableElevation onClick={handleSignUp} size="small" variant='contained'>
           Sign Up
         </Button>
         <Typography variant="caption">

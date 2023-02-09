@@ -20,6 +20,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import NotificationList from '../Lists/NotificationList';
 import Badge from '@mui/material/Badge';
+import { signOut } from "firebase/auth";
+import { auth } from "../../../FirebaseConfig"
 
 export default function LoggedInAppBar() {
   let yourUserData = JSON.parse(sessionStorage.yourUser)
@@ -66,6 +68,7 @@ export default function LoggedInAppBar() {
   };
 
   const handleLogOut = () => {
+    signOut(auth);
     sessionStorage.setItem('yourUser', JSON.stringify("loggedout"));
     navigate("/log-in");
     window.location.reload();
