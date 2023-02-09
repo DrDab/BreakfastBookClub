@@ -12,14 +12,16 @@ CREATE TABLE books (
 	book_author VARCHAR (40),
 	book_cover VARCHAR (100));
 
--- DROP TABLE book_posts;
+DROP TABLE book_posts;
 CREATE TABLE book_posts (
+	post_id VARCHAR(50) PRIMARY KEY,
 	user_id VARCHAR(50),
 	book_key VARCHAR(20),
 	post_title VARCHAR(100),
 	post VARCHAR(1000),
 	tag VARCHAR(20),
-	post_date DATE
+	post_date DATE,
+    likes BIGINT
 );
 
 -- DROP TABLE friends;
