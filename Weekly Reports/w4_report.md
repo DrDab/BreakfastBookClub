@@ -57,6 +57,10 @@
   - Designed login/sign up pages and user flow
   - Set up create post component to build data object for create post
 
+  Jocelyn Thomson:
+  - Setup Firebase for login and sign up functionality, and stored that information in database
+  - Started connecting frontend to backend regarding home page information (posts, recommendations, etc)
+
 - Goals:
 
   Zaynab Khan:
@@ -79,3 +83,7 @@
   Andrea Ha:
   - Write jest tests for book club page and search results page
   - Mock OpenLibrary API call for search results page
+
+  Jocelyn Thomson:
+  - Finish login / logout functionality
+  - Help with connecting frontend information to backend databasing 
