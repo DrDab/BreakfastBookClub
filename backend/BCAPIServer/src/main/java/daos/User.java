@@ -52,7 +52,7 @@ public class User {
      * @param user Current user that is logged in
      * @param conn Connection to the MySQL database
      */
-    public User(String user, Connection conn) {
+    public User(String user, Connection conn) throws SQLException {
         this.user = user;
         this.conn = conn;
         prepareStatements();
@@ -146,26 +146,20 @@ public class User {
      * @param other the user to be added as a friend
      * @return "Friend added." if the friendship was made.
      *         "Friendship already exists." if the other user is already this user's friend.
-     *         "Failed to add friend." if a SQLException is caught
      */
-    public String addFriend(User other) {
+    public String addFriend(User other) throws SQLException {
         if (isFriend(other)) {
             return "Friendship already exists.";
         }
 
-        try {
-            addFriendStatement.clearParameters();
-            addFriendStatement.setString(1, this.user);
-            addFriendStatement.setString(2, other.user);
-            addFriendStatement.setString(3, other.user);
-            addFriendStatement.setString(4, this.user);
-            addFriendStatement.execute();
+        addFriendStatement.clearParameters();
+        addFriendStatement.setString(1, this.user);
+        addFriendStatement.setString(2, other.user);
+        addFriendStatement.setString(3, other.user);
+        addFriendStatement.setString(4, this.user);
+        addFriendStatement.execute();
 
-            return "Friend added.";
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "Failed to add friend.";
-        }
+        return "Friend added.";
     }
 
     /**
@@ -175,9 +169,8 @@ public class User {
      *         "bookKey cannot be empty." if bookKey is null or empty
      *         "bookKey cannot be more than 20 characters." if bookKey is too long
      *         "User is already a member of this book club." if membership already exists
-     *         "Failed to add user to book club" if a SQLException is caught
      */
-    public String joinClub(String bookKey) {
+    public String joinClub(String bookKey) throws SQLException{
         if (bookKey == null || bookKey.equals("")) {
             return "bookKey cannot be empty.";
         }
@@ -190,17 +183,12 @@ public class User {
             return "User is already a member of this book club.";
         }
 
-        try {
-            addUserClubStatement.clearParameters();
-            addUserClubStatement.setString(1, this.user);
-            addUserClubStatement.setString(2, bookKey);
-            addUserClubStatement.execute();
+        addUserClubStatement.clearParameters();
+        addUserClubStatement.setString(1, this.user);
+        addUserClubStatement.setString(2, bookKey);
+        addUserClubStatement.execute();
 
-            return "User is added to this book club.";
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "Failed to add user to book club.";
-        }
+        return "User is added to this book club.";
     }
 
     /**
@@ -210,9 +198,8 @@ public class User {
      *         "bookKey cannot be empty." if bookKey is null or empty
      *         "bookKey cannot be more than 20 characters." if bookKey is too long
      *         "This book is already in the user's saved books." if book is saved from before
-     *         "Failed to save book." if a SQLException is caught
      */
-    public String saveBook(String bookKey) {
+    public String saveBook(String bookKey) throws SQLException{
         if (bookKey == null || bookKey.equals("")) {
             return "bookKey cannot be empty.";
         }
@@ -225,17 +212,12 @@ public class User {
             return "This book is already in the user's saved books.";
         }
 
-        try {
-            addSavedBookStatement.clearParameters();
-            addSavedBookStatement.setString(1, this.user);
-            addSavedBookStatement.setString(2, bookKey);
-            addSavedBookStatement.execute();
+        addSavedBookStatement.clearParameters();
+        addSavedBookStatement.setString(1, this.user);
+        addSavedBookStatement.setString(2, bookKey);
+        addSavedBookStatement.execute();
 
-            return "Book saved.";
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "Failed to save book.";
-        }
+        return "Book saved.";
     }
 
     /**
