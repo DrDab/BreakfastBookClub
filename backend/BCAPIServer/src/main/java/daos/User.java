@@ -137,7 +137,7 @@ public class User {
             return "Post successful.";
         } catch (SQLException e) {
             e.printStackTrace();
-            return "Failed to post."
+            return "Failed to post.";
         }
     }
 
@@ -164,7 +164,7 @@ public class User {
             return "Friend added.";
         } catch (SQLException e) {
             e.printStackTrace();
-            return "Failed to add friend."
+            return "Failed to add friend.";
         }
     }
 
@@ -199,7 +199,7 @@ public class User {
             return "User is added to this book club.";
         } catch (SQLException e) {
             e.printStackTrace();
-            return "Failed to add user to book club."
+            return "Failed to add user to book club.";
         }
     }
 
@@ -234,7 +234,7 @@ public class User {
             return "Book saved.";
         } catch (SQLException e) {
             e.printStackTrace();
-            return "Failed to save book."
+            return "Failed to save book.";
         }
     }
 
