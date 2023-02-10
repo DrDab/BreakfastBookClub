@@ -207,8 +207,8 @@ public class User {
         }
 
         addSavedBookStatement.clearParameters();
-        addSavedBookStatement.setString(this.user);
-        addSavedBookStatement.setString(bookKey);
+        addSavedBookStatement.setString(1, this.user);
+        addSavedBookStatement.setString(2, bookKey);
         addSavedBookStatement.execute();
 
         return "Book saved.";
@@ -238,7 +238,7 @@ public class User {
         
         ResultSet rs = getFriendsStatement.executeQuery();
         while (rs.next()) {
-            friends.add(rs.getString(user_id_2));
+            friends.add(rs.getString("user_id_2"));
         }
         rs.close();
 
@@ -257,12 +257,12 @@ public class User {
 
         ResultSet rs = getClubPostsStatement.executeQuery();
         while (rs.next()) {
-            String userId = rs.getString(user_id);
-            String bookKey = rs.getString(book_key);
-            String postTitle = rs.getString(post_title);
-            String post = rs.getString(post);
-            String tag = rs.getString(tag);
-            String postId = rs.getString(post_id);
+            String userId = rs.getString("user_id");
+            String bookKey = rs.getString("book_key");
+            String postTitle = rs.getString("post_title");
+            String post = rs.getString("post");
+            String tag = rs.getString("tag");
+            String postId = rs.getString("post_id");
             long date = rs.getLong("date");
             long likes = rs.getLong("likes");
 
