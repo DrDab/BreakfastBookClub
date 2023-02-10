@@ -77,7 +77,8 @@ public class User {
      *         "post cannot be more than 1000 characters." if post is too long
      *         "postTitle cannot be more than 100 characters." if postTitle is too long
      *         "postId cannot be more than 50 characters." if postId is too long
-     *         "tag cannot be more than 20 characters." if tag is too long 
+     *         "tag cannot be more than 20 characters." if tag is too long
+     *         "Failed to post." if a SQLException is caught
      */
     public String bookPost(String bookKey, String postTitle, String post, String tag, String postId,
                             long date, long likes) {
@@ -121,39 +122,50 @@ public class User {
             return "tag cannot be more than 20 characters.";
         }
 
-        addPostStatement.clearParameters();
-        addPostStatement.setString(1, postId);
-        addPostStatement.setString(2, this.user);
-        addPostStatement.setString(3, bookKey);
-        addPostStatement.setString(4, postTitle);
-        addPostStatement.setString(5, post);
-        addPostStatement.setString(6, tag);
-        addPostStatement.setLong(7, date);
-        addPostStatement.setLong(8, likes);
-        addPostStatement.execute();
+        try {
+            addPostStatement.clearParameters();
+            addPostStatement.setString(1, postId);
+            addPostStatement.setString(2, this.user);
+            addPostStatement.setString(3, bookKey);
+            addPostStatement.setString(4, postTitle);
+            addPostStatement.setString(5, post);
+            addPostStatement.setString(6, tag);
+            addPostStatement.setLong(7, date);
+            addPostStatement.setLong(8, likes);
+            addPostStatement.execute();
 
-        return "Post successful.";
+            return "Post successful.";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Failed to post."
+        }
     }
 
     /**
      * Adds the other friend to this user's friend list and vice versa.
      * @param other the user to be added as a friend
      * @return "Friend added." if the friendship was made.
-     *         "Friendship already exists." if the other user is already this user's friend. 
+     *         "Friendship already exists." if the other user is already this user's friend.
+     *         "Failed to add friend." if a SQLException is caught
      */
     public String addFriend(User other) {
         if (isFriend(other)) {
             return "Friendship already exists.";
         }
 
-        addFriendStatement.clearParameters();
-        addFriendStatement.setString(1, this.user);
-        addFriendStatement.setString(2, other.user);
-        addFriendStatement.setString(3, other.user);
-        addFriendStatement.setString(4, this.user);
-        addFriendStatement.execute();
+        try {
+            addFriendStatement.clearParameters();
+            addFriendStatement.setString(1, this.user);
+            addFriendStatement.setString(2, other.user);
+            addFriendStatement.setString(3, other.user);
+            addFriendStatement.setString(4, this.user);
+            addFriendStatement.execute();
 
-        return "Friend added.";
+            return "Friend added.";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Failed to add friend."
+        }
     }
 
     /**
@@ -163,6 +175,7 @@ public class User {
      *         "bookKey cannot be empty." if bookKey is null or empty
      *         "bookKey cannot be more than 20 characters." if bookKey is too long
      *         "User is already a member of this book club." if membership already exists
+     *         "Failed to add user to book club" if a SQLException is caught
      */
     public String joinClub(String bookKey) {
         if (bookKey == null || bookKey.equals("")) {
@@ -175,14 +188,19 @@ public class User {
 
         if (isClubMember(bookKey)) {
             return "User is already a member of this book club.";
-        };
+        }
 
-        addUserClubStatement.clearParameters();
-        addUserClubStatement.setString(1, this.user);
-        addUserClubStatement.setString(2, bookKey);
-        addUserClubStatement.execute();
+        try {
+            addUserClubStatement.clearParameters();
+            addUserClubStatement.setString(1, this.user);
+            addUserClubStatement.setString(2, bookKey);
+            addUserClubStatement.execute();
 
-        return "User is added to this book club.";
+            return "User is added to this book club.";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Failed to add user to book club."
+        }
     }
 
     /**
@@ -192,6 +210,7 @@ public class User {
      *         "bookKey cannot be empty." if bookKey is null or empty
      *         "bookKey cannot be more than 20 characters." if bookKey is too long
      *         "This book is already in the user's saved books." if book is saved from before
+     *         "Failed to save book." if a SQLException is caught
      */
     public String saveBook(String bookKey) {
         if (bookKey == null || bookKey.equals("")) {
@@ -206,12 +225,17 @@ public class User {
             return "This book is already in the user's saved books.";
         }
 
-        addSavedBookStatement.clearParameters();
-        addSavedBookStatement.setString(1, this.user);
-        addSavedBookStatement.setString(2, bookKey);
-        addSavedBookStatement.execute();
+        try {
+            addSavedBookStatement.clearParameters();
+            addSavedBookStatement.setString(1, this.user);
+            addSavedBookStatement.setString(2, bookKey);
+            addSavedBookStatement.execute();
 
-        return "Book saved.";
+            return "Book saved.";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Failed to save book."
+        }
     }
 
     /**
@@ -230,7 +254,7 @@ public class User {
      * Lists all the friends this user has.
      * @return list of this user's friends
      */
-    public List<String> allFriends() {
+    public List<String> allFriends() throws SQLException {
         List<String> friends = new ArrayList<>();
 
         getFriendsStatement.clearParameters();
@@ -249,7 +273,7 @@ public class User {
      * Get all the posts from book clubs that this user is a member of.
      * @return 
      */
-    public List<BookPost> getClubPosts() {
+    public List<BookPost> getClubPosts() throws SQLException {
         List<BookPost> posts = new ArrayList<>();
 
         getClubPostsStatement.clearParameters();
@@ -269,12 +293,13 @@ public class User {
             BookPost bp = new BookPost(userId, bookKey, postTitle, post, tag, postId, date, likes);
             posts.add(bp);
         }
+        rs.close();
 
         return posts;
     }
 
     // Returns true if this user is friends with the other user, otherwise returns false
-    private boolean isFriend(User other) {
+    private boolean isFriend(User other) throws SQLException {
         isFriendStatement.clearParameters();
         isFriendStatement.setString(1, this.user);
         isFriendStatement.setString(2, other.user);
@@ -288,7 +313,7 @@ public class User {
     }
 
     // Returns true if this user is a member of the club for the book.
-    private boolean isClubMember(String bookKey) {
+    private boolean isClubMember(String bookKey) throws SQLException {
         isClubMemberStatement.clearParameters();
         isClubMemberStatement.setString(1, this.user);
         isClubMemberStatement.setString(2, bookKey);
@@ -302,7 +327,7 @@ public class User {
     }
 
     // Returns true if the book is in this user's saved books
-    private boolean isBookSaved(String bookKey) {
+    private boolean isBookSaved(String bookKey) throws SQLException {
         isBookSavedStatement.clearParameters();
         isBookSavedStatement.setString(1, this.user);
         isBookSavedStatement.setString(2, bookKey);
@@ -315,7 +340,7 @@ public class User {
         return count == 1;
     }
 
-    private void prepareStatements() {
+    private void prepareStatements() throws SQLException {
         addPostStatement = conn.prepareStatement(ADD_POST);
         
         isFriendStatement = conn.prepareStatement(IS_FRIEND);
