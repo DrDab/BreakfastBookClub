@@ -6,6 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from "react-router-dom";
 import { goToBookClub } from '../Utils'
+import { avatarColorMap } from '../Constants'
 
 export default function NotificationList(props) {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function NotificationList(props) {
           <ListItemAvatar>
             <Avatar
               alt={notif.recommender + " avatar"}
-              sx={{ width: 35, height: 35 }}
+              sx={{ bgcolor: avatarColorMap.get(notif.recommender), width: 35, height: 35 }}
             >
             {notif.recommender.charAt(0)}
             </Avatar>
