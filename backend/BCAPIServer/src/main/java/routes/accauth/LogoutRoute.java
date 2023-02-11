@@ -7,6 +7,7 @@ import spark.Response;
 import spark.Route;
 import utils.TokenStore;
 
+@Deprecated
 public class LogoutRoute implements Route {
     private TokenStore tokenStore;
 

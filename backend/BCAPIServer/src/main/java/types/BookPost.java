@@ -1,4 +1,4 @@
-package daos;
+package types;
 
 public class BookPost {
     private String userId;

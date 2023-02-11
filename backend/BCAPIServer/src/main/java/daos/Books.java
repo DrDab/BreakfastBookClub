@@ -2,7 +2,7 @@ package daos;
 
 import java.sql.*;
 import java.util.*;
-import daos.BookPost;
+import types.BookPost;
 
 public class Books {
 

@@ -6,6 +6,7 @@ import spark.Response;
 import spark.Route;
 import utils.TokenStore;
 
+@Deprecated
 public class AuthTokenValidRoute implements Route {
     private TokenStore tokenStore;
 

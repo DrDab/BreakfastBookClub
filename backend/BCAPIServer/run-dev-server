@@ -1,0 +1,10 @@
+#!/bin/bash
+
+RUNCMD="./gradlew run"
+
+if [[ $# -ge 1 ]]
+then
+  $RUNCMD --args="$*"
+else
+  $RUNCMD
+fi

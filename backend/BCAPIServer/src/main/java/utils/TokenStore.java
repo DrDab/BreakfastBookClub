@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Deprecated
 public class TokenStore {
     private Map<String, String> tokenMap;
 
