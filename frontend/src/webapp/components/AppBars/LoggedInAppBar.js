@@ -2,7 +2,6 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
-import { red } from '@mui/material/colors';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -22,9 +21,11 @@ import NotificationList from '../Lists/NotificationList';
 import Badge from '@mui/material/Badge';
 import { signOut } from "firebase/auth";
 import { auth } from "../../../FirebaseConfig"
+import { avatarColorMap } from '../Constants';
 
 export default function LoggedInAppBar() {
-  let yourUserData = JSON.parse(sessionStorage.yourUser)
+  let yourUserId = JSON.parse(sessionStorage.yourUser);
+  let yourUser = yourUserId == 'EHDvyZymtRSbciB7uXHv1mN5O9r2' ? 'Amanda': yourUserId;
 
   let notificationData = [];
   for (let i = 0; i < 3; i++) {
@@ -124,7 +125,7 @@ export default function LoggedInAppBar() {
               color="secondary"
               onClick={(e) => setAnchorElAccount(e.currentTarget)}
             >
-              <Avatar sx={{bgcolor: red[500]}}>{yourUserData.charAt(0)}</Avatar>
+              <Avatar sx={{bgcolor: avatarColorMap.get(yourUser)}}>{yourUser.charAt(0)}</Avatar>
             </IconButton>
           </Stack>
         </Toolbar>
@@ -141,7 +142,7 @@ export default function LoggedInAppBar() {
           },
         }}
       >
-        <MenuItem component={RouterLink} to={"/user-profile/" + yourUserData}>
+        <MenuItem component={RouterLink} to={"/user-profile/" + yourUserId}>
           <ListItemIcon>
             <AccountCircle fontSize="small" />
           </ListItemIcon>

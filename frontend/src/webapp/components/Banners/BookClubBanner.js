@@ -17,10 +17,11 @@ export default function BookClubBanner(props) {
   const [friend, setFriend] = React.useState('');
 
   let friendsData = [
-    {name: "Amanda"}, 
     {name: "Andrea"},
     {name: "Victor"},
-    {name: "Zaynab"}
+    {name: "Zaynab"},
+    {name: "Sanjana"},
+    {name: "Jocelyn"}
   ];
   
   return (

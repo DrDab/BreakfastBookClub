@@ -13,9 +13,8 @@ import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import { red } from '@mui/material/colors';
 import { Link as RouterLink } from "react-router-dom";
-import { tagsList } from './Constants';
+import { tagsList, avatarColorMap} from './Constants';
 
 export default function CreatePost() {
   const [showPostModal, setShowPostModal] = React.useState(false);
@@ -24,12 +23,14 @@ export default function CreatePost() {
   const [thoughts, setThoughts] = React.useState("");
   const [indexOfTagSelected, setIndexOfTagSelected] = React.useState(-1);
 
-  let yourUser = JSON.parse(sessionStorage.yourUser);
+  let yourUserId = JSON.parse(sessionStorage.yourUser);
+  let yourUser = yourUserId == 'EHDvyZymtRSbciB7uXHv1mN5O9r2' ? 'Amanda': yourUserId;
 
   let bookClubsJoinedData = [
-    {title: "Harry Potter"},
-    {title: "Twilight"},
-    {title: "Wonder"}
+    {title: "Animal Farm"},
+    {title: "Nineteen Eighty-Four"},
+    {title: "Homage to Catalonia"},
+    {title: "George Orwell"}
   ];
 
   const clearFormValues = () => {
@@ -57,8 +58,8 @@ export default function CreatePost() {
           <Stack direction="row" spacing={2}>
             <Avatar
               component={RouterLink}
-              to={"/user-profile/" + yourUser}
-              sx={{ bgcolor: red[500], width: 50, height: 50, textDecoration: "none" }}
+              to={"/user-profile/" + yourUserId}
+              sx={{ bgcolor: avatarColorMap.get(yourUser), width: 50, height: 50, textDecoration: "none" }}
               aria-label={yourUser + " avatar"}
             >
              {yourUser.charAt(0)}

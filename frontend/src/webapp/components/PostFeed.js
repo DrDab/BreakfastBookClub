@@ -7,10 +7,9 @@ import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Link as RouterLink } from "react-router-dom";
-import { tagsList } from './Constants';
+import { tagsList, avatarColorMap } from './Constants';
 
 export default function PostFeed(props) {
 
@@ -25,7 +24,7 @@ export default function PostFeed(props) {
               <Avatar 
                 component={RouterLink}
                 to={"/user-profile/" + post.user}
-                sx={{ bgcolor: red[500], width: 50, height: 50, textDecoration: "none" }}
+                sx={{ bgcolor: avatarColorMap.get(post.user), width: 50, height: 50, textDecoration: "none" }}
                 aria-label={post.user + " avatar"}
               >
                 {post.user.charAt(0)}
@@ -54,9 +53,12 @@ export default function PostFeed(props) {
             </Typography>
           </CardContent>
           <CardActions disableSpacing>
-            <IconButton aria-label="like">
+            <IconButton onClick={()=> console.log("like post")} sx={{color: post.isLikedByUser? 'red': 'grey'}} aria-label="like">
               <FavoriteIcon />
             </IconButton>
+            <Typography variant='caption'>
+              {post.likes} likes
+            </Typography> 
           </CardActions>
         </Card>
       )
