@@ -5,13 +5,14 @@ import daos.Account;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import utils.TokenStore;
+import utils.SQLTokenStore;
 
+@Deprecated
 public class LoginRoute implements Route {
     private final Account account;
-    private final TokenStore tokenStore;
+    private final SQLTokenStore tokenStore;
 
-    public LoginRoute(Account account, TokenStore tokenStore) {
+    public LoginRoute(Account account, SQLTokenStore tokenStore) {
         this.account = account;
         this.tokenStore = tokenStore;
     }

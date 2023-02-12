@@ -4,12 +4,13 @@ import com.google.gson.JsonObject;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import utils.TokenStore;
+import utils.SQLTokenStore;
 
+@Deprecated
 public class AuthTokenValidRoute implements Route {
-    private TokenStore tokenStore;
+    private SQLTokenStore tokenStore;
 
-    public AuthTokenValidRoute(TokenStore tokenStore) {
+    public AuthTokenValidRoute(SQLTokenStore tokenStore) {
         this.tokenStore = tokenStore;
     }
 

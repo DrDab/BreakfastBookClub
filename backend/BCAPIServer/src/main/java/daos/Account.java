@@ -7,6 +7,7 @@ import java.security.spec.*;
 import javax.crypto.*;
 import javax.crypto.spec.*;
 
+@Deprecated
 public class Account {
     private Connection conn;
 

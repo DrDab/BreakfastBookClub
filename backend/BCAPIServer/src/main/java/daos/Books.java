@@ -2,7 +2,7 @@ package daos;
 
 import java.sql.*;
 import java.util.*;
-import daos.BookPost;
+import types.BookPost;
 
 public class Books {
 
@@ -15,6 +15,10 @@ public class Books {
     private static final String POSTS_IN_BOOK_CLUB_SQL =
             "SELECT * FROM book_posts WHERE book_key = ?";
     private PreparedStatement postsInBookClubStatement;
+
+    private static final String ALL_POSTS_SQL =
+        "SELECT * FROM book_posts";
+    private PreparedStatement allPostsStatement;
 
     public Books(Connection conn) throws SQLException {
         this.conn = conn;
@@ -62,7 +66,37 @@ public class Books {
                 String post = rs.getString("post");
                 String tag = rs.getString("tag");
                 String postId = rs.getString("post_id");
-                long date = rs.getLong("date");
+                long date = rs.getLong("post_date");
+                long likes = rs.getLong("likes");
+
+                BookPost bp = new BookPost(userId, bookKey, postTitle, post, tag, postId, date, likes);
+                posts.add(bp);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return posts;
+    }
+
+    /**
+     * Gets the list all the books posts
+     */
+    public List<BookPost> listAllPosts() {
+        List<BookPost> posts = new ArrayList<>();
+        try {
+            allPostsStatement.clearParameters();
+            ResultSet rs = allPostsStatement.executeQuery();
+
+            while (rs.next()) {
+                String userId = rs.getString("user_id");
+                String bookKey = rs.getString("book_key");
+                String postTitle = rs.getString("post_title");
+                String post = rs.getString("post");
+                String tag = rs.getString("tag");
+                String postId = rs.getString("post_id");
+                long date = rs.getLong("post_date");
                 long likes = rs.getLong("likes");
 
                 BookPost bp = new BookPost(userId, bookKey, postTitle, post, tag, postId, date, likes);
@@ -80,5 +114,6 @@ public class Books {
     private void prepareStatements() throws SQLException {
         usersInBookClubStatement = conn.prepareStatement(USERS_IN_BOOK_CLUB_SQL);
         postsInBookClubStatement = conn.prepareStatement(POSTS_IN_BOOK_CLUB_SQL);
+        allPostsStatement = conn.prepareStatement(ALL_POSTS_SQL);
     }
 }
