@@ -52,13 +52,14 @@ public class BCServerMain {
       System.exit(1);
     }
 
+    BCCORSFilter corsFilter = new BCCORSFilter();
+    corsFilter.apply();
+
     Spark.post("/api/make_post", new MakePost(fbApp, sqlConn));
 
     GetPosts getPosts = new GetPosts(fbApp, sqlConn);
     Spark.get("/api/get_posts", getPosts);
     Spark.get("/api/list_feed", getPosts);
-
-    new BCCORSFilter().apply();
   }
 
   @SuppressWarnings("deprecation")
