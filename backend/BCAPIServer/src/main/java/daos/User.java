@@ -168,7 +168,7 @@ public class User {
 
     /**
      * Adds the user to the club associated to the book. This method assumes that the book exists.
-     * @param book_key id of the book in the club, not null or empty, at most 20 characters
+     * @param bookKey id of the book in the club, not null or empty, at most 20 characters
      * @return "User is added to this book club." is successfully added
      *         "bookKey cannot be empty." if bookKey is null or empty
      *         "bookKey cannot be more than 20 characters." if bookKey is too long
