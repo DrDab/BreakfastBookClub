@@ -40,7 +40,7 @@ public class GetPosts implements Route {
       respJson.addProperty("status", "failure");
       respJson.addProperty("failure_reason", (searchUID != null && searchBookKey != null) ?
           "Should only provide uid or book_key!" : "Need to provide uid xor book_key!");
-      return respJson.getAsString();
+      return respJson;
     }
 
     List<BookPost> posts =
@@ -75,6 +75,6 @@ public class GetPosts implements Route {
 
     respJson.add("posts", postsArr);
     respJson.addProperty("status", "success");
-    return respJson.getAsString();
+    return respJson;
   }
 }
