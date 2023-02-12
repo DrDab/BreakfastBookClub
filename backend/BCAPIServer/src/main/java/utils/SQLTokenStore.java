@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.UUID;
 
 @Deprecated
-public class TokenStore {
+public class SQLTokenStore {
     private Map<String, String> tokenMap;
 
-    public TokenStore() {
+    public SQLTokenStore() {
         tokenMap = new HashMap<>();
     }
 

@@ -4,6 +4,7 @@ import com.google.firebase.FirebaseOptions;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
+import daos.User;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,6 +16,8 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 
+import routes.bookclubs.MakePost;
+import spark.Spark;
 import utils.BCCORSFilter;
 
 public class BCServerMain {
@@ -48,11 +51,11 @@ public class BCServerMain {
       System.exit(1);
     }
 
-    FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-    String uid = decodedToken.getUid();
 
+    BCCORSFilter corsFilter = new BCCORSFilter();
+    corsFilter.apply();
 
-
+    Spark.post("/api/make_post", new MakePost(fbApp, sqlConn));
   }
 
   @SuppressWarnings("deprecation")
@@ -73,12 +76,5 @@ public class BCServerMain {
             "/breakfast_book_club?useUnicode=true&useJDBCCompliantTimezoneShift=true" +
             "&useLegacyDatetimeCode=false&serverTimezone=UTC", hostAddr),
         username, password);
-  }
-
-  public static void startServer() {
-    BCCORSFilter corsFilter = new BCCORSFilter();
-    corsFilter.apply();
-
-    // Spark.get(...)
   }
 }

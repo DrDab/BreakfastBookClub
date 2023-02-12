@@ -1,18 +1,18 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utils.TokenStore;
+import utils.SQLTokenStore;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestTokenStore {
+public class TestSQLTokenStore {
     public static final int NUM_TOKEN_ENTRIES = 1000;
 
-    private TokenStore store;
+    private SQLTokenStore store;
     private final String[] tokens = new String[NUM_TOKEN_ENTRIES];
 
     @BeforeEach
     public void initTokenStore() {
-        store = new TokenStore();
+        store = new SQLTokenStore();
 
         for (int i = 0; i < NUM_TOKEN_ENTRIES; i++) {
             tokens[i] = store.getUserToken("user" + i);

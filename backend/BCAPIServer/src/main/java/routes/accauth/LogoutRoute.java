@@ -1,17 +1,16 @@
 package routes.accauth;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import utils.TokenStore;
+import utils.SQLTokenStore;
 
 @Deprecated
 public class LogoutRoute implements Route {
-    private TokenStore tokenStore;
+    private SQLTokenStore tokenStore;
 
-    public LogoutRoute(TokenStore tokenStore) {
+    public LogoutRoute(SQLTokenStore tokenStore) {
         this.tokenStore = tokenStore;
     }
 
