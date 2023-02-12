@@ -291,10 +291,10 @@ public class User {
     public List<BookPost> getUserPosts() throws SQLException {
         List<BookPost> posts = new ArrayList<>();
 
-        getClubPostsStatement.clearParameters();
-        getClubPostsStatement.setString(1, this.user);
+        getAllUserPostsStatement.clearParameters();
+        getAllUserPostsStatement.setString(1, this.user);
 
-        ResultSet rs = getClubPostsStatement.executeQuery();
+        ResultSet rs = getAllUserPostsStatement.executeQuery();
         while (rs.next()) {
             String userId = rs.getString("user_id");
             String bookKey = rs.getString("book_key");
