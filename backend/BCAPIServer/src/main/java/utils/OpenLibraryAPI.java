@@ -25,17 +25,26 @@ public class OpenLibraryAPI {
 
   public String getAuthorByKey(String authorKey)
       throws URISyntaxException, IOException, InterruptedException {
-    URI targetURI = new URI(AUTHOR_URL + authorKey);
+    //System.out.println("getAuthorByKey called " + authorKey);
+    URI targetURI = new URI(AUTHOR_URL + authorKey + ".json");
     HttpRequest httpRequest = buildGetHttpRequest(targetURI);
     HttpClient httpClient = HttpClient.newHttpClient();
+    //System.out.println("Sending response");
     HttpResponse<String> response = httpClient.send(httpRequest,
         HttpResponse.BodyHandlers.ofString());
 
-    JsonObject jsonObject = BCGsonUtils.fromStr(response.body());
+    //System.out.println("Got response, parsing");
+
+    String body = response.body();
+    System.out.println(body);
+    JsonObject jsonObject = BCGsonUtils.fromStr(body);
 
     if (jsonObject.has("error")) {
+      //System.out.println("getAuthorByKey returned null");
       return null;
     }
+
+    //System.out.println("getAuthorByKey so far ok");
 
     return jsonObject.get("personal_name").toString();
   }
@@ -54,6 +63,8 @@ public class OpenLibraryAPI {
       return null;
     }
 
+    //System.out.println("getBookByKey " + bookKey);
+
     String title = jsonObject.get("title").toString();
     String author = null;
 
@@ -64,6 +75,8 @@ public class OpenLibraryAPI {
       JsonObject authorObj = firstElement.getAsJsonObject("author");
       author = getAuthorByKey(authorObj.get("key").getAsString());
     }
+
+    //System.out.println("author is " + author);
 
     String coverUrl = null;
 
