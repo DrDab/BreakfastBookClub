@@ -55,7 +55,7 @@ public class GetPosts implements Route {
       JsonObject postJson = new JsonObject();
       postJson.addProperty("book_id", post.bookKey);
       postJson.addProperty("title", post.postTitle);
-      postJson.addProperty("book", gson.toJson(new OpenLibraryAPI().getBookByKey(post.bookKey)));
+      postJson.add("book", gson.toJsonTree(new OpenLibraryAPI().getBookByKey(post.bookKey)));
 
       JsonObject userObj = new JsonObject();
       userObj.addProperty("userId", post.userId);
