@@ -42,7 +42,7 @@ public class MakePost implements Route {
     if (bodyInvalid || bodyJson == null) {
       respJson.addProperty("status", "failure");
       respJson.addProperty("failure_reason", "Body is not valid JSON!");
-      return respJson;
+      return respJson.getAsString();
     }
 
     if (!bodyJson.has("token") ||
@@ -50,7 +50,7 @@ public class MakePost implements Route {
         !bodyJson.has("title") ||
         !bodyJson.has("body")) {
       respJson.addProperty("status", "failure");
-      return respJson;
+      return respJson.getAsString();
     }
 
     String token = bodyJson.get("token").getAsString();
@@ -64,7 +64,7 @@ public class MakePost implements Route {
     } catch (FirebaseAuthException e) {
       respJson.addProperty("status", "failure");
       respJson.addProperty("failure_reason", String.valueOf(e.getAuthErrorCode()));
-      return respJson;
+      return respJson.getAsString();
     }
 
     String postTitle = bodyJson.get("title").getAsString();
@@ -84,6 +84,6 @@ public class MakePost implements Route {
 
     respJson.addProperty("status", "success");
     respJson.addProperty("post_id", postId);
-    return respJson;
+    return respJson.getAsString();
   }
 }
