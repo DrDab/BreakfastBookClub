@@ -2,6 +2,8 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseToken;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -24,6 +26,8 @@ public class BCServerMain {
     parser.addArgument("--mysql_addr").setDefault("localhost")
         .help("Specify IP address of MySQL Server");
 
+    parser.addArgument("--svc_acct").help("The service account file to use.");
+
     Namespace ns = null;
     try {
       ns = parser.parseArgs(args);
@@ -32,19 +36,33 @@ public class BCServerMain {
       System.exit(1);
     }
 
+    Connection sqlConn = null;
+    FirebaseApp fbApp = null;
+
+    try {
+      sqlConn = initSQLConnection(ns.getString("mysql_addr"),
+          "bcapiserver", "bcapiserver");
+      fbApp = initFirebase(ns.getString("svc_acct"));
+    } catch (ClassNotFoundException | SQLException | IOException e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+
+    FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+    String uid = decodedToken.getUid();
+
 
 
   }
 
-  public static void initFirebase() throws IOException {
-    FileInputStream serviceAccount =
-        new FileInputStream("serviceAccountKey.json");
-
+  @SuppressWarnings("deprecation")
+  public static FirebaseApp initFirebase(String credsFile) throws IOException {
     FirebaseOptions options = new FirebaseOptions.Builder()
-        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+        .setCredentials(credsFile == null ? GoogleCredentials.getApplicationDefault() :
+            GoogleCredentials.fromStream(new FileInputStream(credsFile)))
         .build();
 
-    FirebaseApp.initializeApp(options);
+    return FirebaseApp.initializeApp(options);
   }
 
   public static Connection initSQLConnection(String hostAddr, String username, String password)
