@@ -46,6 +46,10 @@ public class User {
             "(SELECT book_key FROM user_clubs WHERE user_id = ?)";
     private PreparedStatement getClubPostsStatement;
 
+    private static final String GET_ALL_USER_POSTS =
+        "SELECT * FROM book_posts WHERE user_id = ?";
+    private PreparedStatement getAllUserPostsStatement;
+
     /**
      * Creates a User class which allows user-specific interaction with the database.
      * This class assumes that user exists (has an account, logged in, etc).
@@ -268,8 +272,37 @@ public class User {
             String postTitle = rs.getString("post_title");
             String post = rs.getString("post");
             String tag = rs.getString("tag");
-            String postId = rs.getString("post_id");
+            String postId = rs.getString("post_date");
             long date = rs.getLong("date");
+            long likes = rs.getLong("likes");
+
+            BookPost bp = new BookPost(userId, bookKey, postTitle, post, tag, postId, date, likes);
+            posts.add(bp);
+        }
+        rs.close();
+
+        return posts;
+    }
+
+    /**
+     * Get all the posts this user has made.
+     * @return
+     */
+    public List<BookPost> getUserPosts() throws SQLException {
+        List<BookPost> posts = new ArrayList<>();
+
+        getClubPostsStatement.clearParameters();
+        getClubPostsStatement.setString(1, this.user);
+
+        ResultSet rs = getClubPostsStatement.executeQuery();
+        while (rs.next()) {
+            String userId = rs.getString("user_id");
+            String bookKey = rs.getString("book_key");
+            String postTitle = rs.getString("post_title");
+            String post = rs.getString("post");
+            String tag = rs.getString("tag");
+            String postId = rs.getString("post_id");
+            long date = rs.getLong("post_date");
             long likes = rs.getLong("likes");
 
             BookPost bp = new BookPost(userId, bookKey, postTitle, post, tag, postId, date, likes);
@@ -337,5 +370,7 @@ public class User {
         getFriendsStatement = conn.prepareStatement(GET_FRIENDS);
 
         getClubPostsStatement = conn.prepareStatement(GET_CLUB_POSTS);
+
+        getAllUserPostsStatement = conn.prepareStatement(GET_ALL_USER_POSTS);
     }
 }

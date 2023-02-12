@@ -1,32 +1,19 @@
 package routes.bookclubs;
 
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.Query;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.AuthErrorCode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
-import com.google.firebase.auth.UserRecord;
-import com.google.firebase.cloud.FirestoreClient;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import daos.Books;
+import com.google.gson.JsonSyntaxException;
 import daos.User;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
-import java.util.List;
-import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import utils.BCGsonUtils;
 
 public class MakePost implements Route {
 
@@ -38,26 +25,25 @@ public class MakePost implements Route {
     this.sqlConn = sqlConn;
   }
 
-  private String getUsername(String uid) throws ExecutionException, InterruptedException {
-    Firestore db = FirestoreClient.getFirestore(fbApp);
-
-    CollectionReference cities = db.collection("users");
-    Query query = cities.whereEqualTo("uid", uid);
-    ApiFuture<QuerySnapshot> querySnapshot = query.get();
-
-    List<QueryDocumentSnapshot> l = querySnapshot.get().getDocuments();
-
-    if (l.size() != 1) {
-      return null;
-    }
-
-    return l.get(0).getString("name");
-  }
-
   @Override
   public Object handle(Request request, Response response) throws Exception {
-    JsonObject bodyJson = JsonParser.parseString(request.body()).getAsJsonObject();
     JsonObject respJson = new JsonObject();
+    JsonObject bodyJson = null;
+
+    boolean bodyInvalid = false;
+
+    try {
+      bodyJson = BCGsonUtils.fromStr(request.body());
+    } catch (JsonSyntaxException ex) {
+      ex.printStackTrace();
+      bodyInvalid = true;
+    }
+
+    if (bodyInvalid || bodyJson == null) {
+      respJson.addProperty("status", "failure");
+      respJson.addProperty("failure_reason", "Body is not valid JSON!");
+      return respJson;
+    }
 
     if (!bodyJson.has("token") ||
         !bodyJson.has("book_key") ||
@@ -70,7 +56,7 @@ public class MakePost implements Route {
     String token = bodyJson.get("token").getAsString();
     String bookKey = bodyJson.get("book_key").getAsString();
 
-    FirebaseToken decodedToken = null;
+    FirebaseToken decodedToken;
 
     try {
       decodedToken = FirebaseAuth.getInstance()
@@ -92,7 +78,7 @@ public class MakePost implements Route {
     String postId = UUID.nameUUIDFromBytes(seed.getBytes(StandardCharsets.UTF_8))
         .toString();
 
-    User user = new User(getUsername(uid), sqlConn);
+    User user = new User(uid, sqlConn);
     user.bookPost(bookKey, postTitle, postBody,
         bodyJson.has("tag") ? bodyJson.get("tag").getAsString() : "", postId, date, 0);
 

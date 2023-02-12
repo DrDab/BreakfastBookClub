@@ -16,6 +16,7 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 
+import routes.bookclubs.GetPosts;
 import routes.bookclubs.MakePost;
 import spark.Spark;
 import utils.BCCORSFilter;
@@ -56,6 +57,7 @@ public class BCServerMain {
     corsFilter.apply();
 
     Spark.post("/api/make_post", new MakePost(fbApp, sqlConn));
+    Spark.get("/api/get_posts", new GetPosts(fbApp, sqlConn));
   }
 
   @SuppressWarnings("deprecation")

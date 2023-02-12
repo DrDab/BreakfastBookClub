@@ -1,14 +1,14 @@
 package types;
 
 public class BookPost {
-    private String userId;
-    private String bookKey;
-    private String postTitle;
-    private String post;
-    private String tag;
-    private String postId;
-    private long date;
-    private long likes;
+    public final String userId;
+    public final String bookKey;
+    public final String postTitle;
+    public final String post;
+    public final String tag;
+    public final String postId;
+    public final long date;
+    public final long likes;
 
     public BookPost(String userId, String bookKey, String postTitle, String post, 
             String tag, String postId, long date, long likes) {
@@ -20,5 +20,5 @@ public class BookPost {
         this.postId = postId;
         this.date = date;
         this.likes = likes;
-    } 
+    }
 }
