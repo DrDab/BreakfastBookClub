@@ -36,7 +36,7 @@ public class OpenLibraryAPI {
     //System.out.println("Got response, parsing");
 
     String body = response.body();
-    System.out.println(body);
+    //System.out.println(body);
     JsonObject jsonObject = BCGsonUtils.fromStr(body);
 
     if (jsonObject.has("error")) {

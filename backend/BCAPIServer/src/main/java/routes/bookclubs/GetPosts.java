@@ -35,16 +35,18 @@ public class GetPosts implements Route {
     String searchUID = request.queryParams("uid");
     String searchBookKey = request.queryParams("book_key");
 
-    if ((searchUID != null && searchBookKey != null) ||
-        (searchUID == null && searchBookKey == null)) {
+    if ((searchUID != null && searchBookKey != null)) {// ||
+      //(searchUID == null && searchBookKey == null)) {
       respJson.addProperty("status", "failure");
       respJson.addProperty("failure_reason", (searchUID != null && searchBookKey != null) ?
           "Should only provide uid or book_key!" : "Need to provide uid xor book_key!");
       return respJson;
     }
 
-    List<BookPost> posts = searchUID != null ? new User(searchUID, sqlConn).getUserPosts()
-        : new Books(sqlConn).listBookPosts(searchBookKey);
+    List<BookPost> posts =
+        (searchUID == null && searchBookKey == null) ? new Books(sqlConn).listAllPosts() :
+            searchUID != null ? new User(searchUID, sqlConn).getUserPosts()
+                : new Books(sqlConn).listBookPosts(searchBookKey);
 
     JsonArray postsArr = new JsonArray();
     Gson gson = new Gson();

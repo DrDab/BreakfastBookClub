@@ -57,7 +57,10 @@ public class BCServerMain {
     corsFilter.apply();
 
     Spark.post("/api/make_post", new MakePost(fbApp, sqlConn));
-    Spark.get("/api/get_posts", new GetPosts(fbApp, sqlConn));
+
+    GetPosts getPosts = new GetPosts(fbApp, sqlConn);
+    Spark.get("/api/get_posts", getPosts);
+    Spark.get("/api/list_feed", getPosts);
   }
 
   @SuppressWarnings("deprecation")
