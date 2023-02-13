@@ -57,6 +57,7 @@ export default function Home() {
   
   let popularPeopleData = [];
   for (let i = 0; i < 1; i++ ) {
+    popularPeopleData.push("Jesse");
     popularPeopleData.push("Andrea");
     popularPeopleData.push("Jocelyn");
     popularPeopleData.push("Sanjana");
