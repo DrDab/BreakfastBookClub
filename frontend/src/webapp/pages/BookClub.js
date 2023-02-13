@@ -18,7 +18,11 @@ export default function BookClub() {
       try {
         const response = await fetch(query);
         const json = await response.json();
-        setBookClubPostsData(json);
+        const posts = json.posts;
+        posts.sort(function (a, b) {
+          return b.date - a.date;
+        });
+        setBookClubPostsData(posts);
       } catch (error) {
         console.log("error", error);
       }
@@ -46,7 +50,7 @@ export default function BookClub() {
         <div style={{marginBottom: '0.5rem'}}>
           <CreatePost/>
         </div>
-          <PostFeed postsData={bookClubPostsData.posts || []} />
+          <PostFeed postsData={bookClubPostsData} />
       </Grid>
       <Grid item xs={4}>
         <Button disableElevation sx={{ width: '100%', marginBottom: '1rem' }} variant="contained">

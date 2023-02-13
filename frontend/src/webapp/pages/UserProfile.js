@@ -51,7 +51,11 @@ export default function UserProfile() {
       try {
         const response = await fetch(query);
         const json = await response.json();
-        setUserPostsData(json);
+        const posts = json.posts;
+        posts.sort(function (a, b) {
+          return b.date - a.date;
+        });
+        setUserPostsData(posts);
       } catch (error) {
         console.log("error", error);
       }
@@ -62,7 +66,11 @@ export default function UserProfile() {
       try {
         const response = await fetch(query);
         const json = await response.json();
-        setUserLikedPostsData(json);
+        const posts = json.posts;
+        posts.sort(function (a, b) {
+          return b.date - a.date;
+        });
+        setUserLikedPostsData(posts);
       } catch (error) {
         console.log("error", error);
       }
@@ -135,10 +143,10 @@ export default function UserProfile() {
               </Tabs>
             </Box>
             <TabPanel value={tabIndexValue} index={0}>
-              <PostFeed postsData={userPostsData.posts || []} />
+              <PostFeed postsData={userPostsData} />
             </TabPanel>
             <TabPanel value={tabIndexValue} index={1}>
-              <PostFeed postsData={userLikedPostsData.posts || []} />
+              <PostFeed postsData={userLikedPostsData} />
             </TabPanel>
           </Box>
         </Stack>

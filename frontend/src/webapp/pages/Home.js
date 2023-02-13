@@ -23,19 +23,23 @@ export default function Home() {
         console.log("error", error);
       }
     }
-    handleFetchPopularBooks();
-
+    
     const handleFetchPosts = async () => {
       let query = "http://localhost:4567/api/list_feed";
       try {
         const response = await fetch(query);
         const json = await response.json();
-        setHomePostsData(json)
+        const posts = json.posts;
+        posts.sort(function (a, b) {
+          return b.date - a.date;
+        });
+        setHomePostsData(posts);
       } catch (error) {
         console.log("error", error);
       }
     }
     handleFetchPosts();
+    handleFetchPopularBooks();
 
 }, []);
 
@@ -66,7 +70,7 @@ export default function Home() {
         <CreatePost/>
       </Grid>
       <Grid item xs={8}>
-        <PostFeed postsData={homePostsData.posts || []} />
+        <PostFeed postsData={homePostsData} />
       </Grid>
       <Grid item xs={4}>
         <Stack spacing={2}>
