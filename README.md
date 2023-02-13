@@ -60,5 +60,5 @@ cd backend/BCAPIServer
 ./run-dev-server --mysql_addr <SQL_SERVER_ADDRESS> --svc_acct <FIREBASE_SERVICE_ACCT_JSON>
 ```
 
-SQL_SERVER_ADDRESS is 34.145.15.228 for now.
-FIREBASE_SERVICE_ACCT_JSON is bc-adminsdk-svcacct.json
+- `SQL_SERVER_ADDRESS` is `34.145.15.228` for now.
+- `FIREBASE_SERVICE_ACCT_JSON` is `bc-adminsdk-svcacct.json` for now.
