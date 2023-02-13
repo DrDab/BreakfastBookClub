@@ -18,10 +18,12 @@ const mockBook = {
 };
 
 const mockUser = "Amanda";
+const mockToken = "Token";
 
 test("Book club page renders correctly", () => {
   sessionStorage.setItem('book', JSON.stringify(mockBook));
   sessionStorage.setItem('yourUser', JSON.stringify(mockUser));
+  sessionStorage.setItem('yourToken', JSON.stringify(mockToken));
   render(
     <MemoryRouter>
       <BookClub />
