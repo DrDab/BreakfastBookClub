@@ -16,40 +16,33 @@ public class OpenLibraryAPI {
   private static final String AUTHOR_URL = "https://openlibrary.org";
   private static final String COVERS_URL = "https://covers.openlibrary.org/b/id/";
 
-  private HttpRequest buildGetHttpRequest(URI targetURI) {
+  private static HttpRequest buildGetHttpRequest(URI targetURI) {
     return HttpRequest.newBuilder()
         .uri(targetURI)
         .GET()
         .build();
   }
 
-  public String getAuthorByKey(String authorKey)
+  public static String getAuthorByKey(String authorKey)
       throws URISyntaxException, IOException, InterruptedException {
-    //System.out.println("getAuthorByKey called " + authorKey);
     URI targetURI = new URI(AUTHOR_URL + authorKey + ".json");
     HttpRequest httpRequest = buildGetHttpRequest(targetURI);
     HttpClient httpClient = HttpClient.newHttpClient();
-    //System.out.println("Sending response");
     HttpResponse<String> response = httpClient.send(httpRequest,
         HttpResponse.BodyHandlers.ofString());
 
-    //System.out.println("Got response, parsing");
 
     String body = response.body();
-    //System.out.println(body);
     JsonObject jsonObject = BCGsonUtils.fromStr(body);
 
     if (jsonObject.has("error")) {
-      //System.out.println("getAuthorByKey returned null");
       return null;
     }
-
-    //System.out.println("getAuthorByKey so far ok");
 
     return jsonObject.get("personal_name").toString();
   }
 
-  public Book getBookByKey(String bookKey)
+  public static Book getBookByKey(String bookKey)
       throws URISyntaxException, IOException, InterruptedException {
     URI targetURI = new URI(WORKS_URL + bookKey + ".json");
     HttpRequest httpRequest = buildGetHttpRequest(targetURI);
@@ -63,8 +56,6 @@ public class OpenLibraryAPI {
       return null;
     }
 
-    //System.out.println("getBookByKey " + bookKey);
-
     String title = jsonObject.get("title").toString();
     String author = null;
 
@@ -75,8 +66,6 @@ public class OpenLibraryAPI {
       JsonObject authorObj = firstElement.getAsJsonObject("author");
       author = getAuthorByKey(authorObj.get("key").getAsString());
     }
-
-    //System.out.println("author is " + author);
 
     String coverUrl = null;
 

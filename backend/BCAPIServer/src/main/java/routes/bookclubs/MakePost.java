@@ -5,7 +5,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import daos.User;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
@@ -28,18 +27,11 @@ public class MakePost implements Route {
   @Override
   public Object handle(Request request, Response response) throws Exception {
     JsonObject respJson = new JsonObject();
-    JsonObject bodyJson = null;
+    JsonObject bodyJson;
 
-    boolean bodyInvalid = false;
+    bodyJson = BCGsonUtils.fromStr(request.body());
 
-    try {
-      bodyJson = BCGsonUtils.fromStr(request.body());
-    } catch (JsonSyntaxException ex) {
-      ex.printStackTrace();
-      bodyInvalid = true;
-    }
-
-    if (bodyInvalid || bodyJson == null) {
+    if (bodyJson == null) {
       respJson.addProperty("status", "failure");
       respJson.addProperty("failure_reason", "Body is not valid JSON!");
       return respJson.toString() + "\n";
