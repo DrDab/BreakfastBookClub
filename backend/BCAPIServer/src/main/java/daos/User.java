@@ -319,7 +319,7 @@ public class User {
 
         unsaveBookStatement.clearParameters();
         unsaveBookStatement.setString(1, this.user);
-        unsaveBookStatement.setString(2, book_key);
+        unsaveBookStatement.setString(2, bookKey);
         unsaveBookStatement.execute();
 
         return "Book unsaved.";
