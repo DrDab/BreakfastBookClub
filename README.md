@@ -19,7 +19,7 @@ cd frontend
 npm start
 ```
 
-### Run frontend tests
+### Run frontend JEST tests
 ```
 cd frontend
 npm test
@@ -36,14 +36,29 @@ cd backend/BCAPIServer
 ./gradlew build
 ```
 
-### Run backend tests
+### Clean backend build
+```
+./gradlew clean
+```
+###
+
+### Run backend JUnit tests
 ```
 cd backend/BCAPIServer
 ./gradlew test
 ```
 
+### Download Firebase service account JSON file
+```
+cd backend/BCAPIServer
+wget https://gist.githubusercontent.com/DrDab/32035488537b844794375ff4b9884ff5/raw/74001b8aa5f0c225dee943ab7c963e52421e3183/bc-adminsdk-svcacct.json
+```
+
 ### Run backend server
 ```
 cd backend/BCAPIServer
-./gradlew run
+./run-dev-server --mysql_addr <SQL_SERVER_ADDRESS> --svc_acct <FIREBASE_SERVICE_ACCT_JSON>
 ```
+
+SQL_SERVER_ADDRESS is 34.145.15.228 for now.
+FIREBASE_SERVICE_ACCT_JSON is bc-adminsdk-svcacct.json
