@@ -58,11 +58,27 @@ public class OpenLibraryAPI {
     String body = response.body();
     JsonObject jsonObject = BCGsonUtils.fromStr(body);
 
-    if (jsonObject.has("error")) {
+    if (jsonObject.has("error") || !jsonObject.has("personal_name")) {
       return null;
     }
 
     return jsonObject.get("personal_name").getAsString();
+  }
+
+  public static boolean bookExists(String bookKey) throws IOException, InterruptedException {
+    URI targetURI = getBookTargetURI(bookKey);
+
+    if (targetURI == null) {
+      return false;
+    }
+
+    HttpRequest httpRequest = buildGetHttpRequest(targetURI);
+    HttpClient httpClient = HttpClient.newHttpClient();
+    HttpResponse<String> response = httpClient.send(httpRequest,
+        HttpResponse.BodyHandlers.ofString());
+
+    JsonObject jsonObject = BCGsonUtils.fromStr(response.body());
+    return !jsonObject.has("error");
   }
 
   public static Book getBookByKey(String bookKey)
@@ -84,22 +100,26 @@ public class OpenLibraryAPI {
       return null;
     }
 
-    String title = jsonObject.get("title").getAsString();
+    String title = jsonObject.has("title") ? jsonObject.get("title").getAsString() : null;
     String author = null;
 
-    JsonArray authorsArr = jsonObject.getAsJsonArray("authors");
+    if (jsonObject.has("authors")) {
+      JsonArray authorsArr = jsonObject.getAsJsonArray("authors");
 
-    if (!authorsArr.isEmpty()) {
-      JsonObject firstElement = authorsArr.get(0).getAsJsonObject();
-      JsonObject authorObj = firstElement.getAsJsonObject("author");
-      author = getAuthorByKey(authorObj.get("key").getAsString());
+      if (!authorsArr.isEmpty()) {
+        JsonObject firstElement = authorsArr.get(0).getAsJsonObject();
+        JsonObject authorObj = firstElement.getAsJsonObject("author");
+        author = getAuthorByKey(authorObj.get("key").getAsString());
+      }
     }
 
     String coverUrl = null;
 
-    JsonArray coversArr = jsonObject.getAsJsonArray("covers");
-    if (!coversArr.isEmpty()) {
-      coverUrl = COVERS_URL + coversArr.get(0).getAsString() + "-M.jpg";
+    if (jsonObject.has("covers")) {
+      JsonArray coversArr = jsonObject.getAsJsonArray("covers");
+      if (!coversArr.isEmpty()) {
+        coverUrl = COVERS_URL + coversArr.get(0).getAsString() + "-M.jpg";
+      }
     }
 
     return new Book(bookKey, title, author, coverUrl);

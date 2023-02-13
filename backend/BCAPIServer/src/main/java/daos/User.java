@@ -21,6 +21,10 @@ public class User {
         "INSERT INTO friends VALUES (?, ?), (?, ?)";
     private PreparedStatement addFriendStatement;
 
+    private static final String UNFRIEND = 
+        "DELETE FROM friends WHERE user_id_1 = ? AND user_id_2 = ?";
+    private PreparedStatement unfriendStatement;
+
     private static final String IS_CLUB_MEMBER = 
         "SELECT COUNT(*) FROM user_clubs WHERE user_id = ? AND book_key = ?"; 
     private PreparedStatement isClubMemberStatement;
@@ -29,6 +33,10 @@ public class User {
         "INSERT INTO user_clubs VALUES (?, ?)";
     private PreparedStatement addUserClubStatement;
 
+    private static final String LEAVE_USER_CLUB = 
+        "DELETE FROM user_clubs WHERE user_id = ? AND book_key = ?";
+    private PreparedStatement leaveUserClubStatement;
+
     private static final String IS_BOOK_SAVED = 
         "SELECT COUNT(*) FROM saved_books WHERE user_id = ? AND book_key = ?"; 
     private PreparedStatement isBookSavedStatement;
@@ -36,6 +44,10 @@ public class User {
     private static final String ADD_SAVED_BOOK = 
         "INSERT INTO saved_books VALUES (?, ?)";
     private PreparedStatement addSavedBookStatement;
+
+    private static final String UNSAVE_BOOK = 
+        "DELETE FROM saved_books WHERE user_id = ? AND book_key = ?";
+    private PreparedStatement unsaveBookStatement;
 
     private static final String GET_FRIENDS = 
         "SELECT user_id_2 FROM friends WHERE user_id_1 = ?";
@@ -55,6 +67,7 @@ public class User {
      * This class assumes that user exists (has an account, logged in, etc).
      * @param user Current user that is logged in
      * @param conn Connection to the MySQL database
+     * @throws SQLException if something goes wrong with the database
      */
     public User(String user, Connection conn) throws SQLException {
         this.user = user;
@@ -150,6 +163,7 @@ public class User {
      * @param other the user to be added as a friend
      * @return "Friend added." if the friendship was made.
      *         "Friendship already exists." if the other user is already this user's friend.
+     * @throws SQLException if something goes wrong with the database
      */
     public String addFriend(User other) throws SQLException {
         if (isFriend(other)) {
@@ -167,12 +181,38 @@ public class User {
     }
 
     /**
+     * Unfriends this user from the other user and vice versa. 
+     * @param other User tobe unfriended
+     * @return "Unfriended." if the friendship was broken
+     *         "Friendship does not exist." if the users were not friends from before
+     * @throws SQLException if something goes wrong with the database
+     */
+    public String unfriend(User other) throws SQLException {
+        if (!isFriend(other)) {
+            return "Friendship does not exist.";
+        }
+
+        unfriendStatement.clearParameters();
+        unfriendStatement.setString(1, this.user);
+        unfriendStatement.setString(2, other.user);
+        unfriendStatement.execute();
+
+        unfriendStatement.clearParameters();
+        unfriendStatement.setString(1, other.user);
+        unfriendStatement.setString(2, this.user);
+        unfriendStatement.execute();
+
+        return "Unfriended.";
+    } 
+
+    /**
      * Adds the user to the club associated to the book. This method assumes that the book exists.
      * @param bookKey id of the book in the club, not null or empty, at most 20 characters
-     * @return "User is added to this book club." is successfully added
+     * @return "User is added to this book club." if successfully added
      *         "bookKey cannot be empty." if bookKey is null or empty
      *         "bookKey cannot be more than 20 characters." if bookKey is too long
-     *         "User is already a member of this book club." if membership already exists
+     *         "User is already a member of this book club." if membership already exist
+     * @throws SQLException if something goes wrong with the database
      */
     public String joinClub(String bookKey) throws SQLException{
         if (bookKey == null || bookKey.equals("")) {
@@ -196,12 +236,43 @@ public class User {
     }
 
     /**
+     * Remove the user from the club associated to the book. This method assumes that the book exists.
+     * @param bookKey id of the book in the club, not null or empty, at most 20 characters
+     * @return "User has left this book club." if successfully removed
+     *         "bookKey cannot be empty." if bookKey is null or empty
+     *         "bookKey cannot be more than 20 characters." if bookKey is too long
+     *         "User is not a member of this book club." if membership does not exist
+     * @throws SQLException if something goes wrong with the database
+     */
+    public String leaveClub(String bookKey) throws SQLException{
+        if (bookKey == null || bookKey.equals("")) {
+            return "bookKey cannot be empty.";
+        }
+
+        if (bookKey.length() > 20) {
+            return "bookKey cannot be more than 20 characters.";
+        }
+
+        if (!isClubMember(bookKey)) {
+            return "User is not a member of this book club.";
+        }
+
+        leaveUserClubStatement.clearParameters();
+        leaveUserClubStatement.setString(1, this.user);
+        leaveUserClubStatement.setString(2, bookKey);
+        leaveUserClubStatement.execute();
+
+        return "User has left this book club.";
+    }
+
+    /**
      * Adds the book to this user's saved books. This method assumes that the book exists.
-     * @param bookKey id of the book to be saved, not null 
+     * @param bookKey id of the book to be saved, not null or empty, at most 20 characters
      * @return "Book saved." if the book is added to the user's saved books
      *         "bookKey cannot be empty." if bookKey is null or empty
      *         "bookKey cannot be more than 20 characters." if bookKey is too long
      *         "This book is already in the user's saved books." if book is saved from before
+     * @throws SQLException if something goes wrong with the database
      */
     public String saveBook(String bookKey) throws SQLException{
         if (bookKey == null || bookKey.equals("")) {
@@ -225,6 +296,36 @@ public class User {
     }
 
     /**
+     * Removes the book from this user's saved books. This method assumes that the book exists.
+     * @param bookKey id of the book to be unsaved, not null or empty, at most 20 characters
+     * @return "Book unsaved." if the book is removed from the user's saved books
+     *         "bookKey cannot be empty." if bookKey is null or empty
+     *         "bookKey cannot be more than 20 characters." if bookKey is too long
+     *         "This book is not in the user's saved books." if book is not in user's saved books
+     * @throws SQLException if something goes wrong with the database
+     */
+    public String unsaveBook(String bookKey) throws SQLException {
+        if (bookKey == null || bookKey.equals("")) {
+            return "bookKey cannot be empty.";
+        }
+
+        if (bookKey.length() > 20) {
+            return "bookKey cannot be more than 20 characters.";
+        }
+
+        if (!isBookSaved(bookKey)) {
+            return "This book is not in the user's saved books.";
+        }
+
+        unsaveBookStatement.clearParameters();
+        unsaveBookStatement.setString(1, this.user);
+        unsaveBookStatement.setString(2, bookKey);
+        unsaveBookStatement.execute();
+
+        return "Book unsaved.";
+    }
+
+    /**
      * This is used when this user recommends a book to the other user. This method assumes that
      * the book exists.
      * @param other the user to whom the book is recommended, not null/empty, at most 20 characters
@@ -239,6 +340,7 @@ public class User {
     /**
      * Lists all the friends this user has.
      * @return list of this user's friends
+     * @throws SQLException if something goes wrong with the database
      */
     public List<String> allFriends() throws SQLException {
         List<String> friends = new ArrayList<>();
@@ -257,7 +359,8 @@ public class User {
 
     /**
      * Get all the posts from book clubs that this user is a member of.
-     * @return 
+     * @return List of all posts made to books that this user is a club member of.
+     * @throws SQLException if something goes wrong with the database
      */
     public List<BookPost> getClubPosts() throws SQLException {
         List<BookPost> posts = new ArrayList<>();
@@ -286,7 +389,8 @@ public class User {
 
     /**
      * Get all the posts this user has made.
-     * @return
+     * @return List of this user's BookPosts
+     * @throws SQLException if something goes wrong with the database
      */
     public List<BookPost> getUserPosts() throws SQLException {
         List<BookPost> posts = new ArrayList<>();
@@ -361,11 +465,17 @@ public class User {
         isFriendStatement = conn.prepareStatement(IS_FRIEND);
         addFriendStatement = conn.prepareStatement(ADD_FRIEND);
 
+        unfriendStatement = conn.prepareStatement(UNFRIEND);
+
         isClubMemberStatement = conn.prepareStatement(IS_CLUB_MEMBER);
         addUserClubStatement = conn.prepareStatement(ADD_USER_CLUB);
 
+        leaveUserClubStatement = conn.prepareStatement(LEAVE_USER_CLUB);
+
         isBookSavedStatement = conn.prepareStatement(IS_BOOK_SAVED);
         addSavedBookStatement = conn.prepareStatement(ADD_SAVED_BOOK);
+
+        unsaveBookStatement = conn.prepareStatement(UNSAVE_BOOK);
 
         getFriendsStatement = conn.prepareStatement(GET_FRIENDS);
 
