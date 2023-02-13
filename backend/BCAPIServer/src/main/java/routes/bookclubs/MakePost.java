@@ -13,6 +13,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import utils.BCGsonUtils;
+import utils.OpenLibraryAPI;
 
 public class MakePost implements Route {
 
@@ -47,6 +48,13 @@ public class MakePost implements Route {
 
     String token = bodyJson.get("token").getAsString();
     String bookKey = bodyJson.get("book_key").getAsString();
+
+    // Validate provided book key.
+    if (OpenLibraryAPI.bookExists(bookKey)) {
+      respJson.addProperty("status", "failure");
+      respJson.addProperty("failure_reason", "Invalid book key!");
+      return respJson.toString() + "\n";
+    }
 
     FirebaseToken decodedToken;
 
