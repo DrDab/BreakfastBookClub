@@ -10,7 +10,7 @@ import PostFeed from '../components/PostFeed';
 
 export default function Home() {
   const [popularBooks, setPopularBooks] = React.useState("");
-  const [homePosts, setHomePosts] = React.useState("");
+  const [homePostsData, setHomePostsData] = React.useState("");
 
   React.useEffect(() => {
     const handleFetchPopularBooks = async () => {
@@ -23,19 +23,23 @@ export default function Home() {
         console.log("error", error);
       }
     }
-    handleFetchPopularBooks();
-
+    
     const handleFetchPosts = async () => {
       let query = "http://localhost:4567/api/list_feed";
       try {
         const response = await fetch(query);
         const json = await response.json();
-        setHomePosts(json)
+        const posts = json.posts;
+        posts.sort(function (a, b) {
+          return b.date - a.date;
+        });
+        setHomePostsData(posts);
       } catch (error) {
         console.log("error", error);
       }
     }
     handleFetchPosts();
+    handleFetchPopularBooks();
 
 }, []);
 
@@ -53,6 +57,7 @@ export default function Home() {
   
   let popularPeopleData = [];
   for (let i = 0; i < 1; i++ ) {
+    popularPeopleData.push("Jesse");
     popularPeopleData.push("Andrea");
     popularPeopleData.push("Jocelyn");
     popularPeopleData.push("Sanjana");
@@ -66,9 +71,7 @@ export default function Home() {
         <CreatePost/>
       </Grid>
       <Grid item xs={8}>
-      {homePosts !== "" &&
-        <PostFeed postsData={homePosts.posts} />
-      }
+        <PostFeed postsData={homePostsData} />
       </Grid>
       <Grid item xs={4}>
         <Stack spacing={2}>
@@ -76,7 +79,7 @@ export default function Home() {
             <Typography variant="overline">
               Trending Books
             </Typography>
-            <BookList bookData={popularBooksData}/>
+            <BookList bookData={popularBooksData} />
           </div>
           <div>
             <Typography variant="overline">

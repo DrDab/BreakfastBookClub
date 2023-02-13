@@ -16,3 +16,4 @@ avatarColorMap.set('Jocelyn',"#083D77");
 avatarColorMap.set('VictorD', "#E29578");
 avatarColorMap.set('Sanjana',"#5E4AE3");
 avatarColorMap.set('Zaynab', "#C2095A");
+avatarColorMap.set('Jesse', "#DEAA28");

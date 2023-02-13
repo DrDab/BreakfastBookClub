@@ -94,6 +94,7 @@ export default function CreatePost() {
         <CardContent>
           <Stack direction="row" spacing={2}>
             <Avatar
+              reloadDocument
               component={RouterLink}
               to={"/user-profile/" + yourUserId}
               sx={{ bgcolor: avatarColorMap.get(yourUser), width: 50, height: 50, textDecoration: "none" }}
