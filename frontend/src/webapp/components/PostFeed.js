@@ -30,6 +30,7 @@ export default function PostFeed(props) {
             <CardHeader
               avatar={
                 <Avatar
+                  reloadDocument
                   component={RouterLink}
                   to={"/user-profile/" + post.user.userId}
                   sx={{ bgcolor: avatarColorMap.get(post.user.username), width: 50, height: 50, textDecoration: "none" }}
