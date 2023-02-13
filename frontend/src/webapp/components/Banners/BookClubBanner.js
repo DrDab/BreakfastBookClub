@@ -18,7 +18,6 @@ export default function BookClubBanner(props) {
 
   let friendsData = [
     {name: "Andrea"},
-    {name: "Victor"},
     {name: "Zaynab"},
     {name: "Sanjana"},
     {name: "Jocelyn"}

@@ -18,7 +18,6 @@ export default function SignUp() {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState("");
   const [isError, setIsError] = React.useState(false);
 
   const handleSignUp = async () => {
@@ -37,7 +36,6 @@ export default function SignUp() {
       })
     } catch (err) {
       setIsError(true);
-      setErrorMessage("Error when creating account");
     }
   };
 
@@ -72,7 +70,7 @@ export default function SignUp() {
         />
         {isError &&
           <Alert severity="error">
-            {errorMessage}
+            Error encountered when creating account
           </Alert>}
         <Button disableElevation onClick={handleSignUp} size="small" variant='contained'>
           Sign Up

@@ -16,7 +16,6 @@ export default function LogIn() {
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState("");
   const [isError, setIsError] = React.useState(false);
 
   const handleLogin = async () => {
@@ -24,13 +23,14 @@ export default function LogIn() {
       await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
+        const token = userCredential._tokenResponse;
         sessionStorage.setItem('yourUser', JSON.stringify(user.uid));
+        sessionStorage.setItem('yourToken', JSON.stringify(token.idToken));
         navigate("/");
         window.location.reload();
       })
     } catch (err) {
       setIsError(true);
-      setErrorMessage("Login is incorrect");
     }
   };
 
@@ -58,7 +58,7 @@ export default function LogIn() {
         />
         {isError &&
           <Alert severity="error">
-            {errorMessage}
+            Login is incorrect
           </Alert>}
         <Button 
           onClick={handleLogin}

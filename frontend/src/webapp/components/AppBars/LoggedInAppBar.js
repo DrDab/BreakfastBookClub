@@ -25,7 +25,7 @@ import { avatarColorMap } from '../Constants';
 
 export default function LoggedInAppBar() {
   let yourUserId = JSON.parse(sessionStorage.yourUser);
-  let yourUser = yourUserId == 'EHDvyZymtRSbciB7uXHv1mN5O9r2' ? 'Amanda': yourUserId;
+  let yourUser = yourUserId === 'EHDvyZymtRSbciB7uXHv1mN5O9r2' ? 'Amanda': yourUserId;
 
   let notificationData = [];
   for (let i = 0; i < 3; i++) {
@@ -44,7 +44,7 @@ export default function LoggedInAppBar() {
       "coverUrl": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
     }})
 
-    notificationData.push({recommender: "Victor", time: "1h", book: {
+    notificationData.push({recommender: "Jocelyn", time: "1h", book: {
       "key": "/works/OL27479W",
       "title": "The Two Towers",
       "author": [

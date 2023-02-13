@@ -44,7 +44,6 @@ export default function SearchResults() {
     searchResultPeopleData.push("Andrea")
     searchResultPeopleData.push("Amanda")
     searchResultPeopleData.push("Jocelyn")
-    searchResultPeopleData.push("Victor")
     searchResultPeopleData.push("Sanjana")
     searchResultPeopleData.push("Zaynab")
   }

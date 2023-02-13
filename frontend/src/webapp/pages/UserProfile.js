@@ -15,70 +15,75 @@ import { useParams } from "react-router-dom";
 
 export default function UserProfile() {
   let yourUserId = JSON.parse(sessionStorage.yourUser);
-
-  let { uid } = useParams(); // clicked uid
-  // /api/get_user?username={uid} 
-  // return user profile of clicked user
+  let { uid } = useParams(); // clicked user
 
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
   const [booksFavorited, setBooksFavorited] = React.useState('');
   const [bookClubsJoined, setBookClubsJoined] = React.useState('');
+  const [userPostsData, setUserPostsData] = React.useState('');
+  const [userLikedPostsData, setUserLikedPostsData] = React.useState('');
   
-
-   // user profile of clicked user from api call
-
-  let userPostsData = [];
-  for (let i = 0; i < 5; i++ ) {
-      let user = uid == 'EHDvyZymtRSbciB7uXHv1mN5O9r2' ? 'Amanda': uid;
-      let club = "Animal Farm";
-      let title = "Theory about chapter " + (i+1);
-      let content = 
-      i % 3 == 0? "I had to read this book for one of my classes,It is currently my favorite book and I grew up with Harry Potter and Percy Jackson so this was a big step up from unrealistic books even though they were talking animals it actually taught me a lot about the cycle of society and where America is now.":
-      i % 3 == 1? "George Orwell (Eric Arthur Blair) is a spectacular writer, and his less popular work Animal Farm is no different than his other work, 1984, in quality. It paints a great picture, and it can represent countless things, not solely the Russian Revolution. Perhaps we will continue to see parallels (Though I certainly hope not). I will never forget this book and it's universal message.":
-      "A group of farm animals fight against their master Jones and gain freedom and equality.  Manor farm is thus becomes Animal farm.  But in the end Napoleon's dictatorial ruling farm gets worse than ever.  The 7 commandments given at the beginning are distorted over time. It's written in a way that all characters are animals, but it's all about human beings.  In the end, the narrator points to each of us by saying that humans and pigs are indistinguishable.";
-      let tag = "Theory";
-      let likes = 200;
-      let isLikedByUser = i % 3 == 0? true : i % 3 == 1? false : true;
-      userPostsData.push({user, club, title, content, tag, likes, isLikedByUser});
-  }
-
-  let likedPostsData = [];
-  for (let i = 0; i < 10; i++ ) {
-    let user = i % 3 == 0? "Sanjana" : i % 3 == 1? "Zaynab" : "Victor" ;
-    let club = i % 3 == 0? "Wonder" : i % 3 == 1? "Twilight New Moon" : "Harry Potter and the Goblet of Fire" ;
-    let title = i % 3 == 0? "Spoiler Review" : i % 3 == 1? "Theory about Edward" : "Hot take on chapter 3" ;
-    let content = 
-    i % 3 == 0? "I'm in seventh grade and reading this book really changed my perspective about everyone. Wonder is a book that anyone can read at any age and not think of it as cringe and to heart warming. This is a must read on every ones list. The author puts so much detail and opinion in everyone voice. Wonder is written in a format where most characters have a voice and it really helps you understand their side of the story and their ideas/opinions. Olivia is such a good person in wonder. She sticks with August after everything he's been through, she's always by his side after 27 surgeries. Love this book so much, I could read this book five times a week and not be tired of it after years. Though the book is slightly predictable, but the author makes the rest of the students brutal towards August and near the ends of the book, almost the whole fifth grade is talking with August and being his friend.":
-    i % 3 == 1? "This book is amazing! When I first read this book when Edward left everything became boring to me, so I stopped reading for a week or two. When I started reading again it all started to become better and better and I read up till midnight every day. My suggestion is to keep reading, it will get good! Other than Edward leaving for a bit it was great, read the whole series, you will love them if you love action, vampires, wolves, and romance!":
-    "Being a Harry Potter fan I love Quidditch. Quidditch is a sport in the wizarding world involving a lot of excitement and thrill. Harry Potter and the Goblet of Fire has the most humor and suspense in any book I've ever read. And also, it is the book with the Quidditch World Cup. The most thrilling things happened in this book, involving The Triwizard Tournament and the rising of Lord Voldemort. Besides, it is the first book that ever mentions the existence of Albus Dumbledore's pensieve. I would recommend this book to ages eight to twelve, even though it is definitely suitable for all ages. It is a book that would make you feel you couldn't put it down."
-    let tag = i % 3 == 0? "Spoiler" : i % 3 == 1? "Theory" : "Discussion";
-    let likes = 200;
-    let isLikedByUser = i % 3 == 0? true : i % 3 == 1? false : true;
-    likedPostsData.push({user, club, title, content, tag, likes, isLikedByUser})
-  }
-
-  let userProfile = {
-    "userId": uid,
-    "username": uid == 'EHDvyZymtRSbciB7uXHv1mN5O9r2'? 'Amanda': uid,
-    "bio":" She is known for her roles in Marvel Cinematic Universe superhero film Shang-Chi and the Legend of the Ten Rings and HBO miniseries Irma Vep and The Undoing.",
-    "thumbnail": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/13f2a0d585f3cd8578da0d18c36a18c4~c5_720x720.jpeg?x-expires=1676120400&x-signature=ibiscyoPcZ8jI2EcS7ccAdpXPk0%3D",
-    "posts": userPostsData,
-    "likedPosts": likedPostsData
-  }
-
   React.useEffect(() => {
-    const handleFetch = async () => {
-      let fetchQuery = "http://openlibrary.org/search.json?q=george+orwell&limit=4";
+    const handleFetchBooksFavorited = async () => {
+      let query = "http://openlibrary.org/search.json?q=good&limit=3";
       try {
-        const response = await fetch(fetchQuery);
+        const response = await fetch(query);
+        const json = await response.json();
+        setBooksFavorited(json)
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+ 
+    const handleFetchBooksClubsJoined = async () => {
+      let query = "http://openlibrary.org/search.json?q=george+orwell&limit=4";
+      try {
+        const response = await fetch(query);
         const json = await response.json();
         setBookClubsJoined(json)
       } catch (error) {
         console.log("error", error);
       }
     }
-    handleFetch();
-}, []);
+    
+    const handleFetchUserPosts = async () => {
+      let query = "http://localhost:4567/api/list_feed?uid="+ uid;
+      try {
+        const response = await fetch(query);
+        const json = await response.json();
+        setUserPostsData(json);
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+    
+    const handleFetchLikedPosts = async () => {
+      let query = "http://localhost:4567/api/list_feed";
+      try {
+        const response = await fetch(query);
+        const json = await response.json();
+        setUserLikedPostsData(json);
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+
+    handleFetchBooksFavorited();
+    handleFetchBooksClubsJoined();
+    handleFetchUserPosts();
+    handleFetchLikedPosts();
+
+  }, []);
+
+  let userProfile = {
+    "userId": uid,
+    "username": uid ==='EHDvyZymtRSbciB7uXHv1mN5O9r2'? 'Amanda': uid === 'sjzbuujj2hNljqVFpfJAplzXxjH3'? 'VictorD': uid,
+    "bio":"Known for roles in Marvel Cinematic Universe superhero film Shang-Chi and the Legend of the Ten Rings and HBO miniseries Irma Vep and The Undoing.",
+    "thumbnail": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/13f2a0d585f3cd8578da0d18c36a18c4~c5_720x720.jpeg?x-expires=1676120400&x-signature=ibiscyoPcZ8jI2EcS7ccAdpXPk0%3D",
+    "posts": userPostsData,
+    "likedPosts": userLikedPostsData
+  }
+
 
   let bookClubsJoinedData = [];
   if (bookClubsJoined !== "") {
@@ -91,22 +96,6 @@ export default function UserProfile() {
       bookClubsJoinedData.push({key, title, author, coverUrl})
     }
   }
-
-
-
-  React.useEffect(() => {
-    const handleFetch = async () => {
-      let fetchQuery = "http://openlibrary.org/search.json?q=good&limit=3";
-      try {
-        const response = await fetch(fetchQuery);
-        const json = await response.json();
-        setBooksFavorited(json)
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-    handleFetch();
-}, []);
 
   let booksFavoritedData = [];  
   if (booksFavorited !== "") {
@@ -123,7 +112,6 @@ export default function UserProfile() {
   let friendsData = [];
   for (let i = 0; i < 1; i++ ) {
     friendsData.push("Andrea")
-    friendsData.push("Victor")
     friendsData.push("Zaynab")
     friendsData.push("Sanjana")
     friendsData.push("Jocelyn")
@@ -147,10 +135,14 @@ export default function UserProfile() {
               </Tabs>
             </Box>
             <TabPanel value={tabIndexValue} index={0}>
-              <PostFeed postsData={userPostsData} />
+            {userPostsData !== "" &&
+              <PostFeed postsData={userPostsData.posts} />
+            }
             </TabPanel>
             <TabPanel value={tabIndexValue} index={1}>
-              <PostFeed postsData={likedPostsData} />
+            {userLikedPostsData !== "" &&
+              <PostFeed postsData={userLikedPostsData.posts} />
+            } 
             </TabPanel>
           </Box>
         </Stack>
