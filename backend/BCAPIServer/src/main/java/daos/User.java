@@ -304,7 +304,7 @@ public class User {
      *         "This book is not in the user's saved books." if book is not in user's saved books
      * @throws SQLException if something goes wrong with the database
      */
-    public String unsaveBook(String book_key) throws SQLException {
+    public String unsaveBook(String bookKey) throws SQLException {
         if (bookKey == null || bookKey.equals("")) {
             return "bookKey cannot be empty.";
         }
