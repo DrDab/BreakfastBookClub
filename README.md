@@ -102,5 +102,3 @@ cd backend/BCAPIServer
 ```
 ssh [username]@34.145.15.228
 ```
-- `SQL_SERVER_ADDRESS` is `34.145.15.228` for now.
-- `FIREBASE_SERVICE_ACCT_JSON` is `bc-adminsdk-svcacct.json` for now.
