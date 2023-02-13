@@ -23,14 +23,37 @@ public class OpenLibraryAPI {
         .build();
   }
 
+  private static URI getAuthorTargetURI(String authorKey) {
+    try {
+      return new URI(AUTHOR_URL + authorKey + ".json");
+    } catch (URISyntaxException ex) {
+      ex.printStackTrace();
+    }
+    return null;
+  }
+
+  private static URI getBookTargetURI(String bookKey) {
+    try {
+      return new URI(WORKS_URL + bookKey + ".json");
+    } catch (URISyntaxException ex) {
+      ex.printStackTrace();
+    }
+
+    return null;
+  }
+
   public static String getAuthorByKey(String authorKey)
-      throws URISyntaxException, IOException, InterruptedException {
-    URI targetURI = new URI(AUTHOR_URL + authorKey + ".json");
+      throws IOException, InterruptedException {
+    URI targetURI = getAuthorTargetURI(authorKey);
+
+    if (targetURI == null) {
+      return null;
+    }
+
     HttpRequest httpRequest = buildGetHttpRequest(targetURI);
     HttpClient httpClient = HttpClient.newHttpClient();
     HttpResponse<String> response = httpClient.send(httpRequest,
         HttpResponse.BodyHandlers.ofString());
-
 
     String body = response.body();
     JsonObject jsonObject = BCGsonUtils.fromStr(body);
@@ -39,12 +62,17 @@ public class OpenLibraryAPI {
       return null;
     }
 
-    return jsonObject.get("personal_name").toString();
+    return jsonObject.get("personal_name").getAsString();
   }
 
   public static Book getBookByKey(String bookKey)
-      throws URISyntaxException, IOException, InterruptedException {
-    URI targetURI = new URI(WORKS_URL + bookKey + ".json");
+      throws IOException, InterruptedException {
+    URI targetURI = getBookTargetURI(bookKey);
+
+    if (targetURI == null) {
+      return null;
+    }
+
     HttpRequest httpRequest = buildGetHttpRequest(targetURI);
     HttpClient httpClient = HttpClient.newHttpClient();
     HttpResponse<String> response = httpClient.send(httpRequest,
@@ -56,7 +84,7 @@ public class OpenLibraryAPI {
       return null;
     }
 
-    String title = jsonObject.get("title").toString();
+    String title = jsonObject.get("title").getAsString();
     String author = null;
 
     JsonArray authorsArr = jsonObject.getAsJsonArray("authors");
