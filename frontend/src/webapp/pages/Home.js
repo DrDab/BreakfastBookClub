@@ -10,7 +10,7 @@ import PostFeed from '../components/PostFeed';
 
 export default function Home() {
   const [popularBooks, setPopularBooks] = React.useState("");
-  const [homePosts, setHomePosts] = React.useState("");
+  const [homePostsData, setHomePostsData] = React.useState("");
 
   React.useEffect(() => {
     const handleFetchPopularBooks = async () => {
@@ -30,7 +30,7 @@ export default function Home() {
       try {
         const response = await fetch(query);
         const json = await response.json();
-        setHomePosts(json)
+        setHomePostsData(json)
       } catch (error) {
         console.log("error", error);
       }
@@ -66,9 +66,7 @@ export default function Home() {
         <CreatePost/>
       </Grid>
       <Grid item xs={8}>
-      {homePosts !== "" &&
-        <PostFeed postsData={homePosts.posts} />
-      }
+        <PostFeed postsData={homePostsData.posts || []} />
       </Grid>
       <Grid item xs={4}>
         <Stack spacing={2}>
@@ -76,7 +74,7 @@ export default function Home() {
             <Typography variant="overline">
               Trending Books
             </Typography>
-            <BookList bookData={popularBooksData}/>
+            <BookList bookData={popularBooksData} />
           </div>
           <div>
             <Typography variant="overline">

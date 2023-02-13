@@ -46,9 +46,7 @@ export default function BookClub() {
         <div style={{marginBottom: '0.5rem'}}>
           <CreatePost/>
         </div>
-        {bookClubPostsData !== "" &&
-          <PostFeed postsData={bookClubPostsData.posts} />
-        }
+          <PostFeed postsData={bookClubPostsData.posts || []} />
       </Grid>
       <Grid item xs={4}>
         <Button disableElevation sx={{ width: '100%', marginBottom: '1rem' }} variant="contained">
