@@ -19,7 +19,7 @@ cd frontend
 npm start
 ```
 
-### Run frontend tests
+### Run frontend JEST tests
 ```
 cd frontend
 npm test
@@ -36,7 +36,13 @@ cd backend/BCAPIServer
 ./gradlew build
 ```
 
-### Run backend tests
+### Clean backend
+```
+./gradlew clean
+```
+###
+
+### Run backend JUnit tests
 ```
 cd backend/BCAPIServer
 ./gradlew test
@@ -45,5 +51,6 @@ cd backend/BCAPIServer
 ### Run backend server
 ```
 cd backend/BCAPIServer
-./gradlew run
+./run-dev-server --mysql_addr <SQL_SERVER_ADDRESS> --svc_acct <FIREBASE_SERVICE_ACCT_JSON>
 ```
+
