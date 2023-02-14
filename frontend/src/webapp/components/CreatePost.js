@@ -26,7 +26,10 @@ export default function CreatePost() {
   const [title, setTitle] = React.useState("");
   const [body, setBody] = React.useState("");
   const [indexOfTagSelected, setIndexOfTagSelected] = React.useState(-1);
-  const [isError, setIsError] = React.useState(true);
+  const [isMissingFields, setIsMissingFields] = React.useState(true);
+  const [isOverBodyLength, setIsOverBodyLength] = React.useState(false);
+  const [isOverTitleLength, setIsOverTitleLength] = React.useState(false);
+
 
   let bookClubsJoinedData = [
     {title: "Animal Farm", key: "OL1168007W"},
@@ -36,11 +39,9 @@ export default function CreatePost() {
   ];
 
   React.useEffect(() => {
-    if (bookClub !== "" && title !== "" && body !== "") {
-      setIsError(false);
-    } else {
-      setIsError(true);
-    }
+    setIsOverBodyLength(body.length > 1000);
+    setIsOverTitleLength(title.length > 100);
+    setIsMissingFields(bookClub === "" || title === "" || body === "");
   }, [bookClub, title, body]);
 
   const clearFormValues = () => {
@@ -48,7 +49,8 @@ export default function CreatePost() {
     setTitle("");
     setBody("");
     setIndexOfTagSelected(-1);
-    setIsError(true);
+    setIsMissingFields(true);
+    setIsOverBodyLength(false);
   }
 
   const handleCancelPost = () => {
@@ -74,7 +76,7 @@ export default function CreatePost() {
   }
 
   const handlePost = () => {
-    if (!isError) {
+    if (!isMissingFields && !isOverBodyLength && !isOverTitleLength) {
       setShowPostModal(false);
 
       auth.currentUser?.getIdToken(true).then(function(idToken){
@@ -85,13 +87,13 @@ export default function CreatePost() {
           body: body,
           ...indexOfTagSelected > -1 && {tag: tagsList[indexOfTagSelected].label}
         }
-        console.log("sending ", jsonData)
+        sessionStorage.setItem("sendingPost", JSON.stringify(jsonData));
         fetchPost(jsonData);
       })
       
       setTimeout(function(){
         window.location.reload();
-      }, 1000);
+      }, 3000);
 
       clearFormValues();
     }
@@ -163,6 +165,8 @@ export default function CreatePost() {
               variant="filled"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              error={isOverTitleLength}
+              helperText={isOverTitleLength ? "Over character limit of 100": ""}
             />
             <TextField
               InputProps={{ disableUnderline: true }}
@@ -173,6 +177,8 @@ export default function CreatePost() {
               variant="filled"
               value={body}
               onChange={(e) => setBody(e.target.value)}
+              error={isOverBodyLength}
+              helperText={isOverBodyLength ? "Over character limit of 1000": ""}
             />
             <Stack direction="row" spacing={1}>
               {tagsList.map((tag, index) => {
@@ -189,10 +195,20 @@ export default function CreatePost() {
               })}
             </Stack>
             <Stack justifyContent="end" direction="row" spacing={1}>
-              <Button disableElevation size="small" variant={isError ? 'disabled': 'contained'} onClick={handlePost}>
+              <Button 
+                disableElevation
+                size="small"
+                variant={(isMissingFields || isOverBodyLength || isOverTitleLength) ? 'disabled': 'contained'}
+                onClick={handlePost}
+              >
                 Post
               </Button>
-              <Button disableElevation size="small" variant='outlined' onClick={handleCancelPost}>
+              <Button 
+                disableElevation
+                size="small"
+                variant='outlined'
+                onClick={handleCancelPost}
+              >
                 Cancel
               </Button>
             </Stack>
