@@ -13,12 +13,12 @@ import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
+import { auth } from "../../FirebaseConfig"
 import { Link as RouterLink } from "react-router-dom";
-import { tagsList, avatarColorMap} from './Constants';
+import { tagsList, avatarColorMap } from './Constants';
 
 export default function CreatePost() {
   let yourUserId = JSON.parse(sessionStorage.yourUser);
-  let yourAuthToken = JSON.parse(sessionStorage.yourToken);
   let yourUser = yourUserId === 'EHDvyZymtRSbciB7uXHv1mN5O9r2' ? 'Amanda': yourUserId;
 
   const [showPostModal, setShowPostModal] = React.useState(false);
@@ -56,34 +56,43 @@ export default function CreatePost() {
     clearFormValues();
   };
 
+  const fetchPost = (jsonData) => {
+    fetch('http://localhost:4567/api/make_post', {
+      method: 'POST', 
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(jsonData)
+    })
+    .then((data) => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
   const handlePost = () => {
     if (!isError) {
       setShowPostModal(false);
-      let jsonData = {
-        token: yourAuthToken,
-        book_key: bookClub,
-        title: title,
-        body: body,
-        ...indexOfTagSelected > -1 && {tag: tagsList[indexOfTagSelected].label}
-      }
-      // console.log("sending ", JSON.stringify(jsonData))
 
-      fetch('http://localhost:4567/api/make_post', {
-        method: 'POST', 
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(jsonData)
+      auth.currentUser?.getIdToken(true).then(function(idToken){
+        let jsonData = {
+          token: idToken,
+          book_key: bookClub,
+          title: title,
+          body: body,
+          ...indexOfTagSelected > -1 && {tag: tagsList[indexOfTagSelected].label}
+        }
+        console.log("sending ", jsonData)
+        fetchPost(jsonData);
       })
-        .then((data) => {
-          console.log('Success:', data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      
+      setTimeout(function(){
+        window.location.reload();
+      }, 1000);
 
-      window.location.reload();
       clearFormValues();
     }
   };
