@@ -2,9 +2,9 @@
 ## Team Report
 - Last week’s goals: Complete API routes for getting posts, and creating user profiles in the database. Film beta release presentation.
 
-- Progress / Issues:
+- Progress / Issues: 
 
-- Goals: 
+- Goals: Continue to connect our moving parts together - get the frontend to show real data of likes.
 
 ## Contributions of Individual Team Members
 - Last week’s goals:
@@ -35,7 +35,8 @@
   - Help with connecting frontend information to backend databasing 
 
 - Progress / Issues:
-
+  
+  
 
 - Goals:
 
