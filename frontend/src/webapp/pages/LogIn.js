@@ -23,9 +23,7 @@ export default function LogIn() {
       await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        const token = userCredential._tokenResponse;
         sessionStorage.setItem('yourUser', JSON.stringify(user.uid));
-        sessionStorage.setItem('yourToken', JSON.stringify(token.idToken));
         navigate("/");
         window.location.reload();
       })
