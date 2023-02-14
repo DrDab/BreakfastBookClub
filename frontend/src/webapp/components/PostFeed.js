@@ -41,7 +41,7 @@ export default function PostFeed(props) {
               }
               title={
                 <Typography gutterBottom variant="p4">
-                  <strong>{post.user.username}</strong> in the <strong>{post.book.title.substring(1, post.book.title.length-1)}</strong> Book Club
+                  <strong>{post.user.username}</strong> in the <strong>{post.book.title}</strong> Book Club
                 </Typography>
               }
               subheader={
