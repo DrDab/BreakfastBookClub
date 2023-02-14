@@ -17,6 +17,7 @@ import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 
 import routes.bookclubs.GetPosts;
+import routes.bookclubs.LikePost;
 import routes.bookclubs.MakePost;
 import spark.Spark;
 import utils.BCCORSFilter;
@@ -60,6 +61,8 @@ public class BCServerMain {
     GetPosts getPosts = new GetPosts(fbApp, sqlConn);
     Spark.get("/api/get_posts", getPosts);
     Spark.get("/api/list_feed", getPosts);
+
+    Spark.get("/api/like_post", new LikePost(fbApp, sqlConn));
   }
 
   @SuppressWarnings("deprecation")

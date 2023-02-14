@@ -1,9 +1,6 @@
 package routes.bookclubs;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
 import com.google.gson.JsonObject;
 import daos.Posts;
 import java.sql.Connection;
@@ -28,12 +25,13 @@ public class LikePost implements Route {
     String token = request.queryParams("token");
     String postId = request.queryParams("post_id");
 
-    if (token == null || postId == null) {
+    if (postId == null) { // || token == null) {
       respJson.addProperty("status", "failure");
-      respJson.addProperty("failure_reason", "token and post_id must be present!");
+      respJson.addProperty("failure_reason", "post_id must be present!");
       return respJson;
     }
 
+    /*
     FirebaseToken decodedToken;
 
     try {
@@ -46,6 +44,7 @@ public class LikePost implements Route {
     }
 
     String uid = decodedToken.getUid();
+     */
 
     respJson.addProperty("status", new Posts(sqlConn).likePostByID(postId) ? "success" : "failure");
     return respJson.toString() + "\n";
