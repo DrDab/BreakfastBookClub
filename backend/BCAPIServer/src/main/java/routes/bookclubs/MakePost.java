@@ -50,7 +50,7 @@ public class MakePost implements Route {
     String bookKey = bodyJson.get("book_key").getAsString();
 
     // Validate provided book key.
-    if (OpenLibraryAPI.bookExists(bookKey)) {
+    if (!OpenLibraryAPI.bookExists(bookKey)) {
       respJson.addProperty("status", "failure");
       respJson.addProperty("failure_reason", "Invalid book key!");
       return respJson.toString() + "\n";
