@@ -1,6 +1,6 @@
 package daos;
 
-public enum Result {
+public enum UserResult {
     SUCCESS, // normal return
     FAIL, // abnormal return due to database error
     INVALID, // invalid input
