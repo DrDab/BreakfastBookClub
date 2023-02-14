@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.mysql.cj.x.protobuf.MysqlxCursor.Open;
 import java.io.IOException;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

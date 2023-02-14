@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import daos.Books;
+import daos.Posts;
 import daos.User;
 import java.sql.Connection;
 import java.util.List;
@@ -44,7 +45,7 @@ public class GetPosts implements Route {
     }
 
     List<BookPost> posts =
-        (searchUID == null && searchBookKey == null) ? new Books(sqlConn).listAllPosts() :
+        (searchUID == null && searchBookKey == null) ? new Posts(sqlConn).listAllPosts() :
             searchUID != null ? new User(searchUID, sqlConn).getUserPosts()
                 : new Books(sqlConn).listBookPosts(searchBookKey);
 
