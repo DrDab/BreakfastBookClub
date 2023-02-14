@@ -47,6 +47,7 @@ public class LikePost implements Route {
 
     String uid = decodedToken.getUid();
 
-    return new Posts(sqlConn).likePostByID(postId);
+    respJson.addProperty("status", new Posts(sqlConn).likePostByID(postId) ? "success" : "failure");
+    return respJson.toString() + "\n";
   }
 }
