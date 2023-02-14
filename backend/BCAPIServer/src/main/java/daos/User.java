@@ -115,10 +115,6 @@ public class User {
             return "postId cannot be empty.";
         }
 
-        if (tag == null || tag.equals("")) {
-            return "tag cannot be empty.";
-        }
-
         if (bookKey.length() > 20) {
             return "bookKey cannot be more than 20 characters.";
         }

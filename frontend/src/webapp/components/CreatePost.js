@@ -66,6 +66,7 @@ export default function CreatePost() {
         body: body,
         ...indexOfTagSelected > -1 && {tag: tagsList[indexOfTagSelected].label}
       }
+      // console.log("sending ", JSON.stringify(jsonData))
 
       fetch('http://localhost:4567/api/make_post', {
         method: 'POST', 
@@ -73,9 +74,8 @@ export default function CreatePost() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(jsonData),
+        body: JSON.stringify(jsonData)
       })
-        .then((response) => response.json())
         .then((data) => {
           console.log('Success:', data);
         })
