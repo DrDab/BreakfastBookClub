@@ -142,7 +142,7 @@ export default function LoggedInAppBar() {
           },
         }}
       >
-        <MenuItem component={RouterLink} to={"/user-profile/" + yourUserId}>
+        <MenuItem reloadDocument component={RouterLink} to={"/user-profile/" + yourUserId}>
           <ListItemIcon>
             <AccountCircle fontSize="small" />
           </ListItemIcon>

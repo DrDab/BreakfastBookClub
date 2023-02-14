@@ -7,9 +7,10 @@ import PeopleList from '../components/Lists/PeopleList';
 import BookList from '../components/Lists/BookList';
 import CreatePost from '../components/CreatePost';
 import PostFeed from '../components/PostFeed';
+import { formatOpenLibraryData } from '../components/Utils';
 
 export default function Home() {
-  const [popularBooks, setPopularBooks] = React.useState("");
+  const [popularBooksData, setPopularBooksData] = React.useState("");
   const [homePostsData, setHomePostsData] = React.useState("");
 
   React.useEffect(() => {
@@ -18,7 +19,8 @@ export default function Home() {
       try {
         const response = await fetch(searchQuery);
         const json = await response.json();
-        setPopularBooks(json)
+        let formattedData = formatOpenLibraryData(json);
+        setPopularBooksData(formattedData);
       } catch (error) {
         console.log("error", error);
       }
@@ -43,18 +45,6 @@ export default function Home() {
 
 }, []);
 
-  let popularBooksData = [];
-  if (popularBooks !== "") {
-    for (let i = 0; i < popularBooks.docs.length; i++ ) {
-      let book = popularBooks.docs[i];
-      let key = book.key;
-      let title = book.title;
-      let author = book.author_name;
-      let coverUrl = book.cover_i ? "https://covers.openlibrary.org/b/id/" + book.cover_i  + "-M.jpg" : "";
-      popularBooksData.push({key, title, author, coverUrl})
-    }
-  }
-  
   let popularPeopleData = [];
   for (let i = 0; i < 1; i++ ) {
     popularPeopleData.push("Jesse");

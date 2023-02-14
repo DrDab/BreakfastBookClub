@@ -7,11 +7,11 @@ import BookList from '../components/Lists/BookList';
 import PeopleList from '../components/Lists/PeopleList';
 import Stack from '@mui/material/Stack';
 import TabPanel from "../components/TabPanel";
-import { a11yProps } from '../components/Utils';
+import { a11yProps, formatOpenLibraryData } from '../components/Utils';
 
 export default function SearchResults() {
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
-  const [searchResultsBooks, setSearchResultsBooks] = useState("");
+  const [searchResultBookData, setSearchResultBookData] = useState("");
 
   useEffect(() => {
     const handleFetch = async () => {
@@ -19,25 +19,14 @@ export default function SearchResults() {
       try {
         const response = await fetch(searchQuery);
         const json = await response.json();
-        setSearchResultsBooks(json)
+        let formattedData = formatOpenLibraryData(json);
+        setSearchResultBookData(formattedData);
       } catch (error) {
         console.log("error", error);
       }
     }
     handleFetch();
 }, []);
-
-  let searchResultBookData = [];
-  if (searchResultsBooks !== "") {
-    for (let i = 0; i < searchResultsBooks.docs.length; i++ ) {
-      let book = searchResultsBooks.docs[i];
-      let key = book.key;
-      let title = book.title;
-      let author = book.author_name;
-      let coverUrl = book.cover_i ? "https://covers.openlibrary.org/b/id/" + book.cover_i  + "-M.jpg" : "";
-      searchResultBookData.push({key, title, author, coverUrl})
-    }
-  }
 
   let searchResultPeopleData = [];
   for (let i = 0; i < 1; i++ ) {

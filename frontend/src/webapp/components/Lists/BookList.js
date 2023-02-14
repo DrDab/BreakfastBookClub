@@ -12,43 +12,44 @@ export default function BookList(props) {
   const navigate = useNavigate();
 
 	return (
-    props.bookData.length === 0 ? 
-     <BookListSkeleton/> :
-      props.bookData.map((book, index) => {
-        return (
-          <ListItem
-            className="list-item"
-            alignItems="flex-start"
-            key={index}
-            onClick={() => goToBookClub(book, navigate)}
-            >
-            <ListItemAvatar>
-              <Avatar
-                className="list-item-book-cover"
-                variant="rounded"
-                alt={book.title + " cover"}
-                src={book.coverUrl}
-                sx={{ width: 70, height: 100 }}
+    props.bookData === "" ?
+      <BookListSkeleton/> :
+      Array.isArray(props.bookData) && props.bookData.length === 0?
+        <Typography> No book clubs found </Typography>:
+        props.bookData.map((book, index) => {
+          return (
+            <ListItem
+              className="list-item"
+              alignItems="flex-start"
+              key={index}
+              onClick={() => goToBookClub(book, navigate)}
+              >
+              <ListItemAvatar>
+                <Avatar
+                  className="list-item-book-cover"
+                  variant="rounded"
+                  alt={book.title + " cover"}
+                  src={book.coverUrl}
+                  sx={{ width: 70, height: 100 }}
+                />
+              </ListItemAvatar>
+              <ListItemText
+                primary={book.title}
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {book.author}
+                    </Typography>
+                  </React.Fragment>
+                }
               />
-            </ListItemAvatar>
-            <ListItemText
-              primary={book.title}
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: 'inline' }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    {book.author}
-                  </Typography>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-        )
-      }
-    )
+            </ListItem>
+          )
+        })
   );
 }

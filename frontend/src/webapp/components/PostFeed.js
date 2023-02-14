@@ -15,68 +15,69 @@ import PostFeedSkeleton from './Skeletons/PostFeedSkeleton';
 export default function PostFeed(props) {
 
 	return (
-    props.postsData.length === 0 ? 
+    props.postsData === "" ? 
       <PostFeedSkeleton/> :
-      props.postsData.map((post, index) => {
-        let tagIcon = null;
-        let tagColor = null;
-        if (post.tag === "Spoiler" || post.tag === "Discussion" || post.tag === "Theory") {
-          tagIcon = tagsList.filter(tag => tag.label === post.tag)[0]["icon"];
-          tagColor = tagsList.filter(tag => tag.label === post.tag)[0]["color"];
-        }
+      Array.isArray(props.postsData) && props.postsData.length === 0? 
+        <Typography> No posts yet </Typography>:
+        props.postsData.map((post, index) => {
+          let tagIcon = null;
+          let tagColor = null;
+          if (post.tag === "Spoiler" || post.tag === "Discussion" || post.tag === "Theory") {
+            tagIcon = tagsList.filter(tag => tag.label === post.tag)[0]["icon"];
+            tagColor = tagsList.filter(tag => tag.label === post.tag)[0]["color"];
+          }
 
-        return (
-          <Card key={index} elevation={0} className="post">
-            <CardHeader
-              avatar={
-                <Avatar
-                  reloadDocument
-                  component={RouterLink}
-                  to={"/user-profile/" + post.user.userId}
-                  sx={{ bgcolor: avatarColorMap.get(post.user.username), width: 50, height: 50, textDecoration: "none" }}
-                  aria-label={post.user.username + " avatar"}
-                >
-                  {post.user.username.charAt(0)}
-                </Avatar>
-              }
-              title={
-                <Typography gutterBottom variant="p4">
-                  <strong>{post.user.username}</strong> in the <strong>{post.book.title}</strong> Book Club
-                </Typography>
-              }
-              subheader={
-                new Date(post.date).toLocaleDateString('en-US', { year: "numeric", month: "long", day: "numeric"})
-              }
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h6" color="text.secondary">
-                {post.title}
-
-                {tagIcon != null && tagColor != null &&
-                <Chip
-                  icon={tagIcon}
-                  label={post.tag}
-                  color={tagColor}
-                  size="small"
-                  sx={{marginLeft:'1rem'}}
-                />
+          return (
+            <Card key={index} elevation={0} className="post">
+              <CardHeader
+                avatar={
+                  <Avatar
+                    reloadDocument
+                    component={RouterLink}
+                    to={"/user-profile/" + post.user.userId}
+                    sx={{ bgcolor: avatarColorMap.get(post.user.username), width: 50, height: 50, textDecoration: "none" }}
+                    aria-label={post.user.username + " avatar"}
+                  >
+                    {post.user.username.charAt(0)}
+                  </Avatar>
                 }
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {post.post}
-              </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-              <IconButton onClick={()=> console.log("like post")} sx={{color: 'grey'}} aria-label="like">
-                <FavoriteIcon />
-              </IconButton>
-              <Typography variant='caption'>
-                {post.likes} likes
-              </Typography>
-            </CardActions>
-          </Card>
-        )
-    }
-    )
+                title={
+                  <Typography gutterBottom variant="p4">
+                    <strong>{post.user.username}</strong> in the <strong>{post.book.title}</strong> Book Club
+                  </Typography>
+                }
+                subheader={
+                  new Date(post.date).toLocaleDateString('en-US', { year: "numeric", month: "short", day: "numeric"})
+                }
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h6" color="text.secondary">
+                  {post.title}
+
+                  {tagIcon != null && tagColor != null &&
+                  <Chip
+                    icon={tagIcon}
+                    label={post.tag}
+                    color={tagColor}
+                    size="small"
+                    sx={{marginLeft:'1rem'}}
+                  />
+                  }
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {post.post}
+                </Typography>
+              </CardContent>
+              <CardActions disableSpacing>
+                <IconButton onClick={()=> console.log("like post")} sx={{color: 'grey'}} aria-label="like">
+                  <FavoriteIcon />
+                </IconButton>
+                <Typography variant='caption'>
+                  {post.likes} likes
+                </Typography>
+              </CardActions>
+            </Card>
+          )
+        })
   );
 }

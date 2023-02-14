@@ -10,7 +10,7 @@ import BookList from '../components/Lists/BookList';
 import CreatePost from "../components/CreatePost";
 import PostFeed from '../components/PostFeed'
 import TabPanel from "../components/TabPanel";
-import { a11yProps } from '../components/Utils';
+import { a11yProps, formatOpenLibraryData } from '../components/Utils';
 import { useParams } from "react-router-dom";
 
 export default function UserProfile() {
@@ -18,8 +18,8 @@ export default function UserProfile() {
   let { uid } = useParams(); // clicked user
 
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
-  const [booksFavorited, setBooksFavorited] = React.useState('');
-  const [bookClubsJoined, setBookClubsJoined] = React.useState('');
+  const [booksFavoritedData, setBooksFavoritedData] = React.useState('');
+  const [bookClubsJoinedData, setBookClubsJoinedData] = React.useState('');
   const [userPostsData, setUserPostsData] = React.useState('');
   const [userLikedPostsData, setUserLikedPostsData] = React.useState('');
   
@@ -29,7 +29,8 @@ export default function UserProfile() {
       try {
         const response = await fetch(query);
         const json = await response.json();
-        setBooksFavorited(json)
+        let formattedData = formatOpenLibraryData(json);
+        setBooksFavoritedData(formattedData)
       } catch (error) {
         console.log("error", error);
       }
@@ -40,7 +41,8 @@ export default function UserProfile() {
       try {
         const response = await fetch(query);
         const json = await response.json();
-        setBookClubsJoined(json)
+        let formattedData = formatOpenLibraryData(json);
+        setBookClubsJoinedData(formattedData);
       } catch (error) {
         console.log("error", error);
       }
@@ -80,7 +82,6 @@ export default function UserProfile() {
     handleFetchBooksClubsJoined();
     handleFetchUserPosts();
     handleFetchLikedPosts();
-
   }, []);
 
   let userProfile = {
@@ -90,31 +91,6 @@ export default function UserProfile() {
     "thumbnail": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/13f2a0d585f3cd8578da0d18c36a18c4~c5_720x720.jpeg?x-expires=1676120400&x-signature=ibiscyoPcZ8jI2EcS7ccAdpXPk0%3D",
     "posts": userPostsData,
     "likedPosts": userLikedPostsData
-  }
-
-
-  let bookClubsJoinedData = [];
-  if (bookClubsJoined !== "") {
-    for (let i = 0; i < bookClubsJoined.docs.length; i++ ) {
-      let book = bookClubsJoined.docs[i];
-      let key = book.key;
-      let title = book.title;
-      let author = book.author_name;
-      let coverUrl = book.cover_i ? "https://covers.openlibrary.org/b/id/" + book.cover_i  + "-M.jpg" : "";
-      bookClubsJoinedData.push({key, title, author, coverUrl})
-    }
-  }
-
-  let booksFavoritedData = [];  
-  if (booksFavorited !== "") {
-    for (let i = 0; i < booksFavorited.docs.length; i++ ) {
-      let book = booksFavorited.docs[i];
-      let key = book.key;
-      let title = book.title;
-      let author = book.author_name;
-      let coverUrl = book.cover_i ? "https://covers.openlibrary.org/b/id/" + book.cover_i  + "-M.jpg" : "";
-      booksFavoritedData.push({key, title, author, coverUrl})
-    }
   }
 
   let friendsData = [];
