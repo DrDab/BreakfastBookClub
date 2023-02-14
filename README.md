@@ -10,6 +10,11 @@ The project directory is subdivided into frontend and backend folders.
 The frontend is broken into page components and resusable components such as people lists and book lists.
 These subdirectories are further subdivided into their respective features.
 
+Operational Use Cases:
+- Post review about a book
+- Search for book clubs to join (Every book is it's own book club)
+- View posts made by user in user's profile 
+
 
 ## Start up web app (First time users)
 
