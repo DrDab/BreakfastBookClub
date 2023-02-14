@@ -11,7 +11,8 @@ The frontend is broken into page components and resusable components such as peo
 These subdirectories are further subdivided into their respective features.
 
 Operational Use Cases:
-- Post review about a book
+- Make post about a book
+- View all posts on home page
 - Search for book clubs to join (Every book is it's own book club)
 - View posts made by user in user's profile 
 
@@ -66,8 +67,8 @@ _Command with current server address and firebase json_
 ```
 
 
-### 3. Login
-For the best expirience login with: 
+### 3. Log in
+For the best experience log in with: 
 <blockquote>
 Email: akha1229@gmail.com
 
