@@ -2,9 +2,9 @@
 ## Team Report
 - Last week’s goals: Complete API routes for getting posts, and creating user profiles in the database. Film beta release presentation.
 
-- Progress / Issues: 
+- Progress / Issues: We completed the create post and get posts use case. Now that we have a connection between the frontend and backend, it will be easier to create and integrate the remaining API routes. We were not able to complete as many test this week because we were focused on features for the beta release.
 
-- Goals: Continue to connect our moving parts together - get the frontend to show real data of likes.
+- Goals: Continue to connect our moving parts together. Build out remaining main API routes (get book data, get posts by book club, create and get user profile data). Impliment API routes into frontend.
 
 ## Contributions of Individual Team Members
 - Last week’s goals:
@@ -49,6 +49,11 @@
   - Added more user functionality for unfriending, leaving clubs and removing saved books.
   - Standardized user method status codes
 
+  Amanda Ha:
+  - Integrated make post and get post API routes
+  - Added content length check to posts
+  - fixed login bug 
+
 - Goals:
 
   Sanjana Janakiraman:
@@ -67,3 +72,6 @@
   - Contribute to backend testing
   - Start work on transaction handling
 
+  Amanda Ha:
+  - Add to frontend testing
+  - Impliment like posts API route into frontend 

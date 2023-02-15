@@ -62,7 +62,7 @@ public class BCServerMain {
     Spark.get("/api/get_posts", getPosts);
     Spark.get("/api/list_feed", getPosts);
 
-    Spark.get("/api/like_post", new LikePost(fbApp, sqlConn));
+    Spark.post("/api/like_post", new LikePost(fbApp, sqlConn));
   }
 
   @SuppressWarnings("deprecation")
