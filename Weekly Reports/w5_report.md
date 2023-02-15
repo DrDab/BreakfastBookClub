@@ -52,7 +52,12 @@
   Amanda Ha:
   - Integrated make post and get post API routes
   - Added content length check to posts
-  - fixed login bug 
+  - fixed login bug
+
+  Andrea Ha:
+  - Researched firebase authentication functions to help resolve login bugs
+  - Designed UX for post error checking and posts loading
+
 
 - Goals:
 
@@ -75,3 +80,8 @@
   Amanda Ha:
   - Add to frontend testing
   - Impliment like posts API route into frontend 
+  
+  Andrea Ha:
+  - Add to frontend testing
+  - Implement get user profile data API route into frontend
+
