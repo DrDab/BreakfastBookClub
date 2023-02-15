@@ -45,6 +45,10 @@
   - Implemented routes on backend API for adding and getting book data.
   - Implemented routes on backend API for getting book club posting data.
 
+  Zaynab Khan:
+  - Added more user functionality for unfriending, leaving clubs and removing saved books.
+  - Standardized user method status codes
+
 - Goals:
 
   Sanjana Janakiraman:
@@ -57,4 +61,9 @@
   - Implement routes on backend API for getting user profile data.
   - Help consolidate API status codes into standardized enums.
   - Add profile thumbnail hosting to backend API.
+
+  Zaynab Khan:
+  - Add more user functionality
+  - Contribute to backend testing
+  - Start work on transaction handling
 
