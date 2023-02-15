@@ -41,6 +41,9 @@
   - Began work on transaction handling for backend logic
   - Continued work on database design
   
+  Victor Du:
+  - Implemented routes on backend API for adding and getting book data.
+  - Implemented routes on backend API for getting book club posting data.
 
 - Goals:
 
@@ -48,4 +51,10 @@
   - Finish adding backend logic and add more testing for the new functionalities
   - Continue work on transaction handling for backend logic
   - Explore implementing stretch goals
+
+  Victor Du:
+  - Implement routes on backend API for getting book club member data (profile links)
+  - Implement routes on backend API for getting user profile data.
+  - Help consolidate API status codes into standardized enums.
+  - Add profile thumbnail hosting to backend API.
 
