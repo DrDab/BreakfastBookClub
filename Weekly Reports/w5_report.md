@@ -59,6 +59,10 @@
   - Continued working with databasing and queries connecting to stretch goals
   - Helped fix login / logout functionality
 
+  Andrea Ha:
+  - Researched firebase authentication functions to help resolve login bugs
+  - Designed UX for post error checking and posts loading
+
 - Goals:
 
   Sanjana Janakiraman:
@@ -84,3 +88,7 @@
   Jocelyn Thomson:
   - Add testing to backend / test to make sure databasing works 
   - Help with implementing like posts functionality to backend
+
+  Andrea Ha:
+  - Add to frontend testing
+  - Implement get user profile data API route into frontend
