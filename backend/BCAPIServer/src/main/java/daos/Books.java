@@ -116,4 +116,9 @@ public class Books {
         postsInBookClubStatement = conn.prepareStatement(POSTS_IN_BOOK_CLUB_SQL);
         allPostsStatement = conn.prepareStatement(ALL_POSTS_SQL);
     }
+
+    // Returns whether the error was caused by a deadlock
+    private static boolean isDeadlock(SQLException e) {
+        return e.getErrorCode() == 1205;
+    }
 }
