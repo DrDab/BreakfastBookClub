@@ -35,10 +35,17 @@
   - Help with connecting frontend information to backend databasing 
 
 - Progress / Issues:
-  
+
+  Sanjana Janakiraman:
+  - Added backend logic to get all users in a book club and all posts in a book club
+  - Began work on transaction handling for backend logic
+  - Continued work on database design
   
 
 - Goals:
 
-
+  Sanjana Janakiraman:
+  - Finish adding backend logic and add more testing for the new functionalities
+  - Continue work on transaction handling for backend logic
+  - Explore implementing stretch goals
 
