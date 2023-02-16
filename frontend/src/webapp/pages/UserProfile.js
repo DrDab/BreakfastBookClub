@@ -22,7 +22,7 @@ export default function UserProfile() {
   const [bookClubsJoinedData, setBookClubsJoinedData] = React.useState('');
   const [userPostsData, setUserPostsData] = React.useState('');
   const [userLikedPostsData, setUserLikedPostsData] = React.useState('');
-  
+
   React.useEffect(() => {
     const handleFetchBooksFavorited = async () => {
       let query = "http://openlibrary.org/search.json?q=good&limit=3";
@@ -35,7 +35,7 @@ export default function UserProfile() {
         console.log("error", error);
       }
     }
- 
+
     const handleFetchBooksClubsJoined = async () => {
       let query = "http://openlibrary.org/search.json?q=george+orwell&limit=4";
       try {
@@ -47,7 +47,7 @@ export default function UserProfile() {
         console.log("error", error);
       }
     }
-    
+
     const handleFetchUserPosts = async () => {
       let query = "http://localhost:4567/api/list_feed?uid="+ uid;
       try {
@@ -62,7 +62,7 @@ export default function UserProfile() {
         console.log("error", error);
       }
     }
-    
+
     const handleFetchLikedPosts = async () => {
       let query = "http://localhost:4567/api/list_feed";
       try {
@@ -82,7 +82,7 @@ export default function UserProfile() {
     handleFetchBooksClubsJoined();
     handleFetchUserPosts();
     handleFetchLikedPosts();
-  }, []);
+  }, [uid]);
 
   let userProfile = {
     "userId": uid,

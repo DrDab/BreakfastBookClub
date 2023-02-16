@@ -60,7 +60,7 @@ export default function CreatePost() {
 
   const fetchPost = (jsonData) => {
     fetch('http://localhost:4567/api/make_post', {
-      method: 'POST', 
+      method: 'POST',
       mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json'
@@ -90,7 +90,7 @@ export default function CreatePost() {
         sessionStorage.setItem("sendingPost", JSON.stringify(jsonData));
         fetchPost(jsonData);
       })
-      
+
       setTimeout(function(){
         window.location.reload();
       }, 3000);
