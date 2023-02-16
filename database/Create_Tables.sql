@@ -49,10 +49,9 @@ CREATE TABLE sent_recommendations (
 	book_key VARCHAR (20)
 );
 
--- DROP TABLE liked_posts;
 CREATE TABLE liked_posts {
     user_id VARCHAR(50),
     post_id VARCHAR(50)
-}
+};
 
 
