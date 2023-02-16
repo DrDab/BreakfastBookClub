@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import UserProfileBanner from '../components/Banners/UserProfileBanner';
 import BookList from '../components/Lists/BookList';
 import CreatePost from "../components/CreatePost";
-import PostFeed from '../components/PostFeed'
+import PostList from '../components/Lists/PostList'
 import TabPanel from "../components/TabPanel";
 import { a11yProps, formatOpenLibraryData } from '../components/Utils';
 import { useParams } from "react-router-dom";
@@ -119,10 +119,10 @@ export default function UserProfile() {
               </Tabs>
             </Box>
             <TabPanel value={tabIndexValue} index={0}>
-              <PostFeed postsData={userPostsData} />
+              <PostList postsData={userPostsData} />
             </TabPanel>
             <TabPanel value={tabIndexValue} index={1}>
-              <PostFeed postsData={userLikedPostsData} />
+              <PostList postsData={userLikedPostsData} />
             </TabPanel>
           </Box>
         </Stack>

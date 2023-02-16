@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 
-export default function PostFeedSkeleton(props) {
+export default function PostListSkeleton(props) {
   const posts = [...Array(5).keys()]
   return (
     posts.map((post, index) => {

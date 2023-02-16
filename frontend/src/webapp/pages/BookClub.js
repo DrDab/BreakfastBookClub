@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import PeopleList from '../components/Lists/PeopleList';
 import BookClubBanner from '../components/Banners/BookClubBanner';
 import CreatePost from "../components/CreatePost";
-import PostFeed from '../components/PostFeed';
+import PostList from '../components/Lists/PostList';
 
 export default function BookClub() {
   let bookData = JSON.parse(sessionStorage.book) // should come from our API later
@@ -50,7 +50,7 @@ export default function BookClub() {
         <div style={{marginBottom: '0.5rem'}}>
           <CreatePost/>
         </div>
-          <PostFeed postsData={bookClubPostsData} />
+          <PostList postsData={bookClubPostsData} />
       </Grid>
       <Grid item xs={4}>
         <Button disableElevation sx={{ width: '100%', marginBottom: '1rem' }} variant="contained">

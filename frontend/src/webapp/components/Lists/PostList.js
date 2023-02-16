@@ -9,14 +9,18 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Link as RouterLink } from "react-router-dom";
-import { tagsList, avatarColorMap } from './Constants';
-import PostFeedSkeleton from './Skeletons/PostFeedSkeleton';
+import { tagsList, avatarColorMap } from '../Constants';
+import PostListSkeleton from '../Skeletons/PostListSkeleton';
 
-export default function PostFeed(props) {
+export default function PostList(props) {
+
+  const likePost = (postId) => {
+    console.log("like post with id: ",postId);
+  }
 
 	return (
     props.postsData === "" ? 
-      <PostFeedSkeleton/> :
+      <PostListSkeleton/> :
       Array.isArray(props.postsData) && props.postsData.length === 0? 
         <Typography> No posts yet </Typography>:
         props.postsData.map((post, index) => {
@@ -53,15 +57,14 @@ export default function PostFeed(props) {
               <CardContent>
                 <Typography gutterBottom variant="h6" color="text.secondary">
                   {post.title}
-
                   {tagIcon != null && tagColor != null &&
-                  <Chip
-                    icon={tagIcon}
-                    label={post.tag}
-                    color={tagColor}
-                    size="small"
-                    sx={{marginLeft:'1rem'}}
-                  />
+                    <Chip
+                      icon={tagIcon}
+                      label={post.tag}
+                      color={tagColor}
+                      size="small"
+                      sx={{marginLeft:'1rem'}}
+                    />
                   }
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -69,7 +72,8 @@ export default function PostFeed(props) {
                 </Typography>
               </CardContent>
               <CardActions disableSpacing>
-                <IconButton onClick={()=> console.log("like post")} sx={{color: 'grey'}} aria-label="like">
+
+                <IconButton onClick={() => likePost(post.post_id)} sx={{color: 'grey'}} aria-label="like">
                   <FavoriteIcon />
                 </IconButton>
                 <Typography variant='caption'>

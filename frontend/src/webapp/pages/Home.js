@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 import PeopleList from '../components/Lists/PeopleList';
 import BookList from '../components/Lists/BookList';
 import CreatePost from '../components/CreatePost';
-import PostFeed from '../components/PostFeed';
+import PostList from '../components/Lists/PostList';
 import { formatOpenLibraryData } from '../components/Utils';
 
 export default function Home() {
@@ -61,7 +61,7 @@ export default function Home() {
         <CreatePost/>
       </Grid>
       <Grid item xs={8}>
-        <PostFeed postsData={homePostsData} />
+        <PostList postsData={homePostsData} />
       </Grid>
       <Grid item xs={4}>
         <Stack spacing={2}>
