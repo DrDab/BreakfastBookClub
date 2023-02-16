@@ -49,6 +49,10 @@ public class User {
         "DELETE FROM saved_books WHERE user_id = ? AND book_key = ?";
     private PreparedStatement unsaveBookStatement;
 
+    private static final String RECOMMEND = 
+        "INSERT INTO sent_recommendations VALUES (?, ?, ?)";
+    private PreparedStatement recommendStatement;
+
     private static final String GET_FRIENDS = 
         "SELECT user_id_2 FROM friends WHERE user_id_1 = ?";
     private PreparedStatement getFriendsStatement;
@@ -84,55 +88,46 @@ public class User {
      * @param postId unique post identifier, not null or empty, at most 50 characters
      * @param date when the post was made
      * @param likes number of likes on this post
-     * @return "Post successful." if the post is made. Else:
-     *         "bookKey cannot be empty." if bookKey is null or empty
-     *         "post cannot be empty." if post is null or empty
-     *         "postTitle cannot be empty." if postTitle is null or empty
-     *         "postId cannot be empty." if postId is null or empty
-     *         "tag cannot be empty." if tag is null or empty
-     *         "bookKey cannot be more than 20 characters." if bookKey is too long
-     *         "post cannot be more than 1000 characters." if post is too long
-     *         "postTitle cannot be more than 100 characters." if postTitle is too long
-     *         "postId cannot be more than 50 characters." if postId is too long
-     *         "tag cannot be more than 20 characters." if tag is too long
-     *         "Failed to post." if a SQLException is caught
+     * @return UserResult.SUCCESS if the query is successfully executed
+     *         UserResult.FAIL if there is a database error
+     *         UserResult.INVALID if the input is invalid
      */
-    public String bookPost(String bookKey, String postTitle, String post, String tag, String postId,
+    public UserResult bookPost(String bookKey, String postTitle, String post, String tag, String postId,
                             long date, long likes) {
         if (bookKey == null || bookKey.equals("")) {
-            return "bookKey cannot be empty.";
+            return UserResult.INVALID;
         }
 
         if (post == null || post.equals("")) {
-            return "post cannot be empty.";
+            return UserResult.INVALID;
         }
 
         if (postTitle == null || postTitle.equals("")) {
-            return "postTitle cannot be empty.";
+            return UserResult.INVALID;
         }
 
         if (postId == null || postId.equals("")) {
-            return "postId cannot be empty.";
+            return UserResult.INVALID;
         }
 
         if (bookKey.length() > 20) {
-            return "bookKey cannot be more than 20 characters.";
+            return UserResult.INVALID;
         }
 
         if (post.length() > 1000) {
-            return "post cannot be more than 1000 characters.";
+            return UserResult.INVALID;
         } 
 
         if (postTitle.length() > 100) {
-            return "post cannot be more than 100 characters.";
+            return UserResult.INVALID;
         } 
 
         if (postId.length() > 50) {
-            return "post cannot be more than 50 characters.";
+            return UserResult.INVALID;
         } 
 
         if (tag.length() > 20) {
-            return "tag cannot be more than 20 characters.";
+            return UserResult.INVALID;
         }
 
         try {
@@ -147,23 +142,23 @@ public class User {
             addPostStatement.setLong(8, likes);
             addPostStatement.execute();
 
-            return "Post successful.";
+            return UserResult.SUCCESS;
         } catch (SQLException e) {
             e.printStackTrace();
-            return "Failed to post.";
+            return UserResult.FAIL;
         }
     }
 
     /**
      * Adds the other friend to this user's friend list and vice versa.
      * @param other the user to be added as a friend
-     * @return "Friend added." if the friendship was made.
-     *         "Friendship already exists." if the other user is already this user's friend.
+     * @return UserResult.SUCCESS if friendship is made
+     *         UserResult.IMPOSSIBLE if friendship already exists
      * @throws SQLException if something goes wrong with the database
      */
-    public String addFriend(User other) throws SQLException {
+    public UserResult addFriend(User other) throws SQLException {
         if (isFriend(other)) {
-            return "Friendship already exists.";
+            return UserResult.IMPOSSIBLE;
         }
 
         addFriendStatement.clearParameters();
@@ -173,19 +168,19 @@ public class User {
         addFriendStatement.setString(4, this.user);
         addFriendStatement.execute();
 
-        return "Friend added.";
+        return UserResult.SUCCESS;
     }
 
     /**
      * Unfriends this user from the other user and vice versa. 
      * @param other User tobe unfriended
-     * @return "Unfriended." if the friendship was broken
-     *         "Friendship does not exist." if the users were not friends from before
+     * @return UserResult.SUCCESS if friendship is broken
+     *         UserResult.FAIL if friendship didn't exist
      * @throws SQLException if something goes wrong with the database
      */
-    public String unfriend(User other) throws SQLException {
+    public UserResult unfriend(User other) throws SQLException {
         if (!isFriend(other)) {
-            return "Friendship does not exist.";
+            return UserResult.IMPOSSIBLE;
         }
 
         unfriendStatement.clearParameters();
@@ -198,29 +193,28 @@ public class User {
         unfriendStatement.setString(2, this.user);
         unfriendStatement.execute();
 
-        return "Unfriended.";
+        return UserResult.SUCCESS;
     } 
 
     /**
      * Adds the user to the club associated to the book. This method assumes that the book exists.
      * @param bookKey id of the book in the club, not null or empty, at most 20 characters
-     * @return "User is added to this book club." if successfully added
-     *         "bookKey cannot be empty." if bookKey is null or empty
-     *         "bookKey cannot be more than 20 characters." if bookKey is too long
-     *         "User is already a member of this book club." if membership already exist
+     * @return UserResult.SUCCESS if the user joins the book club
+     *         UserResult.INVALID if the input is invalid
+     *         UserResult.IMPOSSIBLE if the user was already in the book club
      * @throws SQLException if something goes wrong with the database
      */
-    public String joinClub(String bookKey) throws SQLException{
+    public UserResult joinClub(String bookKey) throws SQLException{
         if (bookKey == null || bookKey.equals("")) {
-            return "bookKey cannot be empty.";
+            return UserResult.INVALID;
         }
 
         if (bookKey.length() > 20) {
-            return "bookKey cannot be more than 20 characters.";
+            return UserResult.INVALID;
         }
 
         if (isClubMember(bookKey)) {
-            return "User is already a member of this book club.";
+            return UserResult.IMPOSSIBLE;
         }
 
         addUserClubStatement.clearParameters();
@@ -228,29 +222,28 @@ public class User {
         addUserClubStatement.setString(2, bookKey);
         addUserClubStatement.execute();
 
-        return "User is added to this book club.";
+        return UserResult.SUCCESS;
     }
 
     /**
      * Remove the user from the club associated to the book. This method assumes that the book exists.
      * @param bookKey id of the book in the club, not null or empty, at most 20 characters
-     * @return "User has left this book club." if successfully removed
-     *         "bookKey cannot be empty." if bookKey is null or empty
-     *         "bookKey cannot be more than 20 characters." if bookKey is too long
-     *         "User is not a member of this book club." if membership does not exist
+     * @return UserResult.SUCCESS if the user leaves the book clun
+     *         UserResult.INVALID if the input is invalid
+     *         UserResult.IMPOSSIBLE if the user was not in the book club
      * @throws SQLException if something goes wrong with the database
      */
-    public String leaveClub(String bookKey) throws SQLException{
+    public UserResult leaveClub(String bookKey) throws SQLException{
         if (bookKey == null || bookKey.equals("")) {
-            return "bookKey cannot be empty.";
+            return UserResult.INVALID;
         }
 
         if (bookKey.length() > 20) {
-            return "bookKey cannot be more than 20 characters.";
+            return UserResult.INVALID;
         }
 
         if (!isClubMember(bookKey)) {
-            return "User is not a member of this book club.";
+            return UserResult.IMPOSSIBLE;
         }
 
         leaveUserClubStatement.clearParameters();
@@ -258,29 +251,28 @@ public class User {
         leaveUserClubStatement.setString(2, bookKey);
         leaveUserClubStatement.execute();
 
-        return "User has left this book club.";
+        return UserResult.SUCCESS;
     }
 
     /**
      * Adds the book to this user's saved books. This method assumes that the book exists.
      * @param bookKey id of the book to be saved, not null or empty, at most 20 characters
-     * @return "Book saved." if the book is added to the user's saved books
-     *         "bookKey cannot be empty." if bookKey is null or empty
-     *         "bookKey cannot be more than 20 characters." if bookKey is too long
-     *         "This book is already in the user's saved books." if book is saved from before
+     * @return UserResult.SUCCESS if the book is saved
+     *         UserResult.INVALID if the input is invalid
+     *         UserResult.IMPOSSIBLE if the book is already saved
      * @throws SQLException if something goes wrong with the database
      */
-    public String saveBook(String bookKey) throws SQLException{
+    public UserResult saveBook(String bookKey) throws SQLException{
         if (bookKey == null || bookKey.equals("")) {
-            return "bookKey cannot be empty.";
+            return UserResult.INVALID;
         }
 
         if (bookKey.length() > 20) {
-            return "bookKey cannot be more than 20 characters.";
+            return UserResult.INVALID;
         }
 
         if (isBookSaved(bookKey)) {
-            return "This book is already in the user's saved books.";
+            return UserResult.IMPOSSIBLE;
         }
 
         addSavedBookStatement.clearParameters();
@@ -288,29 +280,28 @@ public class User {
         addSavedBookStatement.setString(2, bookKey);
         addSavedBookStatement.execute();
 
-        return "Book saved.";
+        return UserResult.SUCCESS;
     }
 
     /**
      * Removes the book from this user's saved books. This method assumes that the book exists.
      * @param bookKey id of the book to be unsaved, not null or empty, at most 20 characters
-     * @return "Book unsaved." if the book is removed from the user's saved books
-     *         "bookKey cannot be empty." if bookKey is null or empty
-     *         "bookKey cannot be more than 20 characters." if bookKey is too long
-     *         "This book is not in the user's saved books." if book is not in user's saved books
+     * @return UserResult.SUCCESS if the book is removed from saved books
+     *         UserResult.INVALID if the input is invalid
+     *         UserResult.IMPOSSIBLE if the book is not saved
      * @throws SQLException if something goes wrong with the database
      */
-    public String unsaveBook(String bookKey) throws SQLException {
+    public UserResult unsaveBook(String bookKey) throws SQLException {
         if (bookKey == null || bookKey.equals("")) {
-            return "bookKey cannot be empty.";
+            return UserResult.INVALID;
         }
 
         if (bookKey.length() > 20) {
-            return "bookKey cannot be more than 20 characters.";
+            return UserResult.INVALID;
         }
 
         if (!isBookSaved(bookKey)) {
-            return "This book is not in the user's saved books.";
+            return UserResult.IMPOSSIBLE;
         }
 
         unsaveBookStatement.clearParameters();
@@ -318,7 +309,7 @@ public class User {
         unsaveBookStatement.setString(2, bookKey);
         unsaveBookStatement.execute();
 
-        return "Book unsaved.";
+        return UserResult.SUCCESS;
     }
 
     /**
@@ -326,11 +317,22 @@ public class User {
      * the book exists.
      * @param other the user to whom the book is recommended, not null/empty, at most 20 characters
      * @param bookKey id of the book being recommended
-     * @return
+     * @return UserResult.SUCCESS if the book is recommended to the other user
+     *         UserResult.INVALID if the input is invalid
+     * @throws SQLException if something goes wrong with the database
      */
-    public String reccommend(User other, String bookKey) {
-        // TODO: implement user-to-user recommendation
-        return null;
+    public UserResult recommend(User other, String bookKey) throws SQLException{
+        if (bookKey == null || bookKey.equals("") || bookKey.length() > 20) {
+            return UserResult.INVALID;
+        }
+
+        recommendStatement.clearParameters();
+        recommendStatement.setString(1, this.user);
+        recommendStatement.setString(2, other.user);
+        recommendStatement.setString(3, bookKey);
+        recommendStatement.execute();
+
+        return UserResult.SUCCESS;
     }
 
     /**
@@ -472,6 +474,8 @@ public class User {
         addSavedBookStatement = conn.prepareStatement(ADD_SAVED_BOOK);
 
         unsaveBookStatement = conn.prepareStatement(UNSAVE_BOOK);
+
+        recommendStatement = conn.prepareStatement(RECOMMEND);
 
         getFriendsStatement = conn.prepareStatement(GET_FRIENDS);
 
