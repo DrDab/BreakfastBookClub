@@ -40,9 +40,8 @@ export default function Home() {
         console.log("error", error);
       }
     }
-    handleFetchPosts();
     handleFetchPopularBooks();
-
+    handleFetchPosts();
 }, []);
 
   let popularPeopleData = [];
