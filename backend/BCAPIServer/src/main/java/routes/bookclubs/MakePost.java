@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import com.google.gson.JsonObject;
 import daos.User;
+import daos.UserResult;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.util.UUID;
@@ -79,12 +80,12 @@ public class MakePost implements Route {
         .toString();
 
     User user = new User(uid, sqlConn);
-    String result = user.bookPost(bookKey, postTitle, postBody,
+    UserResult result = user.bookPost(bookKey, postTitle, postBody,
         bodyJson.has("tag") ? bodyJson.get("tag").getAsString() : "", postId, date, 0);
 
-    if (!result.equals("Post successful.")) {
+    if (result != UserResult.SUCCESS) {
       respJson.addProperty("status", "failure");
-      respJson.addProperty("failure_reason", result);
+      respJson.addProperty("failure_reason", result.name());
       return respJson.toString() + "\n";
     }
 

@@ -75,6 +75,11 @@ Email: akha1229@gmail.com
 Password: 123456
 </blockquote>
 
+<blockquote>
+Email: duvictor514@gmail.com
+
+Password: F0xg0fl00f
+</blockquote>
 
 
 ## Run web app (Returning Users)
