@@ -18,6 +18,11 @@ Operational Use Cases:
 
 
 ## Start up web app (First time users)
+### 0. Install Prerequisites
+You should have installed:
+- Java JDK version required: 10 or above
+- Node and NPM
+- MySQL server hosted at address `SQL_SERVER_ADDRESS`
 
 ### 1. Start up frontend
 
@@ -91,9 +96,10 @@ npm start
 Run backend
 ```
 cd backend/BCAPIServer
-./run-dev-server --mysql_addr 34.145.15.228 --svc_acct bc-adminsdk-svcacct.json
+./run-dev-server --mysql_addr 34.145.15.228 --svc_acct bc-adminsdk-svcacct.json --mysql_username=bcapiserver --mysql_password=bcapiserver
 ```
-
+Access frontend
+Open the frontend server address (`localhost:3000` by default if hosting on local computer) in your preferred browser.
 
 ## Run tests
 
@@ -113,3 +119,7 @@ cd backend/BCAPIServer
 ```
 ssh [username]@34.145.15.228
 ```
+
+## Report a bug
+Create an issue at `https://github.com/DrDab/BreakfastBookClub/issues`, create an issue, and describe the bug's behavior and any relevant code to the bug.
+
