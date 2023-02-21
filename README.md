@@ -20,7 +20,7 @@ Operational Use Cases:
 ## Start up web app (First time users)
 ### 0. Install Prerequisites
 You should have installed:
-- Java JDK version required: 10 or above
+- Java JDK version required: 11 or above
 - Node and NPM
 - MySQL server hosted at address `SQL_SERVER_ADDRESS`
 
