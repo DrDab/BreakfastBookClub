@@ -5,6 +5,7 @@ How to obtain the source code. If your system uses multiple repositories or subm
 
 **Obtaining source code:**
 
+All the user needs to do to obtain the source code is clone this repository 
 
 The layout of your directory structure. What do the various directories (folders) contain, and where to find source files, tests, documentation, data files, etc.
 
