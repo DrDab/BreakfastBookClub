@@ -1,14 +1,22 @@
-package routes.bookmgmt;
+package routes.bookclubs;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import daos.Books;
+import daos.User;
+import java.sql.Connection;
+import java.util.List;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import types.Book;
-import utils.OpenLibraryAPI;
 
-public class GetBook implements Route {
+public class GetMembers implements Route {
+
+  private Connection sqlConn;
+
+  public GetMembers(Connection sqlConn) {
+    this.sqlConn = sqlConn;
+  }
 
   @Override
   public Object handle(Request request, Response response) throws Exception {
@@ -21,15 +29,10 @@ public class GetBook implements Route {
       return respJson.toString() + "\n";
     }
 
-    Book bookObj = OpenLibraryAPI.getBookByKey(searchBookKey);
-    if (bookObj == null) {
-      respJson.addProperty("status", "failure");
-      respJson.addProperty("failure_reason", "Failed to find book.");
-      return respJson.toString() + "\n";
-    }
+    List<String> clubUIDs = new Books(sqlConn).bookClubUsers(searchBookKey);
+    //User user = new User()
 
-    Gson gson = new Gson();
-    respJson.add("book", gson.toJsonTree(bookObj));
+    respJson.add("uids", new Gson().toJsonTree(clubUIDs));
     respJson.addProperty("status", "success");
     return respJson.toString() + "\n";
   }

@@ -49,9 +49,15 @@ CREATE TABLE sent_recommendations (
 	book_key VARCHAR (20)
 );
 
-CREATE TABLE liked_posts {
+CREATE TABLE liked_posts (
     user_id VARCHAR(50),
     post_id VARCHAR(50)
-};
+);
 
+CREATE TABLE user_profiles (
+	user_id VARCHAR(50) PRIMARY KEY,
+    username VARCHAR(50),
+    bio VARCHAR(750),
+    thumbnail VARCHAR(100)
+);
 

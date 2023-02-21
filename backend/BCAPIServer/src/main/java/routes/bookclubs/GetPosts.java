@@ -30,14 +30,12 @@ public class GetPosts implements Route {
   public Object handle(Request request, Response response) throws Exception {
     JsonObject respJson = new JsonObject();
 
-    String searchUID = request.queryParams("uid");
+    String searchUID = request.queryParams("userId");
     String searchBookKey = request.queryParams("book_key");
 
-    if ((searchUID != null && searchBookKey != null)) {// ||
-      //(searchUID == null && searchBookKey == null)) {
+    if ((searchUID != null && searchBookKey != null)) {
       respJson.addProperty("status", "failure");
-      respJson.addProperty("failure_reason", (searchUID != null && searchBookKey != null) ?
-          "Should only provide uid or book_key!" : "Need to provide uid xor book_key!");
+      respJson.addProperty("failure_reason", "Need to provide userId or book_key!");
       return respJson.toString() + "\n";
     }
 
