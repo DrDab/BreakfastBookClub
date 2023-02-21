@@ -19,6 +19,9 @@ import net.sourceforge.argparse4j.inf.Namespace;
 import routes.bookclubs.GetPosts;
 import routes.bookclubs.LikePost;
 import routes.bookclubs.MakePost;
+import routes.bookmgmt.GetBook;
+import routes.profile.GetUserProfile;
+import routes.profile.SetUserProfile;
 import spark.Spark;
 import utils.BCCORSFilter;
 
@@ -58,11 +61,17 @@ public class BCServerMain {
 
     Spark.post("/api/make_post", new MakePost(fbApp, sqlConn));
 
+    Spark.get("/api/get_book", new GetBook());
+
     GetPosts getPosts = new GetPosts(fbApp, sqlConn);
     Spark.get("/api/get_posts", getPosts);
     Spark.get("/api/list_feed", getPosts);
 
     Spark.post("/api/like_post", new LikePost(fbApp, sqlConn));
+
+    Spark.get("/api/get_user", new GetUserProfile(fbApp, sqlConn));
+
+    Spark.put("/api/update_user", new SetUserProfile(fbApp, sqlConn));
   }
 
   @SuppressWarnings("deprecation")
