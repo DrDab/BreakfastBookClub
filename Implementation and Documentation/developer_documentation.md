@@ -3,9 +3,18 @@ The developer documentation should include at least the following information:
 
 How to obtain the source code. If your system uses multiple repositories or submodules, provide clear instructions for how to obtain all relevant sources.
 
+**Obtaining source code: **
+
+
 The layout of your directory structure. What do the various directories (folders) contain, and where to find source files, tests, documentation, data files, etc.
 
+**Directory Structure Layout:**
+The backend folder holds all of the necessary parts of the backend - it has the 
+
 How to build the software. Provide clear instructions for how to use your project’s build system to build all system components.
+**Building the software: 
+**
+
 
 How to test the software. Provide clear instructions for how to run the system’s test cases. In some cases, the instructions may need to include information such as how to access data sources or how to interact with external systems. You may reference the user documentation (e.g., prerequisites) to avoid duplication.
 
