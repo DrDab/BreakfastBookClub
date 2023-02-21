@@ -36,6 +36,12 @@ public class BCServerMain {
 
     parser.addArgument("--svc_acct").help("The service account file to use.");
 
+    parser.addArgument("--mysql_username").setDefault("bcapiserver")
+        .help("The username on the MySQL server to use.");
+
+    parser.addArgument("--mysql_password").setDefault("bcapiserver")
+        .help("The password on the MySQL server to use.");
+
     Namespace ns = null;
     try {
       ns = parser.parseArgs(args);
@@ -49,7 +55,7 @@ public class BCServerMain {
 
     try {
       sqlConn = initSQLConnection(ns.getString("mysql_addr"),
-          "bcapiserver", "bcapiserver");
+          ns.getString("mysql_username"), ns.getString("mysql_password"));
       fbApp = initFirebase(ns.getString("svc_acct"));
     } catch (ClassNotFoundException | SQLException | IOException e) {
       e.printStackTrace();
