@@ -1,50 +1,51 @@
 # BreakfastBookClub
 
-Breakfast Book Club is a social media site for book lovers. 
-Users can join books clubs,
-make post about theories, opinion and reviews, within the book club,
-friend other users,
-and recommend books.
+## User Documentation
 
-The project directory is subdivided into frontend and backend folders. 
-The frontend is broken into page components and resusable components such as people lists and book lists.
-These subdirectories are further subdivided into their respective features.
+### Description:
 
-Operational Use Cases:
-- Make post about a book
-- View all posts on home page
-- Search for book clubs to join (Every book is it's own book club)
-- View posts made by user in user's profile 
+Breakfast Book Club is a social networking website for literature enthusiasts. Users can customize their profiles, join book clubs for the books they enjoy to receive user-generated content that other users post to these book clubs, make friends with other users on Breakfast Book Club, and make posts to book clubs for the books they enjoy. A user would want to use it to share theories, reviews and ideas about their favorite books and books that they are reading with their friends who are also reading those books.
 
 
-## Start up web app (First time users)
-### 0. Install Prerequisites
-You should have installed:
-- Java JDK version required: 11 or above
-- Node and NPM
-- MySQL server hosted at address `SQL_SERVER_ADDRESS`
 
-### 1. Start up frontend
+### How to install the software
 
-Go to frontend folder
+#### 1. Clone down repository
 ```
-cd frontend
+git clone https://github.com/DrDab/BreakfastBookClub.git
 ```
 
+#### 2. Set up frontend
+
+Go to the frontend folder
+```
+cd breakfastbookclub/frontend
+```
 Install npm packages
 ```
 npm install 
 ```
-Start frontend
+Run frontend
 ```
 npm start
 ```
 
-### 2. Start up backend
+#### 3. Set up backend
 
-Go to backend folder
+In a seperate terminal, go to the backend folder
 ```
-cd backend/BCAPIServer
+cd breakfastbookclub/backend/BCAPIServer
+```
+
+Verify Java JDK version 11 or above is installed. If not, go to https://www.oracle.com/java/technologies/downloads/
+
+```
+javac -version
+```
+
+Install Gradle and run the appropriate Gradle version required by Breakfast Book Club
+```
+gradlew
 ```
 
 Build backend
@@ -57,23 +58,34 @@ Clean backend build
 ./gradlew clean
 ```
 
-Download Firebase service account JSON file
+Download the file given by TA and copy file into BCAPIServer folder
 ```
-wget https://gist.githubusercontent.com/DrDab/32035488537b844794375ff4b9884ff5/raw/74001b8aa5f0c225dee943ab7c963e52421e3183/bc-adminsdk-svcacct.json
+bc-adminsdk-svcacct.json
 ```
 
-Run backend server
-```
-./run-dev-server --mysql_addr <SQL_SERVER_ADDRESS> --svc_acct <FIREBASE_SERVICE_ACCT_JSON>
-```
-_Command with current server address and firebase json_
+Run backend
 ```
 ./run-dev-server --mysql_addr 34.145.15.228 --svc_acct bc-adminsdk-svcacct.json
 ```
 
 
-### 3. Log in
-For the best experience log in with: 
+### How to run the software
+
+Run frontend
+```
+cd breakfastbookclub/frontend
+npm start
+```
+Run backend
+```
+cd breakfastbookclub/backend/BCAPIServer
+./run-dev-server --mysql_addr 34.145.15.228 --svc_acct bc-adminsdk-svcacct.json
+```
+
+### How to use the software
+
+Once the frontend and backend are up and running, from http://localhost:3000/, log in with either account: 
+
 <blockquote>
 Email: akha1229@gmail.com
 
@@ -86,40 +98,113 @@ Email: duvictor514@gmail.com
 Password: F0xg0fl00f
 </blockquote>
 
+#### Functionalities complete: 
 
-## Run web app (Returning Users)
-Run frontend
-```
-cd frontend
-npm start
-```
-Run backend
-```
-cd backend/BCAPIServer
-./run-dev-server --mysql_addr 34.145.15.228 --svc_acct bc-adminsdk-svcacct.json --mysql_username=bcapiserver --mysql_password=bcapiserver
-```
-Access frontend
-Open the frontend server address (`localhost:3000` by default if hosting on local computer) in your preferred browser.
+- Log in using one of the logins provided 
+- Log out by clicking the profile icon in the upper right corner
+- Make post about a book by clicking "Write a post" from the home page, current user's profile page or book club profile page
+- View all posts from home page
+- Search for book clubs to join from the search input in the app bar (Every book is it's own book club)
+- View posts made by user in user's profile
 
-## Run tests
+
+#### Functionalities in progress (Currently hard coded with temporary data): 
+
+Sign up page:
+- Creating an account
+
+From Home page:
+- View trending readers
+
+From Book club profile page:
+- View posts made in a specific book club
+- Join a book club by clicking "Join the club"
+- Recommend book to a friend by clicking "Recommend"
+- Save a book by clicking "Save"
+
+From User profile page:
+- Add friend by clicking "Add friend" 
+- View friends of user by clicking "### Friends"
+- View book clubs that the user has joined
+- View books that the user has saved
+
+
+### How to report a bug
+Go to the issues tab within the breakfast book club repository. Click “New issue” and “Get started” on the bug report. Fill out the bug report template. Click “Submit new issue".
+
+
+
+
+
+## Developer Documentation
+### [How to obtain the source code and How to build the software](#How-to-install-the-software)
+
+### Layout and Structure
+API
+- backend/BCAPIServer/: 
+    - src/main/java:
+        - BCServerMain.java: Instantiates Spark server instance w/ CORS filters and routes in main method.
+        - utils/: Contains utility classes for processing data and applying HTTP filters to server responses.
+        - routes/: Contains code for handling HTTP requests from Breakfast Book Club frontend clients.
+            - accauth - Routes for user authentication
+            - bookclubs - Routes for book club functionalities including making and liking post
+            - bookmgmt - Routes for accessing books including searching for and getting books
+            - profile - Route for getting user profiles 
+        - daos/: Contains DAOs (data-access objects) that communicate with the backend database including Books, Users, Posts, and UserResult.
+        - types/: Contains classes for storing book and book post information
+    - src/test/java/: Contains tests for BCGsonUtils, OpenLibraryAPI, and SQLTokenStore (will include DAOs in the future)
+
+
+Database
+
+- Create_Tables.sql - Contains the MySQL database schema configuration for the breakfast_book_club schema, specifically the relevant user and book data that is collected from user interaction with the frontend.
+
+
+Frontend
+- frontend/src/webapp/:
+    - Components/: Reusable components such as lists, profile banners, and skeletons.
+    - Layouts/: Layouts for logged in and logged out users.
+    - Pages/: Main pages (Home, Book Club, User Profile, Search Results, Sign Up, Log In). Each page uses components from the components folder.
+- frontend/src/tests/:
+    - Pages/: Tests for main pages (Home, Book Club, User Profile, Search Results, Sign Up, Log In).
+
+
+### How to test the software
 
 Run frontend Jest tests
 ```
-cd frontend
+cd breakfastbookclub/frontend
 npm test
 ```
 
 Run backend JUnit tests
 ```
-cd backend/BCAPIServer
+cd breakfastbookclub/backend/BCAPIServer
 ./gradlew test
 ```
 
-## SSH into remote server
-```
-ssh [username]@34.145.15.228
-```
+### How to add new tests
 
-## Report a bug
-Create an issue at `https://github.com/DrDab/BreakfastBookClub/issues`, create an issue, and describe the bug's behavior and any relevant code to the bug.
+Backend tests:
+All backend tests go into backend/BCAPIServer/src/test/java.
+Tests are separated based on the file being tested. Test files must follow the naming convention Test<filename>.java. For example, there is a file TestBCGsonUtils.java that tests the functionality in BCGsonUtils.java.
+
+Frontend tests:
+All frontend tests go into frontend/src/tests.
+Tests are separated based on the file being tested. Test files must follow the naming convention <filename>.test.js. For example, there is a file BookClub.test.js that contains tests for BookClub.js.
+
+
+### How to build a release of the software
+
+Run frontend and backend tests locally before pushing code to a remote branch by following the instructions in the section [How to test the software](#How-to-test-software).
+
+Currently no version number needs to be updated in the backend.
+
+Build a release of the software
+```
+ ./gradlew shadowJar. 
+```
+The release JAR file can be found in backend/BCAPIServer/build/libs
+ 
+
 
