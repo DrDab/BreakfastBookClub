@@ -187,16 +187,16 @@ cd breakfastbookclub/backend/BCAPIServer
 
 Backend tests:
 All backend tests go into backend/BCAPIServer/src/test/java.
-Tests are separated based on the file being tested. Test files must follow the naming convention Test<filename>.java. For example, there is a file TestBCGsonUtils.java that tests the functionality in BCGsonUtils.java.
+Tests are separated based on the file being tested. Test files must follow the naming convention `Test<filename>.java`. For example, there is a file TestBCGsonUtils.java that tests the functionality in BCGsonUtils.java.
 
 Frontend tests:
 All frontend tests go into frontend/src/tests.
-Tests are separated based on the file being tested. Test files must follow the naming convention <filename>.test.js. For example, there is a file BookClub.test.js that contains tests for BookClub.js.
+Tests are separated based on the file being tested. Test files must follow the naming convention `<filename>.test.js`. For example, there is a file BookClub.test.js that contains tests for BookClub.js.
 
 
 ### How to build a release of the software
 
-Run frontend and backend tests locally before pushing code to a remote branch by following the instructions in the section [How to test the software](#How-to-test-software).
+Run frontend and backend tests locally before pushing code to a remote branch by following the instructions in the section [How to test the software](#How-to-test-the-software).
 
 Currently no version number needs to be updated in the backend.
 
