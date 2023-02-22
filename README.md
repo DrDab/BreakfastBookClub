@@ -130,7 +130,7 @@ From User profile page:
 
 
 ### How to report a bug
-Go to the issues tab within the breakfast book club repository. Click “New issue” and “Get started” on the bug report. Fill out the bug report template. Click “Submit new issue".
+Go to the issues tab within the breakfast book club repository. Click “New issue” and “Get started” on the bug report. Fill out the bug report template. Click “Submit new issue". As of right now, we have no known bugs.
 
 
 
