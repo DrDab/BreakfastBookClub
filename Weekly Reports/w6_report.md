@@ -43,7 +43,16 @@
   - Started looking into transaction handling
   - Finalized User class functionality
 
+  Victor Du:
+  - Implemented routes on backend API for getting user profile data.
+  - Helped consolidate API status codes into standardized enums.
+  
+
 - Goals:
 
   Zaynab Khan:
   - Work on API routes
+
+  Victor Du:
+  - Add profile thumbnail hosting to backend API.
+  - Implement routes on backend API for adding book club members and getting book club member data (profile links)
