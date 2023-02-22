@@ -202,7 +202,7 @@ Currently no version number needs to be updated in the backend.
 
 Build a release of the software
 ```
- ./gradlew shadowJar. 
+ ./gradlew shadowJar
 ```
 The release JAR file can be found in backend/BCAPIServer/build/libs
  
