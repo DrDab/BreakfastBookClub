@@ -39,7 +39,11 @@
 
 - Progress / Issues:
 
+  Zaynab Khan:
+  - Started looking into transaction handling
+  - Finalized User class functionality
 
 - Goals:
 
-
+  Zaynab Khan:
+  - Work on API routes
