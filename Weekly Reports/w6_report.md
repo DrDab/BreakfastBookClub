@@ -46,6 +46,10 @@
   Victor Du:
   - Implemented routes on backend API for getting user profile data.
   - Helped consolidate API status codes into standardized enums.
+
+  Jocelyn Thomson:
+  - Worked on backend fucntionality with users and storing user data
+  - Helped with backend regarding liking posts functionality
   
 
 - Goals:
@@ -56,3 +60,6 @@
   Victor Du:
   - Add profile thumbnail hosting to backend API.
   - Implement routes on backend API for adding book club members and getting book club member data (profile links)
+
+  Jocelyn Thomson:
+  - 
