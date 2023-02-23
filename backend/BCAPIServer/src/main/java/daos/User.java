@@ -254,7 +254,7 @@ public class User {
    *
    * @param other the user to be added as a friend
    * @return UserResult.SUCCESS if friendship is made UserResult.IMPOSSIBLE if friendship already
-   * exists
+   * exists. UserResult.FAIL if there is a database error.
    * @throws SQLException if something goes wrong with the database
    */
   public UserResult addFriend(User other) throws SQLException {
@@ -262,12 +262,17 @@ public class User {
       return UserResult.IMPOSSIBLE;
     }
 
-    addFriendStatement.clearParameters();
-    addFriendStatement.setString(1, this.user);
-    addFriendStatement.setString(2, other.user);
-    addFriendStatement.setString(3, other.user);
-    addFriendStatement.setString(4, this.user);
-    addFriendStatement.execute();
+    try {
+      addFriendStatement.clearParameters();
+      addFriendStatement.setString(1, this.user);
+      addFriendStatement.setString(2, other.user);
+      addFriendStatement.setString(3, other.user);
+      addFriendStatement.setString(4, this.user);
+      addFriendStatement.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return UserResult.FAIL;
+    }
 
     return UserResult.SUCCESS;
   }
@@ -276,7 +281,8 @@ public class User {
    * Unfriends this user from the other user and vice versa.
    *
    * @param other User tobe unfriended
-   * @return UserResult.SUCCESS if friendship is broken UserResult.FAIL if friendship didn't exist
+   * @return UserResult.SUCCESS if friendship is broken. UserResult.INVALID if friendship didn't exist.
+   * UserResult.FAIL if there is a database error.
    * @throws SQLException if something goes wrong with the database
    */
   public UserResult unfriend(User other) throws SQLException {
@@ -284,15 +290,20 @@ public class User {
       return UserResult.IMPOSSIBLE;
     }
 
-    unfriendStatement.clearParameters();
-    unfriendStatement.setString(1, this.user);
-    unfriendStatement.setString(2, other.user);
-    unfriendStatement.execute();
+    try {
+      unfriendStatement.clearParameters();
+      unfriendStatement.setString(1, this.user);
+      unfriendStatement.setString(2, other.user);
+      unfriendStatement.execute();
 
-    unfriendStatement.clearParameters();
-    unfriendStatement.setString(1, other.user);
-    unfriendStatement.setString(2, this.user);
-    unfriendStatement.execute();
+      unfriendStatement.clearParameters();
+      unfriendStatement.setString(1, other.user);
+      unfriendStatement.setString(2, this.user);
+      unfriendStatement.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return UserResult.FAIL;
+    }
 
     return UserResult.SUCCESS;
   }
@@ -301,8 +312,9 @@ public class User {
    * Adds the user to the club associated to the book. This method assumes that the book exists.
    *
    * @param bookKey id of the book in the club, not null or empty, at most 20 characters
-   * @return UserResult.SUCCESS if the user joins the book club UserResult.INVALID if the input is
-   * invalid UserResult.IMPOSSIBLE if the user was already in the book club
+   * @return UserResult.SUCCESS if the user joins the book club. UserResult.INVALID if the input is
+   * invalid. UserResult.IMPOSSIBLE if the user was already in the book club. UserResult.FAIL if there
+   * is a database error. 
    * @throws SQLException if something goes wrong with the database
    */
   public UserResult joinClub(String bookKey) throws SQLException {
@@ -318,10 +330,15 @@ public class User {
       return UserResult.IMPOSSIBLE;
     }
 
-    addUserClubStatement.clearParameters();
-    addUserClubStatement.setString(1, this.user);
-    addUserClubStatement.setString(2, bookKey);
-    addUserClubStatement.execute();
+    try {
+      addUserClubStatement.clearParameters();
+      addUserClubStatement.setString(1, this.user);
+      addUserClubStatement.setString(2, bookKey);
+      addUserClubStatement.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return UserResult.FAIL;
+    }
 
     return UserResult.SUCCESS;
   }
@@ -331,8 +348,9 @@ public class User {
    * exists.
    *
    * @param bookKey id of the book in the club, not null or empty, at most 20 characters
-   * @return UserResult.SUCCESS if the user leaves the book clun UserResult.INVALID if the input is
-   * invalid UserResult.IMPOSSIBLE if the user was not in the book club
+   * @return UserResult.SUCCESS if the user leaves the book club. UserResult.INVALID if the input is
+   * invalid. UserResult.IMPOSSIBLE if the user was not in the book club. UserResult.FAIL if there
+   * is a database error. 
    * @throws SQLException if something goes wrong with the database
    */
   public UserResult leaveClub(String bookKey) throws SQLException {
@@ -348,10 +366,15 @@ public class User {
       return UserResult.IMPOSSIBLE;
     }
 
-    leaveUserClubStatement.clearParameters();
-    leaveUserClubStatement.setString(1, this.user);
-    leaveUserClubStatement.setString(2, bookKey);
-    leaveUserClubStatement.execute();
+    try {
+      leaveUserClubStatement.clearParameters();
+      leaveUserClubStatement.setString(1, this.user);
+      leaveUserClubStatement.setString(2, bookKey);
+      leaveUserClubStatement.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return UserResult.FAIL;
+    }
 
     return UserResult.SUCCESS;
   }
@@ -360,8 +383,8 @@ public class User {
    * Adds the book to this user's saved books. This method assumes that the book exists.
    *
    * @param bookKey id of the book to be saved, not null or empty, at most 20 characters
-   * @return UserResult.SUCCESS if the book is saved UserResult.INVALID if the input is invalid
-   * UserResult.IMPOSSIBLE if the book is already saved
+   * @return UserResult.SUCCESS if the book is saved. UserResult.INVALID if the input is invalid.
+   * UserResult.FAIL if there is a database error. UserResult.IMPOSSIBLE if the book is already saved.
    * @throws SQLException if something goes wrong with the database
    */
   public UserResult saveBook(String bookKey) throws SQLException {
@@ -377,10 +400,15 @@ public class User {
       return UserResult.IMPOSSIBLE;
     }
 
-    addSavedBookStatement.clearParameters();
-    addSavedBookStatement.setString(1, this.user);
-    addSavedBookStatement.setString(2, bookKey);
-    addSavedBookStatement.execute();
+    try {
+      addSavedBookStatement.clearParameters();
+      addSavedBookStatement.setString(1, this.user);
+      addSavedBookStatement.setString(2, bookKey);
+      addSavedBookStatement.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return UserResult.FAIL;
+    }
 
     return UserResult.SUCCESS;
   }
@@ -389,8 +417,9 @@ public class User {
    * Removes the book from this user's saved books. This method assumes that the book exists.
    *
    * @param bookKey id of the book to be unsaved, not null or empty, at most 20 characters
-   * @return UserResult.SUCCESS if the book is removed from saved books UserResult.INVALID if the
-   * input is invalid UserResult.IMPOSSIBLE if the book is not saved
+   * @return UserResult.SUCCESS if the book is removed from saved books. UserResult.INVALID if the
+   * input is invalid. UserResult.IMPOSSIBLE if the book is not saved. UserResult.FAIL if there
+   * is a database error. 
    * @throws SQLException if something goes wrong with the database
    */
   public UserResult unsaveBook(String bookKey) throws SQLException {
@@ -406,10 +435,15 @@ public class User {
       return UserResult.IMPOSSIBLE;
     }
 
-    unsaveBookStatement.clearParameters();
-    unsaveBookStatement.setString(1, this.user);
-    unsaveBookStatement.setString(2, bookKey);
-    unsaveBookStatement.execute();
+    try {
+      unsaveBookStatement.clearParameters();
+      unsaveBookStatement.setString(1, this.user);
+      unsaveBookStatement.setString(2, bookKey);
+      unsaveBookStatement.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return UserResult.FAIL;
+    }
 
     return UserResult.SUCCESS;
   }
@@ -420,8 +454,8 @@ public class User {
    *
    * @param other   the user to whom the book is recommended, not null/empty, at most 20 characters
    * @param bookKey id of the book being recommended
-   * @return UserResult.SUCCESS if the book is recommended to the other user UserResult.INVALID if
-   * the input is invalid
+   * @return UserResult.SUCCESS if the book is recommended to the other user. UserResult.INVALID if
+   * the input is invalid. UserResult.FAIL if there is a database error. 
    * @throws SQLException if something goes wrong with the database
    */
   public UserResult recommend(User other, String bookKey) throws SQLException {
@@ -429,11 +463,16 @@ public class User {
       return UserResult.INVALID;
     }
 
-    recommendStatement.clearParameters();
-    recommendStatement.setString(1, this.user);
-    recommendStatement.setString(2, other.user);
-    recommendStatement.setString(3, bookKey);
-    recommendStatement.execute();
+    try {
+      recommendStatement.clearParameters();
+      recommendStatement.setString(1, this.user);
+      recommendStatement.setString(2, other.user);
+      recommendStatement.setString(3, bookKey);
+      recommendStatement.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return UserResult.FAIL;
+    }
 
     return UserResult.SUCCESS;
   }
@@ -441,7 +480,7 @@ public class User {
   /**
    * Lists all the friends this user has.
    *
-   * @return list of this user's friends
+   * @return list of this user's friends.
    * @throws SQLException if something goes wrong with the database
    */
   public List<String> allFriends() throws SQLException {
@@ -486,14 +525,13 @@ public class User {
       posts.add(bp);
     }
     rs.close();
-
     return posts;
   }
 
   /**
    * Get all the posts this user has made.
    *
-   * @return List of this user's BookPosts
+   * @return List of this user's BookPosts. 
    * @throws SQLException if something goes wrong with the database
    */
   public List<BookPost> getUserPosts() throws SQLException {
