@@ -2,7 +2,7 @@
 ## Team Report
 - Last week’s goals: Continue to connect our moving parts together. Build out remaining main API routes (get book data, get posts by book club, create and get user profile data). Impliment API routes into frontend.
 
-- Progress / Issues: We did work to implement more routes from the frontend to the backend - specifically get posts, and list feed. 
+- Progress / Issues: We did work to implement more routes from the frontend to the backend - a couple that we specifically worked on are get posts, and list feed. 
 
 - Goals: Work on finishing API routes that have yet to be implemented fully from frontend to backend. 
 
