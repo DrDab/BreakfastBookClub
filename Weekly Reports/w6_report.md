@@ -51,6 +51,9 @@
   - Worked on backend fucntionality with users and storing user data
   - Helped with backend regarding liking posts functionality
   
+  Amanda Ha:
+  - Implimented test for home page
+  - Set up frontend for like post API json data  
 
 - Goals:
 
@@ -63,3 +66,9 @@
 
   Jocelyn Thomson:
   - Help with implementing different API routes that haven't been established yet.
+  
+  Amanda Ha:
+  - Impliment test for user profile page
+  - Integrate API route for GetUserProfile and SetUserProfile
+
+
