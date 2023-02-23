@@ -58,6 +58,10 @@
   Andrea Ha:
   - Integrated like post API (saved locally since this route is not fully complete)
 
+  Sanjana Janakiraman:
+  - Worked on updates to database design
+  - Continued working on backend functionalities
+
 - Goals:
 
   Zaynab Khan:
@@ -77,5 +81,9 @@
   Andrea Ha:
   - Impliment test for book club page
   - Integrate API route for Get Posts by book key
+  
+  Sanjana Janakiraman:
+  - Continue working on backend functionalities
+  - Assist with implementing API routes
 
 
