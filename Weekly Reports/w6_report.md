@@ -72,10 +72,10 @@
   
   Amanda Ha:
   - Impliment test for user profile page
-  - Integrate API route for GetUserProfile and SetUserProfile
+  - Integrate API route for Get User Profile and Set User Profile
 
   Andrea Ha:
   - Impliment test for book club page
-  - Integrate API route for GetPosts by book key
+  - Integrate API route for Get Posts by book key
 
 
