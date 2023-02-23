@@ -4,7 +4,7 @@
 
 - Progress / Issues:
 
-- Goals: 
+- Goals: Work on finishing API routes that have yet to be implemented fully from frontend to backend. 
 
 ## Contributions of Individual Team Members
 - Last week’s goals:
@@ -62,4 +62,4 @@
   - Implement routes on backend API for adding book club members and getting book club member data (profile links)
 
   Jocelyn Thomson:
-  - 
+  - Help with implementing different API routes that haven't been established yet.
