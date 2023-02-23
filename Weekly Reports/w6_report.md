@@ -54,6 +54,9 @@
   Amanda Ha:
   - Implimented test for home page
   - Set up frontend for like post API json data  
+  
+  Andrea Ha:
+  - Integrated like post API (saved locally since this route is not fully complete)
 
 - Goals:
 
@@ -70,5 +73,9 @@
   Amanda Ha:
   - Impliment test for user profile page
   - Integrate API route for GetUserProfile and SetUserProfile
+
+  Andrea Ha:
+  - Impliment test for book club page
+  - Integrate API route for GetPosts by book key
 
 
