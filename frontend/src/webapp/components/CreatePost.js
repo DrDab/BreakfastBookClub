@@ -18,8 +18,8 @@ import { Link as RouterLink } from "react-router-dom";
 import { tagsList, avatarColorMap } from './Constants';
 
 export default function CreatePost() {
-  let yourUserId = JSON.parse(sessionStorage.yourUser);
-  let yourUser = yourUserId === 'EHDvyZymtRSbciB7uXHv1mN5O9r2' ? 'Amanda': yourUserId;
+  let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
+
 
   const [showPostModal, setShowPostModal] = React.useState(false);
   const [bookClub, setBookClub] = React.useState("");
@@ -107,11 +107,11 @@ export default function CreatePost() {
             <Avatar
               reloadDocument
               component={RouterLink}
-              to={"/user-profile/" + yourUserId}
-              sx={{ bgcolor: avatarColorMap.get(yourUser), width: 50, height: 50, textDecoration: "none" }}
-              aria-label={yourUser + " avatar"}
+              to={"/user-profile/" + loggedinUser.uid}
+              sx={{ bgcolor: avatarColorMap.get(loggedinUser.username), width: 50, height: 50, textDecoration: "none" }}
+              aria-label={loggedinUser.username + " avatar"}
             >
-             {yourUser.charAt(0)}
+             {loggedinUser.username.charAt(0)}
             </Avatar>
             <TextField
               InputProps={{ disableUnderline: true }}

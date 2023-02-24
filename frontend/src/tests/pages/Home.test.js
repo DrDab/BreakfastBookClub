@@ -4,12 +4,15 @@ import { act } from "react-dom/test-utils";
 import Home from '../../webapp/pages/Home';
 import { MemoryRouter } from 'react-router-dom';
 
-const mockUser = "Amanda";
+const mockUser = {
+  "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
+  "username": "Amanda"
+}
 
 describe("Renders Home page", () => {
 
   it("renders posts and popular books", async () => {
-    sessionStorage.setItem('yourUser', JSON.stringify(mockUser));
+    sessionStorage.setItem('loggedinUser', JSON.stringify(mockUser));
     const mockGetPosts = {
       "posts" : [
         {

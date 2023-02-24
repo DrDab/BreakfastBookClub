@@ -17,13 +17,14 @@ const mockBook = {
   "coverUrl": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
 };
 
-const mockUser = "Amanda";
-const mockToken = "Token";
+const mockUser = {
+  "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
+  "username": "Amanda"
+}
 
 test("Book club page renders correctly", () => {
   sessionStorage.setItem('book', JSON.stringify(mockBook));
-  sessionStorage.setItem('yourUser', JSON.stringify(mockUser));
-  sessionStorage.setItem('yourToken', JSON.stringify(mockToken));
+  sessionStorage.setItem('loggedinUser', JSON.stringify(mockUser));
   render(
     <MemoryRouter>
       <BookClub />

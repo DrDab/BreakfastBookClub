@@ -44,14 +44,20 @@ export default function Home() {
     handleFetchPosts();
 }, []);
 
-  let popularPeopleData = [];
-  for (let i = 0; i < 1; i++ ) {
-    popularPeopleData.push("Jesse");
-    popularPeopleData.push("Andrea");
-    popularPeopleData.push("Jocelyn");
-    popularPeopleData.push("Sanjana");
-    popularPeopleData.push("Zaynab");
-  }
+  let popularPeopleData = [
+    {
+      "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
+      "username": "Amanda"
+    },
+    {
+      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD"
+    },
+    {
+      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+      "username": "zaynab"
+    }
+  ]
 
   return (
     <Box sx={{ width: '70%', margin: '0 auto' }}>

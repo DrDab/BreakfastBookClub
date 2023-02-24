@@ -15,21 +15,21 @@ export default function PeopleList(props) {
         <ListItem
           reloadDocument
           component={RouterLink}
-          to={"/user-profile/" + person}
+          to={"/user-profile/" + person.uid}
           className="list-item"
           alignItems="flex-start"
           key={index}
         >
           <ListItemAvatar>
             <Avatar
-              alt={person + " avatar"}
-              sx={{ bgcolor: avatarColorMap.get(person), width: 40, height: 40 }}
+              alt={person.username + " avatar"}
+              sx={{ bgcolor: avatarColorMap.get(person.username), width: 40, height: 40 }}
             >
-            {person.charAt(0)}
+            {person.username.charAt(0)}
             </Avatar>
           </ListItemAvatar>
           <ListItemText
-            primary={person}
+            primary={person.username}
             secondary={
               <React.Fragment>
                 <Typography
