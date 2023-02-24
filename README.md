@@ -30,7 +30,7 @@ javac -version
 
 Install Gradle and run the appropriate Gradle version required by Breakfast Book Club
 ```
-gradlew
+./gradlew
 ```
 
 Build backend
