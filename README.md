@@ -83,7 +83,7 @@ cd breakfastbookclub/frontend
 npm start
 ```
 
-The backend must be running before the frontend in order for the login to work. If you log in and frontend does not display anything, you may have to close out and rerun ```npm start```.
+The backend must be running in order for frontend to log in or display data.
 
 ### How to use the software
 

@@ -39,13 +39,12 @@ export default function LogIn() {
         const user = userCredential.user;
 
         handleFetchUser(user.uid).then((user) => {
-          sessionStorage.setItem('loggedinUser', JSON.stringify(user));
+          if (JSON.stringify(user) !== '{}') {
+            sessionStorage.setItem('loggedinUser', JSON.stringify(user));
+            navigate("/");
+            window.location.reload();
+          }
         });
-
-        setTimeout(function(){
-          navigate("/");
-          window.location.reload();
-        }, 1000);
 
       })
     } catch (err) {
