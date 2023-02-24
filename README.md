@@ -17,7 +17,7 @@ git clone https://github.com/DrDab/BreakfastBookClub.git
 
 #### 2. Set up backend
 
-In a seperate terminal, go to the backend folder
+Go to the backend folder
 ```
 cd breakfastbookclub/backend/BCAPIServer
 ```
@@ -55,7 +55,7 @@ Run backend
 
 #### 3. Set up frontend
 
-Go to the frontend folder
+In a seperate terminal, go to the frontend folder
 ```
 cd breakfastbookclub/frontend
 ```
@@ -77,7 +77,7 @@ cd breakfastbookclub/backend/BCAPIServer
 ./run-dev-server --mysql_addr 34.145.15.228 --svc_acct bc-adminsdk-svcacct.json
 ```
 
-Run frontend
+In a seperate terminal, run frontend
 ```
 cd breakfastbookclub/frontend
 npm start
