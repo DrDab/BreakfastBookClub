@@ -14,10 +14,11 @@ import { a11yProps, formatOpenLibraryData } from '../components/Utils';
 import { useParams } from "react-router-dom";
 
 export default function UserProfile() {
-  let yourUserId = JSON.parse(sessionStorage.yourUser);
+  let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
   let { uid } = useParams(); // clicked user
 
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
+  const [userProfileData, setUserProfileData] = React.useState('');
   const [booksFavoritedData, setBooksFavoritedData] = React.useState('');
   const [bookClubsJoinedData, setBookClubsJoinedData] = React.useState('');
   const [userPostsData, setUserPostsData] = React.useState('');
@@ -54,6 +55,7 @@ export default function UserProfile() {
         const response = await fetch(query);
         const json = await response.json();
         const posts = json.posts;
+        console.log("post for current query ", query, posts)
         posts.sort(function (a, b) {
           return b.date - a.date;
         });
@@ -78,38 +80,50 @@ export default function UserProfile() {
       }
     }
 
+    const handleFetchUserProfile = async () => {
+      let query = "http://localhost:4567/api/get_user?userId=" + uid;
+      try {
+        const response = await fetch(query);
+        const json = await response.json();
+        console.log("user json", json)
+        setUserProfileData(json.user);
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+
+
     handleFetchBooksFavorited();
     handleFetchBooksClubsJoined();
     handleFetchUserPosts();
     handleFetchLikedPosts();
+    handleFetchUserProfile();
   }, [uid]);
 
-  let userProfile = {
-    "userId": uid,
-    "username": uid ==='EHDvyZymtRSbciB7uXHv1mN5O9r2'? 'Amanda': uid === 'sjzbuujj2hNljqVFpfJAplzXxjH3'? 'VictorD': uid,
-    "bio":"Known for roles in Marvel Cinematic Universe superhero film Shang-Chi and the Legend of the Ten Rings and HBO miniseries Irma Vep and The Undoing.",
-    "thumbnail": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/13f2a0d585f3cd8578da0d18c36a18c4~c5_720x720.jpeg?x-expires=1676120400&x-signature=ibiscyoPcZ8jI2EcS7ccAdpXPk0%3D",
-    "posts": userPostsData,
-    "likedPosts": userLikedPostsData
-  }
-
-  let friendsData = [];
-  for (let i = 0; i < 1; i++ ) {
-    friendsData.push("Andrea")
-    friendsData.push("Zaynab")
-    friendsData.push("Sanjana")
-    friendsData.push("Jocelyn")
-  }
+  let friendsData =  [
+    {
+      "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
+      "username": "Amanda"
+    },
+    {
+      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD"
+    },
+    {
+      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+      "username": "zaynab"
+    }
+  ]
 
   return (
     <>
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
-        <UserProfileBanner clickedUserData={userProfile} friendsData={friendsData}/>
+        <UserProfileBanner clickedUserData={userProfileData} friendsData={friendsData}/>
       </Grid>
       <Grid item xs={8}>
-        {uid === yourUserId? <CreatePost/> : <></> }
+        {uid === loggedinUser.uid? <CreatePost/> : <></> }
         <Stack sx={{ marginBottom: '5rem' }} spacing={2}>
           <Box>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

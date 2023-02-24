@@ -24,16 +24,16 @@ export default function NotificationList(props) {
             <Avatar
               reloadDocument
               component={RouterLink}
-              to={"/user-profile/" + notif.recommender}
-              sx={{ bgcolor: avatarColorMap.get(notif.recommender), width: 35, height: 35, textDecoration: "none" }}
-              aria-label={notif.recommender + " avatar"}
+              to={"/user-profile/" + notif.recommender.uid}
+              sx={{ bgcolor: avatarColorMap.get(notif.recommender.username), width: 35, height: 35, textDecoration: "none" }}
+              aria-label={notif.recommender.username + " avatar"}
             >
-             {notif.recommender.charAt(0)}
+             {notif.recommender.username.charAt(0)}
             </Avatar>
           </ListItemAvatar>
           <ListItemText>
             <Typography>
-              <strong>{notif.recommender}</strong> recommended <strong>{notif.book.title}</strong> to you
+              <strong>{notif.recommender.username}</strong> recommended <strong>{notif.book.title}</strong> to you
             </Typography>
             <Typography variant="caption">
               {notif.time}

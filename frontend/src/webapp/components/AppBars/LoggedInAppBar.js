@@ -24,12 +24,15 @@ import { auth } from "../../../FirebaseConfig"
 import { avatarColorMap } from '../Constants';
 
 export default function LoggedInAppBar() {
-  let yourUserId = JSON.parse(sessionStorage.yourUser);
-  let yourUser = yourUserId === 'EHDvyZymtRSbciB7uXHv1mN5O9r2' ? 'Amanda': yourUserId;
+  let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
 
-  let notificationData = [];
-  for (let i = 0; i < 3; i++) {
-    notificationData.push({recommender: "Andrea", time: "2h", book: {
+  let notificationData = [
+    {recommender: {
+        "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+        "username": "VictorD"
+      }, 
+      time: "2h",
+      book: {
       "key": "/works/OL18417W",
       "title": "The Wonderful Wizard of Oz",
       "author": [
@@ -42,18 +45,19 @@ export default function LoggedInAppBar() {
           "Michael Foreman"
       ],
       "coverUrl": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
-    }})
-
-    notificationData.push({recommender: "Jocelyn", time: "1h", book: {
+    }},
+    {recommender: {
+      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+      "username": "zaynab"
+    }, 
+    time: "1h",
+    book: {
       "key": "/works/OL27479W",
       "title": "The Two Towers",
-      "author": [
-          "J.R.R. Tolkien"
-      ],
+      "author": ["J.R.R. Tolkien"],
       "coverUrl": "https://covers.openlibrary.org/b/id/8167231-M.jpg"
-    }
-    })
-  }
+    }}
+  ]
 
   const [searchValue, setSearchValue] = React.useState(null);
   const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
@@ -70,7 +74,7 @@ export default function LoggedInAppBar() {
 
   const handleLogOut = () => {
     signOut(auth);
-    sessionStorage.setItem('yourUser', JSON.stringify("loggedout"));
+    sessionStorage.setItem('loggedinUser', JSON.stringify("loggedout"));
     navigate("/log-in");
     window.location.reload();
   };
@@ -125,7 +129,7 @@ export default function LoggedInAppBar() {
               color="secondary"
               onClick={(e) => setAnchorElAccount(e.currentTarget)}
             >
-              <Avatar sx={{bgcolor: avatarColorMap.get(yourUser)}}>{yourUser.charAt(0)}</Avatar>
+              <Avatar sx={{bgcolor: avatarColorMap.get(loggedinUser.username)}}>{loggedinUser.username.charAt(0)}</Avatar>
             </IconButton>
           </Stack>
         </Toolbar>
@@ -142,7 +146,7 @@ export default function LoggedInAppBar() {
           },
         }}
       >
-        <MenuItem reloadDocument component={RouterLink} to={"/user-profile/" + yourUserId}>
+        <MenuItem reloadDocument component={RouterLink} to={"/user-profile/" + loggedinUser.uid}>
           <ListItemIcon>
             <AccountCircle fontSize="small" />
           </ListItemIcon>

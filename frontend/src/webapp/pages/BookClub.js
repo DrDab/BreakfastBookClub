@@ -31,13 +31,20 @@ export default function BookClub() {
   }, []);
 
 
-  let membersData = [];
-  membersData.push("Andrea")
-  membersData.push("Amanda")
-  membersData.push("Jocelyn")
-  membersData.push("VictorD")
-  membersData.push("Sanjana")
-  membersData.push("Zaynab")
+  let membersData = [
+    {
+      "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
+      "username": "Amanda"
+    },
+    {
+      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD"
+    },
+    {
+      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+      "username": "zaynab"
+    }
+  ]
 
 
   return (
