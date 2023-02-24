@@ -15,22 +15,7 @@ Breakfast Book Club is a social networking website for literature enthusiasts. U
 git clone https://github.com/DrDab/BreakfastBookClub.git
 ```
 
-#### 2. Set up frontend
-
-Go to the frontend folder
-```
-cd breakfastbookclub/frontend
-```
-Install npm packages
-```
-npm install 
-```
-Run frontend
-```
-npm start
-```
-
-#### 3. Set up backend
+#### 2. Set up backend
 
 In a seperate terminal, go to the backend folder
 ```
@@ -58,7 +43,7 @@ Clean backend build
 ./gradlew clean
 ```
 
-Download the file given by TA and copy file into BCAPIServer folder
+Download the file sent by team and copy file into BCAPIServer folder
 ```
 bc-adminsdk-svcacct.json
 ```
@@ -68,23 +53,41 @@ Run backend
 ./run-dev-server --mysql_addr 34.145.15.228 --svc_acct bc-adminsdk-svcacct.json
 ```
 
+#### 3. Set up frontend
+
+Go to the frontend folder
+```
+cd breakfastbookclub/frontend
+```
+Install npm packages
+```
+npm install 
+```
+Run frontend
+```
+npm start
+```
+
 
 ### How to run the software
 
-Run frontend
-```
-cd breakfastbookclub/frontend
-npm start
-```
 Run backend
 ```
 cd breakfastbookclub/backend/BCAPIServer
 ./run-dev-server --mysql_addr 34.145.15.228 --svc_acct bc-adminsdk-svcacct.json
 ```
 
+Run frontend
+```
+cd breakfastbookclub/frontend
+npm start
+```
+
+The backend must be running before the frontend.
+
 ### How to use the software
 
-Once the frontend and backend are up and running, from http://localhost:3000/, log in with either account: 
+Once the backend and frontend are up and running, from http://localhost:3000/, log in with either account: 
 
 <blockquote>
 Email: akha1229@gmail.com
@@ -171,16 +174,16 @@ Frontend
 
 ### How to test the software
 
-Run frontend Jest tests
-```
-cd breakfastbookclub/frontend
-npm test
-```
-
 Run backend JUnit tests
 ```
 cd breakfastbookclub/backend/BCAPIServer
 ./gradlew test
+```
+
+Run frontend Jest tests
+```
+cd breakfastbookclub/frontend
+npm test
 ```
 
 ### How to add new tests
@@ -196,7 +199,7 @@ Tests are separated based on the file being tested. Test files must follow the n
 
 ### How to build a release of the software
 
-Run frontend and backend tests locally before pushing code to a remote branch by following the instructions in the section [How to test the software](#How-to-test-the-software).
+Run backend and frontend tests locally before pushing code to a remote branch by following the instructions in the section [How to test the software](#How-to-test-the-software).
 
 Currently no version number needs to be updated in the backend.
 
