@@ -79,7 +79,9 @@ body {
   width: 40%;
 }
 
-
+.edit-bio-modal {
+  width: 35%;
+}
 
 /* login signup modals */
 .login-signup {

@@ -6,12 +6,60 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import PeopleList from '../Lists/PeopleList';
+import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import { avatarColorMap } from '../Constants';
+import { auth } from "../../../FirebaseConfig"
 
 export default function UserProfileBanner(props) {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
   const [showFriendsModal, setShowFriendsModal] = React.useState(false);
+  const [showEditBioModal, setShowEditBioModal] = React.useState(false);
+  const [bio, setBio] = React.useState(props.clickedUserData.bio? props.clickedUserData.bio : "");
+  const [isOverBioLength, setIsOverBioLength] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsOverBioLength(bio.length > 1000);
+  },[bio]);
+    
+  const clearFormValues = () => {
+    setBio(props.clickedUserData.bio? props.clickedUserData.bio : "");
+    setIsOverBioLength(false);
+  }
+    
+  const handleCancelEdit = () => {
+    setShowEditBioModal(false);
+    clearFormValues();
+  };
+    
+  const fetchPut = (token, bio) => {
+    let url = "http://localhost:4567/api/update_user?token="+token+"&bio="+bio;
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((data) => {
+      console.log('Success:', data);
+      window.location.reload();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+    
+  const handleEditProfile = () => {
+    if (!isOverBioLength) {
+      setShowEditBioModal(false);
+      auth.currentUser?.getIdToken(true).then(function(idToken){
+        sessionStorage.setItem("sendingPut", "token="+ idToken +",bio="+bio);
+        fetchPut(idToken, bio);
+      })
+      clearFormValues();
+    }
+  };
 
   return (
     <>
@@ -33,7 +81,12 @@ export default function UserProfileBanner(props) {
               <Typography variant="h5">{props.clickedUserData.username}</Typography>
               <Stack spacing={2} direction="row">
                 {props.clickedUserData.uid === loggedinUser.uid?
-                  <Button disableElevation variant="contained" size="small">
+                  <Button 
+                    disableElevation
+                    variant="contained"
+                    size="small"
+                    onClick={() => setShowEditBioModal(true)}
+                  >
                     Edit Profile
                   </Button>:
                   <Button disableElevation variant="contained" size="small">
@@ -41,13 +94,16 @@ export default function UserProfileBanner(props) {
                   </Button>
                 } 
                 <Button 
-                  disableElevation variant="outlined" size="small" onClick={() => setShowFriendsModal(true)}
+                  disableElevation
+                  variant="outlined"
+                  size="small"
+                  onClick={() => setShowFriendsModal(true)}
                 >
                   {888 + " Friends"}
                 </Button>
               </Stack>
               <Typography>
-                Bio of {props.clickedUserData.username}
+                {props.clickedUserData.bio ? props.clickedUserData.bio : ""}
               </Typography> 
             </Stack>
           </Grid>
@@ -64,6 +120,51 @@ export default function UserProfileBanner(props) {
             Friends
           </Typography>
           <PeopleList peopleData={props.friendsData}/>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={showEditBioModal}
+        onClose={() => setShowEditBioModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box className="basic-modal edit-bio-modal">
+          <Stack spacing={2}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Edit Profile
+            </Typography>
+            <TextField
+              InputProps={{ disableUnderline: true }}
+              required
+              label="Bio"
+              multiline
+              rows="4"
+              variant="filled"
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              error={isOverBioLength}
+              helperText={isOverBioLength ? "Over character limit of 1000": ""}
+            />
+            <Stack justifyContent="end" direction="row" spacing={1}>
+              <Button
+                disableElevation
+                size="small"
+                variant={isOverBioLength ? 'disabled': 'contained'}
+                onClick={handleEditProfile}
+              >
+                Save
+              </Button>
+              <Button
+                disableElevation
+                size="small"
+                variant='outlined'
+                onClick={handleCancelEdit}
+              >
+                Cancel
+              </Button>
+            </Stack>
+          </Stack>
         </Box>
       </Modal>
       </>

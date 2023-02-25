@@ -59,7 +59,8 @@ export default function CreatePost() {
   };
 
   const fetchPost = (jsonData) => {
-    fetch('http://localhost:4567/api/make_post', {
+    let url = "http://localhost:4567/api/make_post";
+    fetch(url, {
       method: 'POST',
       mode: 'no-cors',
       headers: {
@@ -69,6 +70,7 @@ export default function CreatePost() {
     })
     .then((data) => {
       console.log('Success:', data);
+      window.location.reload();
     })
     .catch((error) => {
       console.log(error);
@@ -90,10 +92,6 @@ export default function CreatePost() {
         sessionStorage.setItem("sendingPost", JSON.stringify(jsonData));
         fetchPost(jsonData);
       })
-
-      setTimeout(function(){
-        window.location.reload();
-      }, 3000);
 
       clearFormValues();
     }

@@ -77,7 +77,7 @@ public class BCServerMain {
 
     Spark.get("/api/get_user", new GetUserProfile(fbApp, sqlConn));
 
-    Spark.put("/api/update_user", new SetUserProfile(fbApp, sqlConn));
+    Spark.post("/api/update_user", new SetUserProfile(fbApp, sqlConn));
   }
 
   @SuppressWarnings("deprecation")
