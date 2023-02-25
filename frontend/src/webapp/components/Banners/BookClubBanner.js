@@ -31,7 +31,7 @@ export default function BookClubBanner(props) {
             <Avatar
               variant="rounded"
               alt={props.bookData.title + " cover"}
-              src={props.bookData.coverUrl}
+              src={props.bookData.thumbnail}
               sx={{ width: 150, height: 200 }}
             />
           </Grid>
@@ -51,9 +51,6 @@ export default function BookClubBanner(props) {
                   Recommend
                 </Button>
               </Stack>
-              <Typography>
-                I walked through the door with you, the air was cold. One for the money, two for the show I never was ready, so I watch you go.
-              </Typography>
             </Stack>
           </Grid>
         </Grid>

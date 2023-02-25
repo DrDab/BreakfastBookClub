@@ -33,18 +33,10 @@ export default function LoggedInAppBar() {
       }, 
       time: "2h",
       book: {
-      "key": "/works/OL18417W",
-      "title": "The Wonderful Wizard of Oz",
-      "author": [
-          "L. Frank Baum",
-          "R. D. Kori",
-          "Kenneth Grahame",
-          "J. T. Barbarese",
-          "Pablo Pino",
-          "Jenny Sánchez",
-          "Michael Foreman"
-      ],
-      "coverUrl": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
+        "book_id": "OL18417W",
+        "title": "The Wonderful Wizard of Oz",
+        "author": "Baum, L. Frank",
+        "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
     }},
     {recommender: {
       "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
@@ -52,10 +44,10 @@ export default function LoggedInAppBar() {
     }, 
     time: "1h",
     book: {
-      "key": "/works/OL27479W",
+      "book_id": "OL27479W",
       "title": "The Two Towers",
-      "author": ["J.R.R. Tolkien"],
-      "coverUrl": "https://covers.openlibrary.org/b/id/8167231-M.jpg"
+      "author": "J.R.R. Tolkien",
+      "thumbnail": "https://covers.openlibrary.org/b/id/8167231-M.jpg"
     }}
   ]
 
@@ -175,9 +167,9 @@ export default function LoggedInAppBar() {
           <Typography>
             Notifications
           </Typography>
-          <Link component="button" variant="caption" onClick={()=> console.log("clear notifs")}>
+          <Typography variant="caption" onClick={()=> console.log("clear notifs")}>
             Clear
-          </Link>
+          </Typography>
         </Stack>
         <NotificationList notificationData={notificationData}/>
       </Menu>
