@@ -2,9 +2,10 @@ package routes.bookclubs;
 
 import com.google.firebase.FirebaseApp;
 import com.google.gson.JsonObject;
-import com.goofle.gson.Gson;
+import com.google.gson.Gson;
 import daos.User;
 import java.sql.Connection;
+import java.util.ArrayList;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -25,7 +26,7 @@ public class GetSubscribedClubs implements Route {
 
         String user = request.queryParams("userId");
 
-        if (use == null) {
+        if (user == null) {
             respJson.addProperty("status", "failure");
             respJson.addProperty("failure_reason", "Need to provide userId.");
             return respJson.toString() + "\n";
