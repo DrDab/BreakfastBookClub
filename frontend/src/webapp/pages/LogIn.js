@@ -23,8 +23,7 @@ export default function LogIn() {
     let query = "http://localhost:4567/api/get_user?userId=" + uid;
     try {
       const response = await fetch(query);
-      const json = await response.json();
-      
+      const json = await response.json();   
       return json.user;
     } catch (error) {
       return error

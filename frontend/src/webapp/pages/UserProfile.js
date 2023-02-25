@@ -55,7 +55,6 @@ export default function UserProfile() {
         const response = await fetch(query);
         const json = await response.json();
         const posts = json.posts;
-        console.log("post for current query ", query, posts)
         posts.sort(function (a, b) {
           return b.date - a.date;
         });
@@ -85,7 +84,6 @@ export default function UserProfile() {
       try {
         const response = await fetch(query);
         const json = await response.json();
-        console.log("user json", json)
         setUserProfileData(json.user);
       } catch (error) {
         console.log("error", error);
