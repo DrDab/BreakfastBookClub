@@ -24,12 +24,16 @@ export default function PostList(props) {
       Array.isArray(props.postsData) && props.postsData.length === 0? 
         <Typography> No posts yet </Typography>:
         props.postsData.map((post, index) => {
+
           let tagIcon = null;
           let tagColor = null;
           if (post.tag === "Spoiler" || post.tag === "Discussion" || post.tag === "Theory") {
             tagIcon = tagsList.filter(tag => tag.label === post.tag)[0]["icon"];
             tagColor = tagsList.filter(tag => tag.label === post.tag)[0]["color"];
           }
+
+          let userProfileUrl = "/user-profile/" + post.user.userId;
+          let bookProfileUrl ="/book-club/" + post.book.book_id;
 
           return (
             <Card key={index} elevation={0} className="post">
@@ -38,7 +42,7 @@ export default function PostList(props) {
                   <Avatar
                     reloadDocument
                     component={RouterLink}
-                    to={"/user-profile/" + post.user.userId}
+                    to={userProfileUrl}
                     sx={{ bgcolor: avatarColorMap.get(post.user.username), width: 50, height: 50, textDecoration: "none" }}
                     aria-label={post.user.username + " avatar"}
                   >
@@ -47,7 +51,7 @@ export default function PostList(props) {
                 }
                 title={
                   <Typography gutterBottom variant="p4">
-                    <strong>{post.user.username}</strong> in the <strong>{post.book.title}</strong> Book Club
+                    <a href={userProfileUrl}>{post.user.username}</a> in the <a href={bookProfileUrl}>{post.book.title}</a> Book Club
                   </Typography>
                 }
                 subheader={
@@ -72,7 +76,6 @@ export default function PostList(props) {
                 </Typography>
               </CardContent>
               <CardActions disableSpacing>
-
                 <IconButton onClick={() => likePost(post.post_id)} sx={{color: 'grey'}} aria-label="like">
                   <FavoriteIcon />
                 </IconButton>

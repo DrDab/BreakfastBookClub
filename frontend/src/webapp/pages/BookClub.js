@@ -7,10 +7,13 @@ import PeopleList from '../components/Lists/PeopleList';
 import BookClubBanner from '../components/Banners/BookClubBanner';
 import CreatePost from "../components/CreatePost";
 import PostList from '../components/Lists/PostList';
+import { useParams } from "react-router-dom";
 
 export default function BookClub() {
-  let bookData = JSON.parse(sessionStorage.book) // should come from our API later
+  let { bid } = useParams(); // clicked book
+
   const [bookClubPostsData, setBookClubPostsData] = React.useState('');
+  const [bookProfileData, setBookProfileData] = React.useState('');
 
   React.useEffect(() => {
     const handleFetchBookClubPosts = async () => {
@@ -27,8 +30,22 @@ export default function BookClub() {
         console.log("error", error);
       }
     }
+
+    const handleFetchBookProfile = async () => {
+      let query = "http://localhost:4567/api/get_book?book_key=" + bid;
+      try {
+        const response = await fetch(query);
+        const json = await response.json();
+        setBookProfileData(json.book);
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+    
     handleFetchBookClubPosts();
-  }, []);
+    handleFetchBookProfile();
+   
+  }, [bid]);
 
 
   let membersData = [
@@ -51,7 +68,7 @@ export default function BookClub() {
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
-        <BookClubBanner bookData={bookData}/>
+        <BookClubBanner bookData={bookProfileData}/>
       </Grid>
       <Grid item xs={8}>
         <div style={{marginBottom: '0.5rem'}}>
