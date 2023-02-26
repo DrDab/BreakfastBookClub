@@ -12,6 +12,7 @@ import { formatOpenLibraryData } from '../components/Utils';
 export default function Home() {
   const [popularBooksData, setPopularBooksData] = React.useState("");
   const [homePostsData, setHomePostsData] = React.useState("");
+  const [isFetchPosts, setIsFetchPosts] = React.useState(false);
 
   React.useEffect(() => {
     const handleFetchPopularBooks = async () => {
@@ -25,7 +26,10 @@ export default function Home() {
         console.log("error", error);
       }
     }
-    
+    handleFetchPopularBooks();
+  },[]);
+
+  React.useEffect(() => {
     const handleFetchPosts = async () => {
       let query = "http://localhost:4567/api/list_feed";
       try {
@@ -40,9 +44,8 @@ export default function Home() {
         console.log("error", error);
       }
     }
-    handleFetchPopularBooks();
     handleFetchPosts();
-}, []);
+  },[isFetchPosts]);
 
   let popularPeopleData = [
     {
@@ -63,7 +66,7 @@ export default function Home() {
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={8}>
-        <CreatePost/>
+        <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
       </Grid>
       <Grid item xs={8}>
         <PostList postsData={homePostsData} />

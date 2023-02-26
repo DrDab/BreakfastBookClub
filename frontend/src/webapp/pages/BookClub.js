@@ -17,7 +17,7 @@ export default function BookClub() {
 
   React.useEffect(() => {
     const handleFetchBookClubPosts = async () => {
-      let query = "http://localhost:4567/api/list_feed";
+      let query = "http://localhost:4567/api/get_posts?book_key=" + bid;
       try {
         const response = await fetch(query);
         const json = await response.json();
