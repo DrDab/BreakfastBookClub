@@ -43,7 +43,7 @@ export default function UserProfileBanner(props) {
     })
     .then((data) => {
       console.log('Success:', data);
-      window.location.reload();
+      props.setIsFetchUserProfile(!props.isFetchUserProfile)
     })
     .catch((error) => {
       console.log(error);

@@ -17,9 +17,8 @@ import { auth } from "../../FirebaseConfig"
 import { Link as RouterLink } from "react-router-dom";
 import { tagsList, avatarColorMap } from './Constants';
 
-export default function CreatePost() {
+export default function CreatePost(props) {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
-
 
   const [showPostModal, setShowPostModal] = React.useState(false);
   const [bookClub, setBookClub] = React.useState("");
@@ -29,7 +28,6 @@ export default function CreatePost() {
   const [isMissingFields, setIsMissingFields] = React.useState(true);
   const [isOverBodyLength, setIsOverBodyLength] = React.useState(false);
   const [isOverTitleLength, setIsOverTitleLength] = React.useState(false);
-
 
   let bookClubsJoinedData = [
     {title: "Animal Farm", key: "OL1168007W"},
@@ -70,7 +68,7 @@ export default function CreatePost() {
     })
     .then((data) => {
       console.log('Success:', data);
-      window.location.reload();
+      props.setIsFetchPosts(!props.isFetchPosts)
     })
     .catch((error) => {
       console.log(error);

@@ -23,6 +23,7 @@ export default function UserProfile() {
   const [bookClubsJoinedData, setBookClubsJoinedData] = React.useState('');
   const [userPostsData, setUserPostsData] = React.useState('');
   const [userLikedPostsData, setUserLikedPostsData] = React.useState('');
+  const [isFetchUserProfile, setIsFetchUserProfile] = React.useState(false);
 
   React.useEffect(() => {
     const handleFetchBooksFavorited = async () => {
@@ -50,7 +51,7 @@ export default function UserProfile() {
     }
 
     const handleFetchUserPosts = async () => {
-      let query = "http://localhost:4567/api/list_feed?uid="+ uid;
+      let query = "http://localhost:4567/api/get_posts?userId=" + uid;
       try {
         const response = await fetch(query);
         const json = await response.json();
@@ -79,6 +80,14 @@ export default function UserProfile() {
       }
     }
 
+    handleFetchBooksFavorited();
+    handleFetchBooksClubsJoined();
+    handleFetchUserPosts();
+    handleFetchLikedPosts();
+  }, [uid]);
+
+
+  React.useEffect(() => {
     const handleFetchUserProfile = async () => {
       let query = "http://localhost:4567/api/get_user?userId=" + uid;
       try {
@@ -89,14 +98,8 @@ export default function UserProfile() {
         console.log("error", error);
       }
     }
-
-
-    handleFetchBooksFavorited();
-    handleFetchBooksClubsJoined();
-    handleFetchUserPosts();
-    handleFetchLikedPosts();
     handleFetchUserProfile();
-  }, [uid]);
+  }, [uid, isFetchUserProfile]);
 
   let friendsData =  [
     {
@@ -118,7 +121,12 @@ export default function UserProfile() {
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
-        <UserProfileBanner clickedUserData={userProfileData} friendsData={friendsData}/>
+        <UserProfileBanner 
+          clickedUserData={userProfileData}
+          friendsData={friendsData}
+          setIsFetchUserProfile={setIsFetchUserProfile}
+          isFetchUserProfile={isFetchUserProfile}
+        />
       </Grid>
       <Grid item xs={8}>
         {uid === loggedinUser.uid? <CreatePost/> : <></> }
