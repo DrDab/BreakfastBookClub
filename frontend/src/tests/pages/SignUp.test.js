@@ -1,8 +1,8 @@
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import SignUp from '../../webapp/pages/SignUp';
 import { MemoryRouter } from 'react-router-dom';
 
-test("Sign up page renders correctly, no user", () => {
+test("Renders Sign up page, no user", () => {
   render(
     <MemoryRouter>
       <SignUp />
