@@ -19,20 +19,20 @@ export default function UserProfile() {
 
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
   const [userProfileData, setUserProfileData] = React.useState('');
-  const [booksFavoritedData, setBooksFavoritedData] = React.useState('');
+  const [booksSavedData, setBooksSavedData] = React.useState('');
   const [bookClubsJoinedData, setBookClubsJoinedData] = React.useState('');
   const [userPostsData, setUserPostsData] = React.useState('');
   const [userLikedPostsData, setUserLikedPostsData] = React.useState('');
   const [isFetchUserProfile, setIsFetchUserProfile] = React.useState(false);
 
   React.useEffect(() => {
-    const handleFetchBooksFavorited = async () => {
+    const handleFetchBooksSaved = async () => {
       let query = "http://openlibrary.org/search.json?q=good&limit=3";
       try {
         const response = await fetch(query);
         const json = await response.json();
         let formattedData = formatOpenLibraryData(json);
-        setBooksFavoritedData(formattedData)
+        setBooksSavedData(formattedData)
       } catch (error) {
         console.log("error", error);
       }
@@ -80,7 +80,7 @@ export default function UserProfile() {
       }
     }
 
-    handleFetchBooksFavorited();
+    handleFetchBooksSaved();
     handleFetchBooksClubsJoined();
     handleFetchUserPosts();
     handleFetchLikedPosts();
@@ -159,7 +159,7 @@ export default function UserProfile() {
             <Typography variant="overline">
               Saved Books
             </Typography>
-            <BookList bookData={booksFavoritedData} />
+            <BookList bookData={booksSavedData} />
           </div>
         </Stack>
       </Grid>
