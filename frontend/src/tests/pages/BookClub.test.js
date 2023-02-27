@@ -46,6 +46,16 @@ const mockGetBook = {
   }
 };
 
+const mockGetMembers = {
+  "members": [
+    {
+      "userId": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD",
+      "bio": "Victor's bio"
+    }
+  ]
+};
+
 describe("Renders Book club page", () => { 
 
   test("Renders posts and book profile ", async () => {
@@ -55,6 +65,7 @@ describe("Renders Book club page", () => {
     const mockFetch = jest.fn()
       .mockReturnValueOnce(makeFetchResponse(mockGetBook))
       .mockReturnValueOnce(makeFetchResponse(mockGetBook))
+      .mockReturnValueOnce(makeFetchResponse(mockGetMembers))
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
     global.fetch = mockFetch
@@ -70,7 +81,7 @@ describe("Renders Book club page", () => {
       );
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(4);
+    expect(mockFetch).toHaveBeenCalledTimes(5);
 
     const bookTitle = screen.getAllByText(mockGetBook.book.title)[0];
     const bookAuthor = screen.queryByText(mockGetBook.book.author);
