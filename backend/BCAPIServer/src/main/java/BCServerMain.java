@@ -16,9 +16,12 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 
+import routes.bookclubs.GetLikedPosts;
+import routes.bookclubs.GetMembers;
 import routes.bookclubs.GetPosts;
 import routes.bookclubs.LikePost;
 import routes.bookclubs.MakePost;
+import routes.bookclubs.UnlikePost;
 import routes.bookmgmt.GetBook;
 import routes.profile.GetUserProfile;
 import routes.profile.SetUserProfile;
@@ -74,10 +77,14 @@ public class BCServerMain {
     Spark.get("/api/list_feed", getPosts);
 
     Spark.post("/api/like_post", new LikePost(fbApp, sqlConn));
+    Spark.post("/api/unlike_post", new UnlikePost(fbApp, sqlConn));
+    Spark.post("/api/get_liked_posts", new GetLikedPosts(fbApp, sqlConn));
 
     Spark.get("/api/get_user", new GetUserProfile(fbApp, sqlConn));
 
     Spark.post("/api/update_user", new SetUserProfile(fbApp, sqlConn));
+
+    Spark.get("/api/get_members", new GetMembers(fbApp, sqlConn));
   }
 
   @SuppressWarnings("deprecation")
