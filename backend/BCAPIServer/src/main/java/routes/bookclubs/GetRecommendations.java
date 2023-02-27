@@ -32,6 +32,7 @@ public class GetRecommendations implements Route {
             return respJson.toString() + "\n";
         }
 
+        // getting list of book ids that have been recommended to user
         List<String> bookRequests = new Books(sqlConn).bookRecommendations(searchRecepientID);
         respJson.add("bookIDs", new Gson().toJsonTree(bookRequests));
         respJson.addProperty("status", "success");

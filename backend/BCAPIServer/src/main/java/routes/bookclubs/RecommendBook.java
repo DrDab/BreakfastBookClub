@@ -28,12 +28,14 @@ public class RecommendBook implements Route {
     public Object handle(Request request, Response response) throws Exception {
         JsonObject respJson = new JsonObject();
         JsonObject body = BCGsonUtils.fromStr(request.body());
+
         if (body == null) {
             respJson.addProperty("status", "failure");
             respJson.addProperty("failure_reason", "Body is not valid JSON!");
             return respJson.toString() + "\n";
         }
 
+        // check to make sure request has necessary parameters
         if (!body.has("token") || !body.has("sender_username") ||
             !body.has("recipient_username") ||
             !body.has("book_key")) {
@@ -43,7 +45,7 @@ public class RecommendBook implements Route {
 
         String token = body.get("token").getAsString();
 
-
+        // authenticating user
         try {
             FirebaseToken decodedToken = FirebaseAuth.getInstance()
                     .verifyIdToken(token, true);
@@ -53,6 +55,7 @@ public class RecommendBook implements Route {
             return respJson.toString() + "\n";
         }
 
+        // getting usernames and book id and adding to the backend
         String senderUsername = body.get("sender_username").getAsString();
         String recipientUsername = body.get("recipient_username").getAsString();
         String bookKey = body.get("book_key").getAsString();
