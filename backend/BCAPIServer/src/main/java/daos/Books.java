@@ -20,6 +20,10 @@ public class Books {
         "SELECT * FROM book_posts";
     private PreparedStatement allPostsStatement;
 
+    private static final String GET_RECOMMENDATIONS_SQL =
+            "SELECT book_key FROM sent_recommendations WHERE recipient_username = ?";
+    private PreparedStatement getRecommendationsStatement;
+
     public Books(Connection conn) throws SQLException {
         this.conn = conn;
         prepareStatements();
@@ -46,6 +50,22 @@ public class Books {
         }
 
         return users;
+    }
+
+    public List<String> bookRecommendations(String recipientUsername) {
+        List<String> bookRecs = new ArrayList<>();
+        try {
+            getRecommendationsStatement.clearParameters();
+            getRecommendationsStatement.setString(1, recipientUsername);
+            ResultSet result = getRecommendationsStatement.executeQuery();
+            while (result.next()) {
+                bookRecs.add(result.getString("book_key"));
+            }
+            result.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookRecs;
     }
 
     /**
@@ -115,6 +135,7 @@ public class Books {
         usersInBookClubStatement = conn.prepareStatement(USERS_IN_BOOK_CLUB_SQL);
         postsInBookClubStatement = conn.prepareStatement(POSTS_IN_BOOK_CLUB_SQL);
         allPostsStatement = conn.prepareStatement(ALL_POSTS_SQL);
+        getRecommendationsStatement = conn.prepareStatement(GET_RECOMMENDATIONS_SQL);
     }
 
     // Returns whether the error was caused by a deadlock
