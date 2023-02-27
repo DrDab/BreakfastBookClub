@@ -18,6 +18,7 @@ import net.sourceforge.argparse4j.inf.Namespace;
 
 import routes.bookclubs.*;
 import routes.bookmgmt.GetBook;
+import routes.bookmgmt.SaveBook;
 import routes.profile.GetUserProfile;
 import routes.profile.SetUserProfile;
 import spark.Spark;
@@ -75,6 +76,8 @@ public class BCServerMain {
     Spark.get("/api/get_recommendations", new GetRecommendations(sqlConn));
     // user1 sends book recommendation to user2
     Spark.post("api/recommend_book", new RecommendBook(fbApp, sqlConn));
+    // user saves book
+    Spark.post("api/save_book", new SaveBook(fbApp, sqlConn));
 
 
     Spark.post("/api/like_post", new LikePost(fbApp, sqlConn));
