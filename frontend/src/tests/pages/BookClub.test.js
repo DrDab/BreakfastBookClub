@@ -34,6 +34,7 @@ const mockGetPosts = {
   ]
 }
 
+// current book club, user's joined book club
 const mockGetBook = {
   "book": {
     "book_id": "OL18417W",
@@ -52,6 +53,7 @@ describe("Renders Book club page", () => {
     const mockFetch = jest.fn()
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
       .mockReturnValueOnce(makeFetchResponse(mockGetBook))
+      .mockReturnValueOnce(makeFetchResponse(mockGetBook))
     global.fetch = mockFetch
 
     await act(async () => {
@@ -65,7 +67,7 @@ describe("Renders Book club page", () => {
       );
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(2);
+    expect(mockFetch).toHaveBeenCalledTimes(3);
 
     const bookTitle = screen.getAllByText(mockGetBook.book.title)[0];
     const bookAuthor = screen.queryByText(mockGetBook.book.author);

@@ -23,7 +23,35 @@ export default function UserProfile() {
   const [bookClubsJoinedData, setBookClubsJoinedData] = React.useState('');
   const [userPostsData, setUserPostsData] = React.useState('');
   const [userLikedPostsData, setUserLikedPostsData] = React.useState('');
+  const [clickedUserFriendsData, setClickedUserFriendsData] = React.useState('');
+  const [isFriendData, setIsFriendData] = React.useState('');
   const [isFetchUserProfile, setIsFetchUserProfile] = React.useState(false);
+
+  let loggedinUserfriendsData = [
+    {
+      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD",
+      "bio": "bio"
+    }
+  ]
+
+  let clickedUserfriendsData = [
+    {
+      "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
+      "username": "Amanda",
+      "bio": "bio"
+    },
+    {
+      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD",
+      "bio": "bio"
+    },
+    {
+      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+      "username": "zaynab",
+      "bio": "bio"
+    }
+  ]
 
   React.useEffect(() => {
     const handleFetchBooksSaved = async () => {
@@ -49,6 +77,18 @@ export default function UserProfile() {
         console.log("error", error);
       }
     }
+
+    // const handleFetchBooksClubsJoined = async () => {
+    //   let query = "http://localhost:4567/api/get_subscribed_clubs?userId=" + uid;
+    //   try {
+    //     const response = await fetch(query);
+    //     const json = await response.json();
+    //     const bookClubs = json.bookClubs;
+    //     setBookClubsJoinedData(bookClubs);
+    //   } catch (error) {
+    //     console.log("error", error);
+    //   }
+    // }
 
     const handleFetchUserPosts = async () => {
       let query = "http://localhost:4567/api/get_posts?userId=" + uid;
@@ -80,10 +120,26 @@ export default function UserProfile() {
       }
     }
 
+    const handleFetchClickedUserFriends = async () => {
+      if (uid === loggedinUser.uid) {
+        setClickedUserFriendsData(loggedinUserfriendsData);
+      } else {
+        setClickedUserFriendsData(clickedUserfriendsData);
+      }  
+    }
+
+
+    const handleFetchIsFriend = async () => {
+      setIsFriendData(loggedinUserfriendsData.some(friend => friend.uid === uid));
+    }
+
     handleFetchBooksSaved();
     handleFetchBooksClubsJoined();
     handleFetchUserPosts();
     handleFetchLikedPosts();
+    handleFetchClickedUserFriends();
+    handleFetchIsFriend();
+
   }, [uid]);
 
 
@@ -101,20 +157,7 @@ export default function UserProfile() {
     handleFetchUserProfile();
   }, [uid, isFetchUserProfile]);
 
-  let friendsData =  [
-    {
-      "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
-      "username": "Amanda"
-    },
-    {
-      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-      "username": "VictorD"
-    },
-    {
-      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
-      "username": "zaynab"
-    }
-  ]
+
 
   return (
     <>
@@ -123,7 +166,9 @@ export default function UserProfile() {
       <Grid item xs={12}>
         <UserProfileBanner 
           clickedUserData={userProfileData}
-          friendsData={friendsData}
+          setIsFriendData={setIsFriendData}
+          isFriendData={isFriendData}
+          clickedUserFriends={clickedUserFriendsData}
           setIsFetchUserProfile={setIsFetchUserProfile}
           isFetchUserProfile={isFetchUserProfile}
         />
