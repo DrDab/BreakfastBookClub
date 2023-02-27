@@ -44,6 +44,7 @@ public class MakePost implements Route {
         !bodyJson.has("title") ||
         !bodyJson.has("body")) {
       respJson.addProperty("status", "failure");
+      respJson.addProperty("failure_reason", "Expected fields are missing!");
       return respJson.toString() + "\n";
     }
 

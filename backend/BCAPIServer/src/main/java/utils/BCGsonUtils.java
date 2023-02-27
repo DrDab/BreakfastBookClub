@@ -1,9 +1,16 @@
 package utils;
 
+import com.google.firebase.FirebaseApp;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import types.BookPost;
 
 public class BCGsonUtils {
 
@@ -28,5 +35,36 @@ public class BCGsonUtils {
     }
 
     return bodyElement.getAsJsonObject();
+  }
+
+  public static JsonArray getPostsJsonArrFromList(FirebaseApp fbApp, List<BookPost> posts)
+      throws ExecutionException, InterruptedException, IOException {
+    JsonArray postsArr = new JsonArray();
+    Gson gson = new Gson();
+
+    for (BookPost post : posts) {
+      JsonObject postJson = new JsonObject();
+
+      postJson.addProperty("post_id", post.postId);
+
+      postJson.add("book", gson.toJsonTree(OpenLibraryAPI.getBookByKey(post.bookKey)));
+
+      JsonObject userObj = new JsonObject();
+      userObj.addProperty("userId", post.userId);
+      userObj.addProperty("username", FirebaseUtils.resolveBCUsername(fbApp, post.userId));
+      userObj.addProperty("bio", "");
+      userObj.addProperty("thumbnail", "");
+      postJson.add("user", userObj);
+
+      postJson.addProperty("title", post.postTitle);
+      postJson.addProperty("date", post.date);
+      postJson.addProperty("tag", post.tag);
+      postJson.addProperty("post", post.post);
+      postJson.addProperty("likes", post.likes);
+
+      postsArr.add(postJson);
+    }
+
+    return postsArr;
   }
 }

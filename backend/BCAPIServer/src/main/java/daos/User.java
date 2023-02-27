@@ -641,6 +641,10 @@ public class User {
   }
 
   private List<BookPost> getBatchPostIdPost(List<String> postIds) throws SQLException {
+    if (postIds.isEmpty()) {
+      return new ArrayList<>();
+    }
+
     StringBuilder sqlQuery = new StringBuilder(GET_POSTS_BY_ID_STUB);
 
     for (int i = 0; i < postIds.size(); i++) {
