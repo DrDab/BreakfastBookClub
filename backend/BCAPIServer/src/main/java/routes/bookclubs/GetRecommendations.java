@@ -1,17 +1,14 @@
 package routes.bookclubs;
 
-import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.mysql.cj.log.NullLogger;
+
 import daos.Books;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import types.Book;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GetRecommendations implements Route {
@@ -39,5 +36,6 @@ public class GetRecommendations implements Route {
         respJson.add("bookIDs", new Gson().toJsonTree(bookRequests));
         respJson.addProperty("status", "success");
         return respJson.toString() + "\n";
+
     }
 }
