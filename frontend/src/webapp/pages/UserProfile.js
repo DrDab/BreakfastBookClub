@@ -150,7 +150,7 @@ export default function UserProfile() {
 
   React.useEffect(() => {
     const handleFetchLikedPosts = async () => {
-      let query = " http://localhost:4567/api/get_liked_posts?user_id=" + uid;
+      let query = "http://localhost:4567/api/get_liked_posts?user_id=" + uid;
       try {
         const response = await fetch(query);
         const json = await response.json();
@@ -165,7 +165,7 @@ export default function UserProfile() {
     }
 
     const handleFetchLoggedinUserLikedPosts = async () => {
-      let query = " http://localhost:4567/api/get_liked_posts?user_id=" + loggedinUser.uid;
+      let query = "http://localhost:4567/api/get_liked_posts?user_id=" + loggedinUser.uid;
       try {
         const response = await fetch(query);
         const json = await response.json();

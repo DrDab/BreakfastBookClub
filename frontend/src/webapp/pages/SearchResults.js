@@ -42,9 +42,7 @@ export default function SearchResults() {
       "username": "zaynab"
     }
   ]
-
-  
-  
+ 
   return (
     <Stack sx={{ width: '70%', margin: '0 auto', marginBottom: '5rem' }} spacing={2}>
       <Typography>{"Showing search results for '" + sessionStorage.searchValue + "'"}</Typography>
