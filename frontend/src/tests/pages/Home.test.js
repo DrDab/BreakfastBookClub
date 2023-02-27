@@ -56,6 +56,7 @@ describe("Renders Home page", () => {
     const mockFetch = jest.fn()
       .mockReturnValueOnce(makeFetchResponse(mockGetPopularBooks))
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
+      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
     global.fetch = mockFetch
 
     await act(async () => {
@@ -66,7 +67,7 @@ describe("Renders Home page", () => {
       )
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(2);
+    expect(mockFetch).toHaveBeenCalledTimes(3);
 
     const postTitle = screen.queryByText(mockGetPosts.posts[0].title);
     const postBody = screen.queryByText(mockGetPosts.posts[0].post);

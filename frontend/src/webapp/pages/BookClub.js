@@ -20,27 +20,14 @@ export default function BookClub() {
 
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
   const [bookClubPostsData, setBookClubPostsData] = React.useState('');
+  const [loggedinUserLikedPostsData, setLoggedinUserLikedPostsData] = React.useState('');
   const [bookProfileData, setBookProfileData] = React.useState('');
   const [isBookClubsJoinedData, setIsBookClubsJoinedData] = React.useState(false);
   const [bookClubMembersData, setBookClubMembersData] = React.useState('');
+  const [isFetchPosts, setIsFetchPosts] = React.useState(false);
 
 
   React.useEffect(() => {
-    const handleFetchBookClubPosts = async () => {
-      let query = "http://localhost:4567/api/get_posts?book_key=" + bid;
-      try {
-        const response = await fetch(query);
-        const json = await response.json();
-        const posts = json.posts;
-        posts.sort(function (a, b) {
-          return b.date - a.date;
-        });
-        setBookClubPostsData(posts);
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-
     const handleFetchBookProfile = async () => {
       let query = "http://localhost:4567/api/get_book?book_key=" + bid;
       try {
@@ -71,7 +58,6 @@ export default function BookClub() {
         const response = await fetch(query);
         const json = await response.json();
         let bookClubs = formatOpenLibraryData(json);
-        console.log("joined clubs", bookClubs )
         setIsBookClubsJoinedData(bookClubs.some(bookClub => bookClub.key === ('/works/' + bid)));
       } catch (error) {
         console.log("error", error);
@@ -100,13 +86,44 @@ export default function BookClub() {
       setBookClubMembersData(membersData);
     }
 
-    handleFetchBookClubPosts();
+    const handleFetchLoggedinUserLikedPosts = async () => {
+      let query = "http://localhost:4567/api/get_liked_posts?user_id=" + loggedinUser.uid;
+      try {
+        const response = await fetch(query);
+        const json = await response.json();
+        const posts = json.posts;
+        setLoggedinUserLikedPostsData(posts);
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+
     handleFetchBookProfile();
     handleFetchIsBookClubsJoined();
-    handleFetchBookClubsMembers();
-   
-  }, [bid]);
- 
+    handleFetchBookClubsMembers();  
+    handleFetchLoggedinUserLikedPosts();
+  },[bid, loggedinUser.uid]);
+
+
+  React.useEffect(() => {
+    const handleFetchBookClubPosts = async () => {
+      let query = "http://localhost:4567/api/get_posts?book_key=" + bid;
+      try {
+        const response = await fetch(query);
+        const json = await response.json();
+        const posts = json.posts;
+        posts.sort(function (a, b) {
+          return b.date - a.date;
+        });
+        setBookClubPostsData(posts);
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+
+    handleFetchBookClubPosts();
+  }, [bid, isFetchPosts]);
+
 
   const handleFetchPostJoinStatus = (status) => {
     let url = "http://localhost:4567/api/" + status + "?userId=" + loggedinUser.uid + "&book_key=" + bid;
@@ -146,8 +163,7 @@ export default function BookClub() {
         <BookClubBanner bookData={bookProfileData}/>
       </Grid>
       <Grid item xs={8}>
-        <CreatePost/>
-
+        <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
         <Stack sx={{ marginBottom: '5rem' }} spacing={2}>
           <Box>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -156,13 +172,10 @@ export default function BookClub() {
               </Tabs>
             </Box>
             <TabPanel value={tabIndexValue} index={0}>
-              <PostList postsData={bookClubPostsData} />
+              <PostList postsData={bookClubPostsData} loggedinUserLikedPostsData={loggedinUserLikedPostsData} />
             </TabPanel>
           </Box>
         </Stack>
-
-
-
       </Grid>
       <Grid item xs={4}>
         <Button

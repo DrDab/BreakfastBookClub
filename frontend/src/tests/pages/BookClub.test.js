@@ -6,9 +6,11 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
 const mockLoggedInUser = {
   "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
-  "username": "Amanda"
+  "username": "Amanda",
+  "bio": "bio"
 }
 
+// book club posts, logged in user liked posts
 const mockGetPosts = {
   "posts" : [
     {
@@ -22,7 +24,7 @@ const mockGetPosts = {
       "user": {
         "userId": "sjzbuujj2hNljqVFpfJAplzXxjH3",
         "username": "VictorD",
-        "bio": "",
+        "bio": "bio",
         "thumbnail": ""
       },
       "title": "Intense stuff!",
@@ -51,9 +53,10 @@ describe("Renders Book club page", () => {
 
     const makeFetchResponse = value => ({ json: async() => value })
     const mockFetch = jest.fn()
+      .mockReturnValueOnce(makeFetchResponse(mockGetBook))
+      .mockReturnValueOnce(makeFetchResponse(mockGetBook))
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
-      .mockReturnValueOnce(makeFetchResponse(mockGetBook))
-      .mockReturnValueOnce(makeFetchResponse(mockGetBook))
+      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
     global.fetch = mockFetch
 
     await act(async () => {
@@ -67,7 +70,7 @@ describe("Renders Book club page", () => {
       );
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(3);
+    expect(mockFetch).toHaveBeenCalledTimes(4);
 
     const bookTitle = screen.getAllByText(mockGetBook.book.title)[0];
     const bookAuthor = screen.queryByText(mockGetBook.book.author);
