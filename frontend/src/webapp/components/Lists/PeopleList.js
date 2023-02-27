@@ -10,42 +10,45 @@ import { avatarColorMap } from '../Constants';
 export default function PeopleList(props) {
 
 	return (
-      props.peopleData.map((person, index) => {
-      return (
-        <ListItem
-          reloadDocument
-          component={RouterLink}
-          to={"/user-profile/" + person.uid}
-          className="list-item"
-          alignItems="flex-start"
-          key={index}
-        >
-          <ListItemAvatar>
-            <Avatar
-              alt={person.username + " avatar"}
-              sx={{ bgcolor: avatarColorMap.get(person.username), width: 40, height: 40 }}
+    props.peopleData === "" ?
+      <></> :
+      Array.isArray(props.peopleData) && props.peopleData.length === 0?
+        <Typography variant="body2"> No users found </Typography> :
+        props.peopleData.map((person, index) => {
+          return (
+            <ListItem
+              reloadDocument
+              component={RouterLink}
+              to={"/user-profile/" + person.uid}
+              className="list-item"
+              alignItems="flex-start"
+              key={index}
             >
-            {person.username.charAt(0)}
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText
-            primary={person.username}
-            secondary={
-              <React.Fragment>
-                <Typography
-                  sx={{ display: 'inline' }}
-                  component="span"
-                  variant="body2"
-                  color="text.primary"
+              <ListItemAvatar>
+                <Avatar
+                  alt={person.username + " avatar"}
+                  sx={{ bgcolor: avatarColorMap.get(person.username), width: 40, height: 40 }}
                 >
-                  bio...
-                </Typography>
-              </React.Fragment>
-            }
-          />
-        </ListItem>
-      )
-    }
-  )
+                {person.username.charAt(0)}
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={person.username}
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {person.bio}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+          )
+        })
   );
 }

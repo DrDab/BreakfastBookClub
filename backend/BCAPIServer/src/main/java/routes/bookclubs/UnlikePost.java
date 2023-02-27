@@ -14,12 +14,12 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class LikePost implements Route {
+public class UnlikePost implements Route {
 
   private FirebaseApp fbApp;
   private Connection sqlConn;
 
-  public LikePost(FirebaseApp fbApp, Connection sqlConn) {
+  public UnlikePost(FirebaseApp fbApp, Connection sqlConn) {
     this.fbApp = fbApp;
     this.sqlConn = sqlConn;
   }
@@ -51,7 +51,7 @@ public class LikePost implements Route {
     String uid = decodedToken.getUid();
 
     try {
-      UserResult res = new User(uid, sqlConn).likePost(postId);
+      UserResult res = new User(uid, sqlConn).unlikePost(postId);
       respJson.addProperty("status", res == UserResult.SUCCESS ? "success" : "failure");
       if (res != UserResult.SUCCESS) {
         respJson.addProperty("failure_reason", String.valueOf(res));

@@ -44,6 +44,7 @@ public class MakePost implements Route {
         !bodyJson.has("title") ||
         !bodyJson.has("body")) {
       respJson.addProperty("status", "failure");
+      respJson.addProperty("failure_reason", "Expected fields are missing!");
       return respJson.toString() + "\n";
     }
 
@@ -60,7 +61,7 @@ public class MakePost implements Route {
     FirebaseToken decodedToken;
 
     try {
-      decodedToken = FirebaseAuth.getInstance()
+      decodedToken = FirebaseAuth.getInstance(fbApp)
           .verifyIdToken(token, true);
     } catch (FirebaseAuthException e) {
       respJson.addProperty("status", "failure");

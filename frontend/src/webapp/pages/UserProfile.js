@@ -19,19 +19,67 @@ export default function UserProfile() {
 
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
   const [userProfileData, setUserProfileData] = React.useState('');
-  const [booksFavoritedData, setBooksFavoritedData] = React.useState('');
+  const [booksSavedData, setBooksSavedData] = React.useState('');
   const [bookClubsJoinedData, setBookClubsJoinedData] = React.useState('');
   const [userPostsData, setUserPostsData] = React.useState('');
   const [userLikedPostsData, setUserLikedPostsData] = React.useState('');
+  const [loggedinUserLikedPostsData, setLoggedinUserLikedPostsData] = React.useState('');
+  const [clickedUserFriendsData, setClickedUserFriendsData] = React.useState('');
+  const [isFriendData, setIsFriendData] = React.useState('');
+  const [isFetchUserProfile, setIsFetchUserProfile] = React.useState(false);
+  const [isFetchPosts, setIsFetchPosts] = React.useState(false);
+  const [isFetchLikedPosts, setIsFetchLikedPosts] = React.useState(false);
+
+  let loggedinUserfriendsData = [
+    {
+      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD",
+      "bio": "bio"
+    }
+  ]
+
+  let clickedUserfriendsData = [
+    {
+      "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
+      "username": "Amanda",
+      "bio": "bio"
+    },
+    {
+      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD",
+      "bio": "bio"
+    },
+    {
+      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+      "username": "zaynab",
+      "bio": "bio"
+    }
+  ]
+
 
   React.useEffect(() => {
-    const handleFetchBooksFavorited = async () => {
+    const handleFetchUserProfile = async () => {
+      let query = "http://localhost:4567/api/get_user?userId=" + uid;
+      try {
+        const response = await fetch(query);
+        const json = await response.json();
+        setUserProfileData(json.user);
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+    handleFetchUserProfile();
+  }, [uid, isFetchUserProfile]);
+
+
+  React.useEffect(() => {
+    const handleFetchBooksSaved = async () => {
       let query = "http://openlibrary.org/search.json?q=good&limit=3";
       try {
         const response = await fetch(query);
         const json = await response.json();
         let formattedData = formatOpenLibraryData(json);
-        setBooksFavoritedData(formattedData)
+        setBooksSavedData(formattedData)
       } catch (error) {
         console.log("error", error);
       }
@@ -49,8 +97,40 @@ export default function UserProfile() {
       }
     }
 
+    // const handleFetchBooksClubsJoined = async () => {
+    //   let query = "http://localhost:4567/api/get_subscribed_clubs?userId=" + uid;
+    //   try {
+    //     const response = await fetch(query);
+    //     const json = await response.json();
+    //     const bookClubs = json.bookClubs;
+    //     setBookClubsJoinedData(bookClubs);
+    //   } catch (error) {
+    //     console.log("error", error);
+    //   }
+    // }
+
+    const handleFetchClickedUserFriends = async () => {
+      if (uid === loggedinUser.uid) {
+        setClickedUserFriendsData(loggedinUserfriendsData);
+      } else {
+        setClickedUserFriendsData(clickedUserfriendsData);
+      }  
+    }
+
+    const handleFetchIsFriend = async () => {
+      setIsFriendData(loggedinUserfriendsData.some(friend => friend.uid === uid));
+    }
+
+    handleFetchBooksSaved();
+    handleFetchBooksClubsJoined();
+    handleFetchClickedUserFriends();
+    handleFetchIsFriend();
+  }, [uid, loggedinUser.uid]);
+
+
+  React.useEffect(() => {
     const handleFetchUserPosts = async () => {
-      let query = "http://localhost:4567/api/list_feed?uid="+ uid;
+      let query = "http://localhost:4567/api/get_posts?userId=" + uid;
       try {
         const response = await fetch(query);
         const json = await response.json();
@@ -64,8 +144,13 @@ export default function UserProfile() {
       }
     }
 
+    handleFetchUserPosts();
+  }, [uid, isFetchPosts]);
+
+
+  React.useEffect(() => {
     const handleFetchLikedPosts = async () => {
-      let query = "http://localhost:4567/api/list_feed";
+      let query = "http://localhost:4567/api/get_liked_posts?user_id=" + uid;
       try {
         const response = await fetch(query);
         const json = await response.json();
@@ -79,84 +164,75 @@ export default function UserProfile() {
       }
     }
 
-    const handleFetchUserProfile = async () => {
-      let query = "http://localhost:4567/api/get_user?userId=" + uid;
+    const handleFetchLoggedinUserLikedPosts = async () => {
+      let query = "http://localhost:4567/api/get_liked_posts?user_id=" + loggedinUser.uid;
       try {
         const response = await fetch(query);
         const json = await response.json();
-        setUserProfileData(json.user);
+        const posts = json.posts;
+        setLoggedinUserLikedPostsData(posts);
       } catch (error) {
         console.log("error", error);
       }
     }
 
+    handleFetchLoggedinUserLikedPosts().then(handleFetchLikedPosts());
+  }, [uid, loggedinUser.uid, isFetchLikedPosts]);
 
-    handleFetchBooksFavorited();
-    handleFetchBooksClubsJoined();
-    handleFetchUserPosts();
-    handleFetchLikedPosts();
-    handleFetchUserProfile();
-  }, [uid]);
 
-  let friendsData =  [
-    {
-      "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
-      "username": "Amanda"
-    },
-    {
-      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-      "username": "VictorD"
-    },
-    {
-      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
-      "username": "zaynab"
-    }
-  ]
 
   return (
     <>
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
-        <UserProfileBanner clickedUserData={userProfileData} friendsData={friendsData}/>
+        <UserProfileBanner 
+          clickedUserData={userProfileData}
+          setIsFriendData={setIsFriendData}
+          isFriendData={isFriendData}
+          clickedUserFriends={clickedUserFriendsData}
+          setIsFetchUserProfile={setIsFetchUserProfile}
+          isFetchUserProfile={isFetchUserProfile}
+        />
       </Grid>
       <Grid item xs={8}>
-        {uid === loggedinUser.uid? <CreatePost/> : <></> }
-        <Stack sx={{ marginBottom: '5rem' }} spacing={2}>
-          <Box>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="basic tabs example">
-                <Tab label="Posts" {...a11yProps(0)} />
-                <Tab label="Liked Posts" {...a11yProps(1)} />
-              </Tabs>
+        {uid === loggedinUser.uid? 
+          <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts}/> : <></> }
+          <Stack sx={{ marginBottom: '5rem' }} spacing={2}>
+            <Box>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="basic tabs example">
+                  <Tab onClick={() => {setIsFetchLikedPosts(!isFetchLikedPosts); setIsFetchPosts(!isFetchPosts)}} label="Posts" {...a11yProps(0)} />
+                  <Tab onClick={() => setIsFetchLikedPosts(!isFetchLikedPosts)} label="Liked Posts" {...a11yProps(1)} />
+                </Tabs>
+              </Box>
+              <TabPanel value={tabIndexValue} index={0}>
+                <PostList postsData={userPostsData} loggedinUserLikedPostsData={loggedinUserLikedPostsData} />
+              </TabPanel>
+              <TabPanel value={tabIndexValue} index={1}>
+                <PostList postsData={userLikedPostsData} loggedinUserLikedPostsData={loggedinUserLikedPostsData} />
+              </TabPanel>
             </Box>
-            <TabPanel value={tabIndexValue} index={0}>
-              <PostList postsData={userPostsData} />
-            </TabPanel>
-            <TabPanel value={tabIndexValue} index={1}>
-              <PostList postsData={userLikedPostsData} />
-            </TabPanel>
-          </Box>
-        </Stack>
+          </Stack>
+        </Grid>
+        <Grid item xs={4}>
+          <Stack spacing={2}>
+            <div>
+              <Typography variant="overline">
+                Book Clubs
+              </Typography>
+              <BookList bookData={bookClubsJoinedData} />
+            </div>
+            <div>
+              <Typography variant="overline">
+                Saved Books
+              </Typography>
+              <BookList bookData={booksSavedData} />
+            </div>
+          </Stack>
+        </Grid>
       </Grid>
-      <Grid item xs={4}>
-        <Stack spacing={2}>
-          <div>
-            <Typography variant="overline">
-              Book Clubs
-            </Typography>
-            <BookList bookData={bookClubsJoinedData} />
-          </div>
-          <div>
-            <Typography variant="overline">
-              Saved Books
-            </Typography>
-            <BookList bookData={booksFavoritedData} />
-          </div>
-        </Stack>
-      </Grid>
-    </Grid>
-  </Box>
-  </>
+    </Box>
+    </>
   );
 };

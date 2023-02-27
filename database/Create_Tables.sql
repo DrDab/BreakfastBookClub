@@ -7,10 +7,10 @@ CREATE TABLE user_info (
 
 -- DROP TABLE books;
 CREATE TABLE books (
-	book_key VARCHAR (20) PRIMARY KEY,
-	book_title VARCHAR (40),
-	book_author VARCHAR (40),
-	book_cover VARCHAR (100));
+	book_key VARCHAR(20) PRIMARY KEY,
+	book_title VARCHAR(40),
+	book_author VARCHAR(40),
+	book_cover VARCHAR(100));
 
 -- DROP TABLE book_posts;
 CREATE TABLE book_posts (
@@ -39,25 +39,28 @@ CREATE TABLE user_clubs (
 -- DROP TABLE saved_books;
 CREATE TABLE saved_books (
 	user_id VARCHAR(50),
-	book_key VARCHAR (20)
+	book_key VARCHAR(20)
 );
 
 -- DROP TABLE sent_recommendations;
 CREATE TABLE sent_recommendations (
 	sender_username VARCHAR(50),
 	recipient_username VARCHAR(50),
-	book_key VARCHAR (20)
+	book_key VARCHAR(20)
 );
 
+-- DROP TABLE liked_posts;
 CREATE TABLE liked_posts (
     user_id VARCHAR(50),
     post_id VARCHAR(50)
 );
 
+-- DROP TABLE user_profiles;
 CREATE TABLE user_profiles (
 	user_id VARCHAR(50) PRIMARY KEY,
     username VARCHAR(50),
     bio VARCHAR(750),
     thumbnail VARCHAR(100)
 );
+
 
