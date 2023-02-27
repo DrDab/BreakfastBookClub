@@ -13,7 +13,7 @@ export default function PeopleList(props) {
     props.peopleData === "" ?
       <></> :
       Array.isArray(props.peopleData) && props.peopleData.length === 0?
-        <Typography> No members yet </Typography>:
+        <Typography variant="body2"> No users found </Typography> :
         props.peopleData.map((person, index) => {
           return (
             <ListItem

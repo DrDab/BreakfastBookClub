@@ -104,7 +104,7 @@ export default function Post(props) {
           <FavoriteIcon />
         </IconButton>
         <Typography variant='caption'>
-          {numberOfLikes + (numberOfLikes == 1 ? " like" : " likes")}
+          {numberOfLikes + (numberOfLikes === 1 ? " like" : " likes")}
         </Typography>
       </CardActions>
     </Card>

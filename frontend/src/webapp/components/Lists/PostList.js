@@ -8,7 +8,7 @@ export default function PostList(props) {
     props.postsData === "" ? 
       <PostListSkeleton/> :
       Array.isArray(props.postsData) && props.postsData.length === 0? 
-        <Typography> No posts yet </Typography>:
+        <Typography variant="body2"> No posts yet </Typography>:
         props.postsData.map((post, index) => {
           return (
             <Post
