@@ -50,15 +50,18 @@ export default function Home() {
   let popularPeopleData = [
     {
       "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
-      "username": "Amanda"
+      "username": "Amanda",
+      "bio": "bio"
     },
     {
       "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-      "username": "VictorD"
+      "username": "VictorD",
+      "bio": "bio"
     },
     {
       "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
-      "username": "zaynab"
+      "username": "zaynab",
+      "bio": "bio"
     }
   ]
 

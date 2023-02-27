@@ -21,7 +21,7 @@ export default function UserProfileBanner(props) {
   React.useEffect(() => {
     setIsOverBioLength(bio.length > 1000);
   },[bio]);
-    
+
   const clearFormValues = () => {
     setBio(props.clickedUserData.bio? props.clickedUserData.bio : "");
     setIsOverBioLength(false);
@@ -32,7 +32,7 @@ export default function UserProfileBanner(props) {
     clearFormValues();
   };
     
-  const fetchPut = (token, bio) => {
+  const handleFetchPostBio = (token, bio) => {
     let url = "http://localhost:4567/api/update_user?token="+token+"&bio="+bio;
     fetch(url, {
       method: 'POST',
@@ -54,11 +54,41 @@ export default function UserProfileBanner(props) {
     if (!isOverBioLength) {
       setShowEditBioModal(false);
       auth.currentUser?.getIdToken(true).then(function(idToken){
-        sessionStorage.setItem("sendingPut", "token="+ idToken +",bio="+bio);
-        fetchPut(idToken, bio);
+        sessionStorage.setItem("postNewBio", "token="+ idToken +",bio="+bio);
+        handleFetchPostBio(idToken, bio);
       })
       clearFormValues();
     }
+  };
+
+
+  const handleFetchPostFriendStatus = (status) => {
+    let url = "http://localhost:4567/api/" + status + "?userId=" + loggedinUser.uid + "&friendUserId=" + props.clickedUserData.uid;
+    console.log(url)
+    // fetch(url, {
+    //   method: 'POST',
+    //   mode: 'no-cors',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    // })
+    // .then((data) => {
+    //   console.log('Success:', data);
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
+
+    console.log(status);
+  }
+
+  const handleAddRemoveFriend = () => {
+    if (props.isFriendData){
+      handleFetchPostFriendStatus("remove_friend");
+    } else {
+      handleFetchPostFriendStatus("add_friend");
+    }
+    props.setIsFriendData(!props.isFriendData);
   };
 
   return (
@@ -89,8 +119,13 @@ export default function UserProfileBanner(props) {
                   >
                     Edit Profile
                   </Button>:
-                  <Button disableElevation variant="contained" size="small">
-                    Add Friend
+                  <Button 
+                    disableElevation
+                    variant={props.isFriendData ? "outlined" : "contained"}
+                    size="small"
+                    onClick={handleAddRemoveFriend}
+                  >
+                    {props.isFriendData ? "Remove Friend" : "Add Friend"}
                   </Button>
                 } 
                 <Button 
@@ -119,7 +154,7 @@ export default function UserProfileBanner(props) {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Friends
           </Typography>
-          <PeopleList peopleData={props.friendsData}/>
+          <PeopleList peopleData={props.clickedUserFriends}/>
         </Box>
       </Modal>
 
