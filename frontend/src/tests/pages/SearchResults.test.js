@@ -6,7 +6,8 @@ import { MemoryRouter } from 'react-router-dom';
 
 const mockLoggedInUser =  {
   "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
-  "username": "Amanda"
+  "username": "Amanda",
+  "bio": "bio"
 }
 
 const mockSearchValue = "The Lord of the Rings";

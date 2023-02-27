@@ -6,7 +6,8 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
 const mockLoggedInUser = {
   "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
-  "username": "Amanda"
+  "username": "Amanda",
+  "bio": "bio"
 }
 
 // saved books, book clubs
@@ -23,7 +24,7 @@ const mockGetBooks = {
   ]
 }
 
-// user posts, liked posts
+// user posts, liked posts, logged in user liked posts
 const mockGetPosts = {
   "posts" : [
     {
@@ -64,11 +65,13 @@ describe("Renders User Profile page", () => {
 
     const makeFetchResponse = value => ({ json: async() => value })
     const mockFetch = jest.fn()
-      .mockReturnValueOnce(makeFetchResponse(mockGetBooks))
-      .mockReturnValueOnce(makeFetchResponse(mockGetBooks))
-      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
-      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
       .mockReturnValueOnce(makeFetchResponse(mockGetUser))
+      .mockReturnValueOnce(makeFetchResponse(mockGetBooks))
+      .mockReturnValueOnce(makeFetchResponse(mockGetBooks))
+      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
+      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
+      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
+     
     global.fetch = mockFetch
 
     await act(async () => {
@@ -82,7 +85,7 @@ describe("Renders User Profile page", () => {
       );
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(5);
+    expect(mockFetch).toHaveBeenCalledTimes(6);
 
     const userName = screen.getAllByText(mockGetUser.user.username)[0];
     const userBio = screen.queryByText(mockGetUser.user.bio);

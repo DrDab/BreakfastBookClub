@@ -78,10 +78,9 @@ public class BCServerMain {
 
     Spark.post("/api/like_post", new LikePost(fbApp, sqlConn));
     Spark.post("/api/unlike_post", new UnlikePost(fbApp, sqlConn));
-    Spark.post("/api/get_liked_posts", new GetLikedPosts(fbApp, sqlConn));
+    Spark.get("/api/get_liked_posts", new GetLikedPosts(fbApp, sqlConn));
 
     Spark.get("/api/get_user", new GetUserProfile(fbApp, sqlConn));
-
     Spark.post("/api/update_user", new SetUserProfile(fbApp, sqlConn));
 
     Spark.get("/api/get_members", new GetMembers(fbApp, sqlConn));
