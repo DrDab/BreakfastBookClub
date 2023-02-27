@@ -92,7 +92,7 @@ public class User {
   private PreparedStatement getLikedPostsStatement;
 
   private static final String COUNT_LIKED_POSTS_BY_PID =
-      "SELECT COUNT(*) AS count FROM liked_posts WHERE post_id = ?";
+      "SELECT COUNT(*) AS count FROM liked_posts WHERE post_id = ? AND user_id = ?";
   private PreparedStatement countLikedPostsByPidStatement;
 
   private static final String GET_POSTS_BY_ID_STUB =
@@ -592,6 +592,7 @@ public class User {
   private int getNumLikesFromUser(String post_id) throws SQLException {
     countLikedPostsByPidStatement.clearParameters();
     countLikedPostsByPidStatement.setString(1, post_id);
+    countLikedPostsByPidStatement.setString(2, user);
     ResultSet rs = countLikedPostsByPidStatement.executeQuery();
     rs.next();
     int count = rs.getInt("count");
