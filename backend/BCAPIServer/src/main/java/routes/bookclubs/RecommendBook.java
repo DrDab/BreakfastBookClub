@@ -35,15 +35,15 @@ public class RecommendBook implements Route {
             return respJson.toString() + "\n";
         }
 
-        // check to make sure request has necessary parameters
-        if (!body.has("token_sender") || !body.has("token_recipient") ||
+        // check to make sure request has necessary parameters (token, recipient username, and book_key)
+        if (!body.has("token") ||
+            !body.has("recipient_username") ||
             !body.has("book_key")) {
             respJson.addProperty("status", "failure");
             return respJson.toString() + "\n";
         }
 
-        String token_sender = body.get("token_sender").getAsString();
-        String token_recipeint = body.get("token_recipient").getAsString();
+        String token = body.get("token").getAsString();
 
         FirebaseToken decodedTokenSender;
 
@@ -51,27 +51,16 @@ public class RecommendBook implements Route {
         // authenticating user
         try {
             decodedTokenSender = FirebaseAuth.getInstance()
-                    .verifyIdToken(token_sender, true);
+                    .verifyIdToken(token, true);
         } catch (FirebaseAuthException e) {
             respJson.addProperty("status", "failure");
             respJson.addProperty("failure_reason", String.valueOf(e.getAuthErrorCode()));
             return respJson.toString() + "\n";
         }
-
-        FirebaseToken decodedTokenRecipient;
-        try {
-            decodedTokenRecipient = FirebaseAuth.getInstance()
-                    .verifyIdToken(token_recipeint, true);
-        } catch (FirebaseAuthException e) {
-            respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", String.valueOf(e.getAuthErrorCode()));
-            return respJson.toString() + "\n";
-        }
-
 
         // getting usernames and book id and adding to the backend
         String senderUsername = decodedTokenSender.getUid();
-        String recipientUsername = decodedTokenRecipient.getUid();
+        String recipientUsername = body.get("recipient_username").getAsString();
         String bookKey = body.get("book_key").getAsString();
         User sender = new User(senderUsername, sqlConn);
         User recipient = new User(recipientUsername, sqlConn);
