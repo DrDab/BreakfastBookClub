@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import types.BookPost;
+import utils.ResultSetParsers;
 
 public class Posts {
 
@@ -24,22 +25,43 @@ public class Posts {
       "UPDATE book_posts SET likes = likes + 1 WHERE post_id = ?";
   private final PreparedStatement likePostByIdStatement;
 
+  private static final String UNLIKE_POST_BY_ID_SQL =
+      "UPDATE book_posts SET likes = likes - 1 WHERE post_id = ? AND likes > 0";
+  private final PreparedStatement unlikePostByIdStatement;
+
   public Posts(Connection conn) throws SQLException {
     this.conn = conn;
     allPostsStatement = conn.prepareStatement(ALL_POSTS_SQL);
     getPostByIdStatement = conn.prepareStatement(GET_POST_BY_ID_SQL);
     likePostByIdStatement = conn.prepareStatement(LIKE_POST_BY_ID_SQL);
+    unlikePostByIdStatement = conn.prepareStatement(UNLIKE_POST_BY_ID_SQL);
   }
 
-  public boolean likePostByID(String postID) {
+  public boolean increaseLikedPostByID(String postID) {
     if (postID == null) {
       throw new IllegalArgumentException("postId cannot be null!");
     }
 
     try {
-      likePostByIdStatement.clearParameters();;
+      likePostByIdStatement.clearParameters();
       likePostByIdStatement.setString(1, postID);
       return likePostByIdStatement.executeUpdate() == 1;
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return false;
+  }
+
+  public boolean decreaseLikedPostByID(String postID) {
+    if (postID == null) {
+      throw new IllegalArgumentException("postId cannot be null!");
+    }
+
+    try {
+      unlikePostByIdStatement.clearParameters();
+      unlikePostByIdStatement.setString(1, postID);
+      return unlikePostByIdStatement.executeUpdate() == 1;
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -85,30 +107,15 @@ public class Posts {
    * Gets the list all the books posts
    */
   public List<BookPost> listAllPosts() {
-    List<BookPost> posts = new ArrayList<>();
     try {
       allPostsStatement.clearParameters();
       ResultSet rs = allPostsStatement.executeQuery();
-
-      while (rs.next()) {
-        String userId = rs.getString("user_id");
-        String bookKey = rs.getString("book_key");
-        String postTitle = rs.getString("post_title");
-        String post = rs.getString("post");
-        String tag = rs.getString("tag");
-        String postId = rs.getString("post_id");
-        long date = rs.getLong("post_date");
-        long likes = rs.getLong("likes");
-
-        BookPost bp = new BookPost(userId, bookKey, postTitle, post, tag, postId, date, likes);
-        posts.add(bp);
-      }
-      rs.close();
+      return ResultSetParsers.getBookPostsFromResultSet(rs);
     } catch (SQLException e) {
       e.printStackTrace();
     }
 
-    return posts;
+    return new ArrayList<>();
   }
 
 }

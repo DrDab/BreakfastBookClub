@@ -60,7 +60,7 @@ public class MakePost implements Route {
     FirebaseToken decodedToken;
 
     try {
-      decodedToken = FirebaseAuth.getInstance()
+      decodedToken = FirebaseAuth.getInstance(fbApp)
           .verifyIdToken(token, true);
     } catch (FirebaseAuthException e) {
       respJson.addProperty("status", "failure");
