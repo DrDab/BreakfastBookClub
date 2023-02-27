@@ -65,25 +65,15 @@ export default function BookClub() {
     }
 
     const handleFetchBookClubsMembers = async () => {
-      let membersData = [
-        {
-          "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
-          "username": "Amanda",
-          "bio": "bio"
-        },
-        {
-          "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-          "username": "VictorD",
-          "bio": "bio"
-        },
-        {
-          "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
-          "username": "zaynab",
-          "bio": "bio"
-        }
-      ]
-
-      setBookClubMembersData(membersData);
+      let query = "http://localhost:4567/api/get_members?book_key=" + bid ;
+      try {
+        const response = await fetch(query);
+        const json = await response.json();
+        const members = json.members;
+        setBookClubMembersData(members);
+      } catch (error) {
+        console.log("error", error);
+      }
     }
 
     const handleFetchLoggedinUserLikedPosts = async () => {
