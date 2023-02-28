@@ -13,11 +13,29 @@ import { tagsList, avatarColorMap } from './Constants';
 import { auth } from "../../FirebaseConfig"
 
 export default function Post(props) {
+  let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
   
-  const [isPostLiked, setIsPostLiked] = React.useState(props.isPostLiked);
+  const [isPostLikedData, setIsPostLikedData] = React.useState(false);
   const [numberOfLikes, setNumberOfLikes] = React.useState(props.post.likes);
 
+
+  React.useEffect(() => {
+    const handleFetchIsPostLiked = async () => {
+      let query = "http://localhost:4567/api/get_is_user_liked_posts?user_id="+ loggedinUser.uid + "&post_id=" + props.post.post_id;
+      try {
+        const response = await fetch(query);
+        const json = await response.json();
+        const isLiked = json.isUserLikedPost;
+        setIsPostLikedData(isLiked === "1");
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+    handleFetchIsPostLiked();
+  },[loggedinUser.uid, props.post.post_id]);
+
   const handleFetchPostLikeStatus = (token, postId, status) => {
+    console.log(status)
     let url = "http://localhost:4567/api/"+ status + "?token=" + token + "&post_id=" + postId;
     fetch(url, {
       method: 'POST',
@@ -36,12 +54,12 @@ export default function Post(props) {
 
   const handleLikeUnlikePost = (postId) => {
     auth.currentUser?.getIdToken(true).then(function(idToken){
-      if (isPostLiked){
+      if (isPostLikedData){
         handleFetchPostLikeStatus(idToken, postId, "unlike_post");
       } else {
         handleFetchPostLikeStatus(idToken, postId, "like_post"); 
       }
-      setIsPostLiked(!isPostLiked);
+      setIsPostLikedData(!isPostLikedData);
     })
   }
 
@@ -98,7 +116,7 @@ export default function Post(props) {
       <CardActions disableSpacing>
         <IconButton 
           onClick={() => handleLikeUnlikePost(props.post.post_id)}
-          sx={{color: isPostLiked ? "red" : "grey"}}
+          sx={{color: isPostLikedData ? "red" : "grey"}}
           aria-label="like"
         >
           <FavoriteIcon />

@@ -23,7 +23,6 @@ export default function UserProfile() {
   const [bookClubsJoinedData, setBookClubsJoinedData] = React.useState('');
   const [userPostsData, setUserPostsData] = React.useState('');
   const [userLikedPostsData, setUserLikedPostsData] = React.useState('');
-  const [loggedinUserLikedPostsData, setLoggedinUserLikedPostsData] = React.useState('');
   const [clickedUserFriendsData, setClickedUserFriendsData] = React.useState('');
   const [isFriendData, setIsFriendData] = React.useState('');
   const [isFetchUserProfile, setIsFetchUserProfile] = React.useState(false);
@@ -164,19 +163,7 @@ export default function UserProfile() {
       }
     }
 
-    const handleFetchLoggedinUserLikedPosts = async () => {
-      let query = "http://localhost:4567/api/get_liked_posts?user_id=" + loggedinUser.uid;
-      try {
-        const response = await fetch(query);
-        const json = await response.json();
-        const posts = json.posts;
-        setLoggedinUserLikedPostsData(posts);
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-
-    handleFetchLoggedinUserLikedPosts().then(handleFetchLikedPosts());
+    handleFetchLikedPosts();
   }, [uid, loggedinUser.uid, isFetchLikedPosts]);
 
 
@@ -202,15 +189,15 @@ export default function UserProfile() {
             <Box>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="basic tabs example">
-                  <Tab onClick={() => {setIsFetchLikedPosts(!isFetchLikedPosts); setIsFetchPosts(!isFetchPosts)}} label="Posts" {...a11yProps(0)} />
+                  <Tab onClick={() => setIsFetchPosts(!isFetchPosts)} label="Posts" {...a11yProps(0)} />
                   <Tab onClick={() => setIsFetchLikedPosts(!isFetchLikedPosts)} label="Liked Posts" {...a11yProps(1)} />
                 </Tabs>
               </Box>
               <TabPanel value={tabIndexValue} index={0}>
-                <PostList postsData={userPostsData} loggedinUserLikedPostsData={loggedinUserLikedPostsData} />
+                <PostList postsData={userPostsData} />
               </TabPanel>
               <TabPanel value={tabIndexValue} index={1}>
-                <PostList postsData={userLikedPostsData} loggedinUserLikedPostsData={loggedinUserLikedPostsData} />
+                <PostList postsData={userLikedPostsData} />
               </TabPanel>
             </Box>
           </Stack>
