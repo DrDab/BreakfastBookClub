@@ -23,6 +23,9 @@ import routes.bookclubs.LikePost;
 import routes.bookclubs.MakePost;
 import routes.bookclubs.UnlikePost;
 import routes.bookmgmt.GetBook;
+import routes.friends.AddFriend;
+import routes.friends.ListFriends;
+import routes.friends.RemoveFriend;
 import routes.profile.GetUserProfile;
 import routes.profile.SetUserProfile;
 import spark.Spark;
@@ -84,6 +87,10 @@ public class BCServerMain {
     Spark.post("/api/update_user", new SetUserProfile(fbApp, sqlConn));
 
     Spark.get("/api/get_members", new GetMembers(fbApp, sqlConn));
+
+    Spark.get("/api/list_friends", new ListFriends(fbApp, sqlConn));
+    Spark.get("/api/add_friend", new AddFriend(fbApp, sqlConn));
+    Spark.get("/api/remove_friend", new RemoveFriend(fbApp, sqlConn));
   }
 
   @SuppressWarnings("deprecation")
