@@ -93,6 +93,7 @@ public class Books {
             while (result.next()) {
                 Recommendation rec = new Recommendation(result.getString("sender_username"),
                         result.getString("book_key"));
+                bookRecs.add(rec);
             }
             result.close();
         } catch (SQLException e) {
