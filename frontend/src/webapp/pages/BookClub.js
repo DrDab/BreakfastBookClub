@@ -23,6 +23,7 @@ export default function BookClub() {
   const [bookProfileData, setBookProfileData] = React.useState('');
   const [isBookClubsJoinedData, setIsBookClubsJoinedData] = React.useState(false);
   const [bookClubMembersData, setBookClubMembersData] = React.useState('');
+  const [loggedinUserFriendsData, setLoggedinUserFriendsData] = React.useState('');
   const [isFetchPosts, setIsFetchPosts] = React.useState(false);
 
 
@@ -75,9 +76,30 @@ export default function BookClub() {
       }
     }
 
+    // for send recs
+    const handleFetchLoggedInUserFriends = async () => {
+      // let query = "http://localhost:4567/api/get_friends?user_id=" + loggedinUser.uid;
+      try {
+        // const response = await fetch(query);
+        // const json = await response.json();
+        // const friends = json.friends;
+        let friends = [
+          {
+            "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+            "username": "VictorD",
+            "bio": "bio"
+          }
+        ]
+        setLoggedinUserFriendsData(friends);
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+
     handleFetchBookProfile();
     handleFetchIsBookClubsJoined();
     handleFetchBookClubsMembers();
+    handleFetchLoggedInUserFriends();
   },[bid, loggedinUser.uid]);
 
 
@@ -136,7 +158,7 @@ export default function BookClub() {
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
-        <BookClubBanner bookData={bookProfileData}/>
+        <BookClubBanner bookData={bookProfileData} loggedinUserFriendsData={loggedinUserFriendsData}/>
       </Grid>
       <Grid item xs={8}>
         <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />

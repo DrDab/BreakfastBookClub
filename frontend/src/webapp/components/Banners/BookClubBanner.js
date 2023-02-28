@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import Modal from '@mui/material/Modal';
@@ -17,22 +16,6 @@ export default function BookClubBanner(props) {
   const [showRecomendModal, setShowRecomendModal] = React.useState(false);
   const [selectFriendUserId, setSelectFriendUserId] = React.useState('');
   const [isMissingFields, setIsMissingFields] = React.useState(true);
-
-
-  let friendsData = [
-    {
-      "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
-      "username": "Amanda"
-    },
-    {
-      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-      "username": "VictorD"
-    },
-    {
-      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
-      "username": "zaynab"
-    }
-  ]
 
   React.useEffect(() => {
     setIsMissingFields(selectFriendUserId === "");
@@ -140,9 +123,12 @@ export default function BookClubBanner(props) {
                 <MenuItem value="">
                   <em>Choose Friend</em>
                 </MenuItem>
-                {friendsData.map((friend, index) => {
-                  return (<MenuItem key={index} value={friend.uid}>{friend.username}</MenuItem>)
-                })}
+                {props.loggedinUserFriendsData !== "" ?
+                  props.loggedinUserFriendsData.map((friend, index) => {
+                    return (<MenuItem key={index} value={friend.uid}>{friend.username}</MenuItem>)
+                  })
+                  : <></>
+                }
               </Select>
             </FormControl>
             <Stack justifyContent="end" direction="row" spacing={1}>

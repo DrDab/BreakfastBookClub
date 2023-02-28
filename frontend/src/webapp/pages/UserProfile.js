@@ -29,32 +29,6 @@ export default function UserProfile() {
   const [isFetchPosts, setIsFetchPosts] = React.useState(false);
   const [isFetchLikedPosts, setIsFetchLikedPosts] = React.useState(false);
 
-  let loggedinUserfriendsData = [
-    {
-      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-      "username": "VictorD",
-      "bio": "bio"
-    }
-  ]
-
-  let clickedUserfriendsData = [
-    {
-      "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
-      "username": "Amanda",
-      "bio": "bio"
-    },
-    {
-      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-      "username": "VictorD",
-      "bio": "bio"
-    },
-    {
-      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
-      "username": "zaynab",
-      "bio": "bio"
-    }
-  ]
-
 
   React.useEffect(() => {
     const handleFetchUserProfile = async () => {
@@ -85,6 +59,16 @@ export default function UserProfile() {
     }
 
     const handleFetchBooksClubsJoined = async () => {
+      // let query = "http://localhost:4567/api/get_subscribed_clubs?userId=" + uid;
+      // try {
+      //   const response = await fetch(query);
+      //   const json = await response.json();
+      //   const bookClubs = json.bookClubs;
+      //   setBookClubsJoinedData(bookClubs);
+      // } catch (error) {
+      //   console.log("error", error);
+      // }
+
       let query = "http://openlibrary.org/search.json?q=george+orwell&limit=4";
       try {
         const response = await fetch(query);
@@ -96,28 +80,61 @@ export default function UserProfile() {
       }
     }
 
-    // const handleFetchBooksClubsJoined = async () => {
-    //   let query = "http://localhost:4567/api/get_subscribed_clubs?userId=" + uid;
-    //   try {
-    //     const response = await fetch(query);
-    //     const json = await response.json();
-    //     const bookClubs = json.bookClubs;
-    //     setBookClubsJoinedData(bookClubs);
-    //   } catch (error) {
-    //     console.log("error", error);
-    //   }
-    // }
-
     const handleFetchClickedUserFriends = async () => {
-      if (uid === loggedinUser.uid) {
-        setClickedUserFriendsData(loggedinUserfriendsData);
-      } else {
-        setClickedUserFriendsData(clickedUserfriendsData);
-      }  
+      // let query = "http://localhost:4567/api/get_friends?user_id=" + uid;
+      try {
+        // const response = await fetch(query);
+        // const json = await response.json();
+        // const friends = json.friends;
+        let loggedinUserfriends = [
+          {
+            "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+            "username": "VictorD",
+            "bio": "bio"
+          }
+        ]
+
+        let clickedUserfriends = [
+          {
+            "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+            "username": "VictorD",
+            "bio": "bio"
+          },
+          {
+            "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+            "username": "zaynab",
+            "bio": "bio"
+          }
+        ]
+        
+        if (uid === loggedinUser.uid) {
+          setClickedUserFriendsData(loggedinUserfriends);
+        } else {
+          setClickedUserFriendsData(clickedUserfriends);
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
     }
 
     const handleFetchIsFriend = async () => {
-      setIsFriendData(loggedinUserfriendsData.some(friend => friend.uid === uid));
+      // let query = "http://localhost:4567/api/get_friends?user_id=" + loggedinUser.uid;
+      try {
+        // const response = await fetch(query);
+        // const json = await response.json();
+        // const loggedinUserfriends = json.friends;
+
+        let loggedinUserfriends = [
+          {
+            "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+            "username": "VictorD",
+            "bio": "bio"
+          }
+        ]
+        setIsFriendData(loggedinUserfriends.some(friend => friend.uid === uid));
+      } catch (error) {
+        console.log("error", error);
+      }
     }
 
     handleFetchBooksSaved();
