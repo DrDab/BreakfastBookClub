@@ -7,6 +7,7 @@ import daos.Books;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import types.Recommendation;
 
 import java.sql.Connection;
 import java.util.List;
@@ -33,8 +34,8 @@ public class GetRecommendations implements Route {
         }
 
         // getting list of book ids that have been recommended to user
-        List<String> bookRequests = new Books(sqlConn).bookRecommendations(searchRecepientID);
-        respJson.add("bookIDs", new Gson().toJsonTree(bookRequests));
+        List<Recommendation> bookRequests = new Books(sqlConn).bookRecommendations(searchRecepientID);
+        respJson.add("recommendations", new Gson().toJsonTree(bookRequests));
         respJson.addProperty("status", "success");
         return respJson.toString() + "\n";
 
