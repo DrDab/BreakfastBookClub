@@ -27,21 +27,15 @@ public class SaveBook implements Route {
     public Object handle(Request request, Response response) throws Exception {
         JsonObject respJson = new JsonObject();
 
-        JsonObject body = BCGsonUtils.fromStr(request.body());
+        String token = request.queryParams("token");
+        String bookKey = request.queryParams("book_key");
 
-        if (body == null) {
+        if (token == null || bookKey == null) {
             respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "Body is not valid JSON!");
+            respJson.addProperty("failure_reason", "Need to provide a token and / or book key");
             return respJson.toString() + "\n";
         }
 
-        if (!body.has("token") || !body.has("book_key")) {
-            respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "JSON doesn't have necessary parameters.");
-            return respJson.toString() + "\n";
-        }
-
-        String token = body.get("token").getAsString();
 
         FirebaseToken decodedTokenSender;
         // authenticating user
@@ -54,7 +48,6 @@ public class SaveBook implements Route {
             return respJson.toString() + "\n";
         }
         String user = decodedTokenSender.getUid();
-        String bookKey = body.get("book_key").getAsString();
         UserResult result = new Books(sqlConn).saveBook(user, bookKey);
 
         if (result != UserResult.SUCCESS) {

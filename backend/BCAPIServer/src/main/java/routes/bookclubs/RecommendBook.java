@@ -37,7 +37,7 @@ public class RecommendBook implements Route {
 
         // check to make sure request has necessary parameters (token, recipient username, and book_key)
         if (!body.has("token") ||
-            !body.has("recipient_username") ||
+            !body.has("recipient_userId") ||
             !body.has("book_key")) {
             respJson.addProperty("status", "failure");
             respJson.addProperty("failure_reason", "Body doesn't have necessary parameters");
@@ -61,7 +61,7 @@ public class RecommendBook implements Route {
 
         // getting usernames and book id and adding to the backend
         String senderUsername = decodedTokenSender.getUid();
-        String recipientUsername = body.get("recipient_username").getAsString();
+        String recipientUsername = body.get("recipient_userId").getAsString();
         String bookKey = body.get("book_key").getAsString();
         User sender = new User(senderUsername, sqlConn);
         User recipient = new User(recipientUsername, sqlConn);

@@ -23,7 +23,7 @@ public class GetRecommendations implements Route {
 
         JsonObject respJson = new JsonObject();
 
-        String searchRecepientID = request.queryParams("recipient_username");
+        String searchRecepientID = request.queryParams("recipient_userId");
 
         if (searchRecepientID == null) {
             respJson.addProperty("status", "failure");
