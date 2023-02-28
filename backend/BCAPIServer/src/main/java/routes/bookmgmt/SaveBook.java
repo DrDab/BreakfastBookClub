@@ -43,8 +43,6 @@ public class SaveBook implements Route {
         String token = body.get("token").getAsString();
 
         FirebaseToken decodedTokenSender;
-
-
         // authenticating user
         try {
             decodedTokenSender = FirebaseAuth.getInstance()
