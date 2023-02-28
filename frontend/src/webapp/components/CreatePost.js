@@ -17,9 +17,8 @@ import { auth } from "../../FirebaseConfig"
 import { Link as RouterLink } from "react-router-dom";
 import { tagsList, avatarColorMap } from './Constants';
 
-export default function CreatePost() {
-  let yourUserId = JSON.parse(sessionStorage.yourUser);
-  let yourUser = yourUserId === 'EHDvyZymtRSbciB7uXHv1mN5O9r2' ? 'Amanda': yourUserId;
+export default function CreatePost(props) {
+  let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
 
   const [showPostModal, setShowPostModal] = React.useState(false);
   const [bookClub, setBookClub] = React.useState("");
@@ -29,7 +28,6 @@ export default function CreatePost() {
   const [isMissingFields, setIsMissingFields] = React.useState(true);
   const [isOverBodyLength, setIsOverBodyLength] = React.useState(false);
   const [isOverTitleLength, setIsOverTitleLength] = React.useState(false);
-
 
   let bookClubsJoinedData = [
     {title: "Animal Farm", key: "OL1168007W"},
@@ -59,7 +57,8 @@ export default function CreatePost() {
   };
 
   const fetchPost = (jsonData) => {
-    fetch('http://localhost:4567/api/make_post', {
+    let url = "http://localhost:4567/api/make_post";
+    fetch(url, {
       method: 'POST',
       mode: 'no-cors',
       headers: {
@@ -69,6 +68,7 @@ export default function CreatePost() {
     })
     .then((data) => {
       console.log('Success:', data);
+      props.setIsFetchPosts(!props.isFetchPosts)
     })
     .catch((error) => {
       console.log(error);
@@ -91,10 +91,6 @@ export default function CreatePost() {
         fetchPost(jsonData);
       })
 
-      setTimeout(function(){
-        window.location.reload();
-      }, 3000);
-
       clearFormValues();
     }
   };
@@ -107,11 +103,11 @@ export default function CreatePost() {
             <Avatar
               reloadDocument
               component={RouterLink}
-              to={"/user-profile/" + yourUserId}
-              sx={{ bgcolor: avatarColorMap.get(yourUser), width: 50, height: 50, textDecoration: "none" }}
-              aria-label={yourUser + " avatar"}
+              to={"/user-profile/" + loggedinUser.uid}
+              sx={{ bgcolor: avatarColorMap.get(loggedinUser.username), width: 50, height: 50, textDecoration: "none" }}
+              aria-label={loggedinUser.username + " avatar"}
             >
-             {yourUser.charAt(0)}
+             {loggedinUser.username.charAt(0)}
             </Avatar>
             <TextField
               InputProps={{ disableUnderline: true }}

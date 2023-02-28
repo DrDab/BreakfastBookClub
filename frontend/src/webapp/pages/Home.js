@@ -10,8 +10,11 @@ import PostList from '../components/Lists/PostList';
 import { formatOpenLibraryData } from '../components/Utils';
 
 export default function Home() {
+  let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
+
   const [popularBooksData, setPopularBooksData] = React.useState("");
   const [homePostsData, setHomePostsData] = React.useState("");
+  const [isFetchPosts, setIsFetchPosts] = React.useState(false);
 
   React.useEffect(() => {
     const handleFetchPopularBooks = async () => {
@@ -25,7 +28,11 @@ export default function Home() {
         console.log("error", error);
       }
     }
-    
+
+    handleFetchPopularBooks();
+  },[loggedinUser.uid]);
+
+  React.useEffect(() => {
     const handleFetchPosts = async () => {
       let query = "http://localhost:4567/api/list_feed";
       try {
@@ -40,24 +47,32 @@ export default function Home() {
         console.log("error", error);
       }
     }
-    handleFetchPopularBooks();
     handleFetchPosts();
-}, []);
+  },[isFetchPosts]);
 
-  let popularPeopleData = [];
-  for (let i = 0; i < 1; i++ ) {
-    popularPeopleData.push("Jesse");
-    popularPeopleData.push("Andrea");
-    popularPeopleData.push("Jocelyn");
-    popularPeopleData.push("Sanjana");
-    popularPeopleData.push("Zaynab");
-  }
+  let popularPeopleData = [
+    {
+      "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
+      "username": "Amanda",
+      "bio": "bio"
+    },
+    {
+      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD",
+      "bio": "bio"
+    },
+    {
+      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+      "username": "zaynab",
+      "bio": "bio"
+    }
+  ]
 
   return (
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={8}>
-        <CreatePost/>
+        <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
       </Grid>
       <Grid item xs={8}>
         <PostList postsData={homePostsData} />

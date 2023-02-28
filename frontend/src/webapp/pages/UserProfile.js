@@ -14,29 +14,61 @@ import { a11yProps, formatOpenLibraryData } from '../components/Utils';
 import { useParams } from "react-router-dom";
 
 export default function UserProfile() {
-  let yourUserId = JSON.parse(sessionStorage.yourUser);
+  let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
   let { uid } = useParams(); // clicked user
 
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
-  const [booksFavoritedData, setBooksFavoritedData] = React.useState('');
+  const [userProfileData, setUserProfileData] = React.useState('');
+  const [booksSavedData, setBooksSavedData] = React.useState('');
   const [bookClubsJoinedData, setBookClubsJoinedData] = React.useState('');
   const [userPostsData, setUserPostsData] = React.useState('');
   const [userLikedPostsData, setUserLikedPostsData] = React.useState('');
+  const [clickedUserFriendsData, setClickedUserFriendsData] = React.useState('');
+  const [isFriendData, setIsFriendData] = React.useState('');
+  const [isFetchUserProfile, setIsFetchUserProfile] = React.useState(false);
+  const [isFetchPosts, setIsFetchPosts] = React.useState(false);
+  const [isFetchLikedPosts, setIsFetchLikedPosts] = React.useState(false);
+
 
   React.useEffect(() => {
-    const handleFetchBooksFavorited = async () => {
+    const handleFetchUserProfile = async () => {
+      let query = "http://localhost:4567/api/get_user?userId=" + uid;
+      try {
+        const response = await fetch(query);
+        const json = await response.json();
+        setUserProfileData(json.user);
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+    handleFetchUserProfile();
+  }, [uid, isFetchUserProfile]);
+
+
+  React.useEffect(() => {
+    const handleFetchBooksSaved = async () => {
       let query = "http://openlibrary.org/search.json?q=good&limit=3";
       try {
         const response = await fetch(query);
         const json = await response.json();
         let formattedData = formatOpenLibraryData(json);
-        setBooksFavoritedData(formattedData)
+        setBooksSavedData(formattedData)
       } catch (error) {
         console.log("error", error);
       }
     }
 
     const handleFetchBooksClubsJoined = async () => {
+      // let query = "http://localhost:4567/api/get_subscribed_clubs?userId=" + uid;
+      // try {
+      //   const response = await fetch(query);
+      //   const json = await response.json();
+      //   const bookClubs = json.bookClubs;
+      //   setBookClubsJoinedData(bookClubs);
+      // } catch (error) {
+      //   console.log("error", error);
+      // }
+
       let query = "http://openlibrary.org/search.json?q=george+orwell&limit=4";
       try {
         const response = await fetch(query);
@@ -48,8 +80,73 @@ export default function UserProfile() {
       }
     }
 
+    const handleFetchClickedUserFriends = async () => {
+      // let query = "http://localhost:4567/api/get_friends?user_id=" + uid;
+      try {
+        // const response = await fetch(query);
+        // const json = await response.json();
+        // const friends = json.friends;
+        let loggedinUserfriends = [
+          {
+            "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+            "username": "VictorD",
+            "bio": "bio"
+          }
+        ]
+
+        let clickedUserfriends = [
+          {
+            "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+            "username": "VictorD",
+            "bio": "bio"
+          },
+          {
+            "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+            "username": "zaynab",
+            "bio": "bio"
+          }
+        ]
+        
+        if (uid === loggedinUser.uid) {
+          setClickedUserFriendsData(loggedinUserfriends);
+        } else {
+          setClickedUserFriendsData(clickedUserfriends);
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+
+    const handleFetchIsFriend = async () => {
+      // let query = "http://localhost:4567/api/get_friends?user_id=" + loggedinUser.uid;
+      try {
+        // const response = await fetch(query);
+        // const json = await response.json();
+        // const loggedinUserfriends = json.friends;
+
+        let loggedinUserfriends = [
+          {
+            "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+            "username": "VictorD",
+            "bio": "bio"
+          }
+        ]
+        setIsFriendData(loggedinUserfriends.some(friend => friend.uid === uid));
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+
+    handleFetchBooksSaved();
+    handleFetchBooksClubsJoined();
+    handleFetchClickedUserFriends();
+    handleFetchIsFriend();
+  }, [uid, loggedinUser.uid]);
+
+
+  React.useEffect(() => {
     const handleFetchUserPosts = async () => {
-      let query = "http://localhost:4567/api/list_feed?uid="+ uid;
+      let query = "http://localhost:4567/api/get_posts?userId=" + uid;
       try {
         const response = await fetch(query);
         const json = await response.json();
@@ -63,8 +160,13 @@ export default function UserProfile() {
       }
     }
 
+    handleFetchUserPosts();
+  }, [uid, isFetchPosts]);
+
+
+  React.useEffect(() => {
     const handleFetchLikedPosts = async () => {
-      let query = "http://localhost:4567/api/list_feed";
+      let query = "http://localhost:4567/api/get_liked_posts?user_id=" + uid;
       try {
         const response = await fetch(query);
         const json = await response.json();
@@ -78,73 +180,63 @@ export default function UserProfile() {
       }
     }
 
-    handleFetchBooksFavorited();
-    handleFetchBooksClubsJoined();
-    handleFetchUserPosts();
     handleFetchLikedPosts();
-  }, [uid]);
+  }, [uid, loggedinUser.uid, isFetchLikedPosts]);
 
-  let userProfile = {
-    "userId": uid,
-    "username": uid ==='EHDvyZymtRSbciB7uXHv1mN5O9r2'? 'Amanda': uid === 'sjzbuujj2hNljqVFpfJAplzXxjH3'? 'VictorD': uid,
-    "bio":"Known for roles in Marvel Cinematic Universe superhero film Shang-Chi and the Legend of the Ten Rings and HBO miniseries Irma Vep and The Undoing.",
-    "thumbnail": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/13f2a0d585f3cd8578da0d18c36a18c4~c5_720x720.jpeg?x-expires=1676120400&x-signature=ibiscyoPcZ8jI2EcS7ccAdpXPk0%3D",
-    "posts": userPostsData,
-    "likedPosts": userLikedPostsData
-  }
 
-  let friendsData = [];
-  for (let i = 0; i < 1; i++ ) {
-    friendsData.push("Andrea")
-    friendsData.push("Zaynab")
-    friendsData.push("Sanjana")
-    friendsData.push("Jocelyn")
-  }
 
   return (
     <>
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
-        <UserProfileBanner clickedUserData={userProfile} friendsData={friendsData}/>
+        <UserProfileBanner 
+          clickedUserData={userProfileData}
+          setIsFriendData={setIsFriendData}
+          isFriendData={isFriendData}
+          clickedUserFriends={clickedUserFriendsData}
+          setIsFetchUserProfile={setIsFetchUserProfile}
+          isFetchUserProfile={isFetchUserProfile}
+        />
       </Grid>
       <Grid item xs={8}>
-        {uid === yourUserId? <CreatePost/> : <></> }
-        <Stack sx={{ marginBottom: '5rem' }} spacing={2}>
-          <Box>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="basic tabs example">
-                <Tab label="Posts" {...a11yProps(0)} />
-                <Tab label="Liked Posts" {...a11yProps(1)} />
-              </Tabs>
+        {uid === loggedinUser.uid? 
+          <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts}/> : <></> }
+          <Stack sx={{ marginBottom: '5rem' }} spacing={2}>
+            <Box>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="basic tabs example">
+                  <Tab onClick={() => setIsFetchPosts(!isFetchPosts)} label="Posts" {...a11yProps(0)} />
+                  <Tab onClick={() => setIsFetchLikedPosts(!isFetchLikedPosts)} label="Liked Posts" {...a11yProps(1)} />
+                </Tabs>
+              </Box>
+              <TabPanel value={tabIndexValue} index={0}>
+                <PostList postsData={userPostsData} />
+              </TabPanel>
+              <TabPanel value={tabIndexValue} index={1}>
+                <PostList postsData={userLikedPostsData} />
+              </TabPanel>
             </Box>
-            <TabPanel value={tabIndexValue} index={0}>
-              <PostList postsData={userPostsData} />
-            </TabPanel>
-            <TabPanel value={tabIndexValue} index={1}>
-              <PostList postsData={userLikedPostsData} />
-            </TabPanel>
-          </Box>
-        </Stack>
+          </Stack>
+        </Grid>
+        <Grid item xs={4}>
+          <Stack spacing={2}>
+            <div>
+              <Typography variant="overline">
+                Book Clubs
+              </Typography>
+              <BookList bookData={bookClubsJoinedData} />
+            </div>
+            <div>
+              <Typography variant="overline">
+                Saved Books
+              </Typography>
+              <BookList bookData={booksSavedData} />
+            </div>
+          </Stack>
+        </Grid>
       </Grid>
-      <Grid item xs={4}>
-        <Stack spacing={2}>
-          <div>
-            <Typography variant="overline">
-              Book Clubs
-            </Typography>
-            <BookList bookData={bookClubsJoinedData} />
-          </div>
-          <div>
-            <Typography variant="overline">
-              Saved Books
-            </Typography>
-            <BookList bookData={booksFavoritedData} />
-          </div>
-        </Stack>
-      </Grid>
-    </Grid>
-  </Box>
-  </>
+    </Box>
+    </>
   );
 };

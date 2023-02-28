@@ -4,25 +4,25 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from "react-router-dom";
-import { goToBookClub } from "../Utils"
 import BookListSkeleton from '../Skeletons/BookListSkeleton';
+import { Link as RouterLink } from "react-router-dom";
 
 export default function BookList(props) {
-  const navigate = useNavigate();
 
 	return (
     props.bookData === "" ?
       <BookListSkeleton/> :
       Array.isArray(props.bookData) && props.bookData.length === 0?
-        <Typography> No book clubs found </Typography>:
+        <Typography variant="body2"> No book clubs found </Typography>:
         props.bookData.map((book, index) => {
           return (
             <ListItem
+              reloadDocument
+              component={RouterLink}
+              to={"/book-club/" + book.key.split("/")[2]} 
               className="list-item"
               alignItems="flex-start"
               key={index}
-              onClick={() => goToBookClub(book, navigate)}
               >
               <ListItemAvatar>
                 <Avatar

@@ -3,6 +3,7 @@ package daos;
 import java.sql.*;
 import java.util.*;
 import types.BookPost;
+import utils.ResultSetParsers;
 
 public class Books {
 
@@ -104,60 +105,16 @@ public class Books {
      * @return list of book posts that are in the bookKey book club
      */
     public List<BookPost> listBookPosts(String bookKey) {
-        List<BookPost> posts = new ArrayList<>();
         try {
             postsInBookClubStatement.clearParameters();
             postsInBookClubStatement.setString(1, bookKey);
             ResultSet rs = postsInBookClubStatement.executeQuery();
-
-            while (rs.next()) {
-                String userId = rs.getString("user_id");
-                String postTitle = rs.getString("post_title");
-                String post = rs.getString("post");
-                String tag = rs.getString("tag");
-                String postId = rs.getString("post_id");
-                long date = rs.getLong("post_date");
-                long likes = rs.getLong("likes");
-
-                BookPost bp = new BookPost(userId, bookKey, postTitle, post, tag, postId, date, likes);
-                posts.add(bp);
-            }
-            rs.close();
+            return ResultSetParsers.getBookPostsFromResultSet(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return posts;
-    }
-
-    /**
-     * Gets the list all the books posts
-     */
-    public List<BookPost> listAllPosts() {
-        List<BookPost> posts = new ArrayList<>();
-        try {
-            allPostsStatement.clearParameters();
-            ResultSet rs = allPostsStatement.executeQuery();
-
-            while (rs.next()) {
-                String userId = rs.getString("user_id");
-                String bookKey = rs.getString("book_key");
-                String postTitle = rs.getString("post_title");
-                String post = rs.getString("post");
-                String tag = rs.getString("tag");
-                String postId = rs.getString("post_id");
-                long date = rs.getLong("post_date");
-                long likes = rs.getLong("likes");
-
-                BookPost bp = new BookPost(userId, bookKey, postTitle, post, tag, postId, date, likes);
-                posts.add(bp);
-            }
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return posts;
+        return new ArrayList<>();
     }
 
     // Prepare all SQL statements

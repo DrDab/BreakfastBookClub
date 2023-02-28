@@ -24,36 +24,48 @@ import { auth } from "../../../FirebaseConfig"
 import { avatarColorMap } from '../Constants';
 
 export default function LoggedInAppBar() {
-  let yourUserId = JSON.parse(sessionStorage.yourUser);
-  let yourUser = yourUserId === 'EHDvyZymtRSbciB7uXHv1mN5O9r2' ? 'Amanda': yourUserId;
+  let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
+  const [recommendationData, setRecommendationData] = React.useState('');
 
-  let notificationData = [];
-  for (let i = 0; i < 3; i++) {
-    notificationData.push({recommender: "Andrea", time: "2h", book: {
-      "key": "/works/OL18417W",
-      "title": "The Wonderful Wizard of Oz",
-      "author": [
-          "L. Frank Baum",
-          "R. D. Kori",
-          "Kenneth Grahame",
-          "J. T. Barbarese",
-          "Pablo Pino",
-          "Jenny Sánchez",
-          "Michael Foreman"
-      ],
-      "coverUrl": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
-    }})
-
-    notificationData.push({recommender: "Jocelyn", time: "1h", book: {
-      "key": "/works/OL27479W",
-      "title": "The Two Towers",
-      "author": [
-          "J.R.R. Tolkien"
-      ],
-      "coverUrl": "https://covers.openlibrary.org/b/id/8167231-M.jpg"
+  React.useEffect(() => {
+    let data = [
+      {recommender: {
+          "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+          "username": "VictorD"
+        }, 
+        time: "2h",
+        book: {
+          "book_id": "OL18417W",
+          "title": "The Wonderful Wizard of Oz",
+          "author": "Baum, L. Frank",
+          "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
+      }},
+      {recommender: {
+        "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+        "username": "zaynab"
+      }, 
+      time: "1h",
+      book: {
+        "book_id": "OL27479W",
+        "title": "The Two Towers",
+        "author": "J.R.R. Tolkien",
+        "thumbnail": "https://covers.openlibrary.org/b/id/8167231-M.jpg"
+      }}
+    ]
+    const handleFetchRecommendations = async () => {
+      // let query = "http://localhost:4567/api/get_recommendations?userId=" + loggedinUser.uid;
+      try {
+        // const response = await fetch(query);
+        // const json = await response.json();
+        // setRecommendationData(json.recommendations);
+        setRecommendationData(data);
+      } catch (error) {
+        console.log("error", error);
+      }
     }
-    })
-  }
+
+    handleFetchRecommendations();
+}, [loggedinUser.uid]);
 
   const [searchValue, setSearchValue] = React.useState(null);
   const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
@@ -70,7 +82,7 @@ export default function LoggedInAppBar() {
 
   const handleLogOut = () => {
     signOut(auth);
-    sessionStorage.setItem('yourUser', JSON.stringify("loggedout"));
+    sessionStorage.setItem('loggedinUser', JSON.stringify("loggedout"));
     navigate("/log-in");
     window.location.reload();
   };
@@ -112,7 +124,7 @@ export default function LoggedInAppBar() {
               onClick={(e) => setAnchorElNotifications(e.currentTarget)}
               sx={{width: 60, height: 60 }}
             >
-              <Badge badgeContent={notificationData.length} color="error">
+              <Badge badgeContent={recommendationData.length} color="error">
                 <NotificationsNoneOutlinedIcon />
               </Badge>
             </IconButton>
@@ -125,7 +137,7 @@ export default function LoggedInAppBar() {
               color="secondary"
               onClick={(e) => setAnchorElAccount(e.currentTarget)}
             >
-              <Avatar sx={{bgcolor: avatarColorMap.get(yourUser)}}>{yourUser.charAt(0)}</Avatar>
+              <Avatar sx={{bgcolor: avatarColorMap.get(loggedinUser.username)}}>{loggedinUser.username.charAt(0)}</Avatar>
             </IconButton>
           </Stack>
         </Toolbar>
@@ -142,7 +154,7 @@ export default function LoggedInAppBar() {
           },
         }}
       >
-        <MenuItem reloadDocument component={RouterLink} to={"/user-profile/" + yourUserId}>
+        <MenuItem reloadDocument component={RouterLink} to={"/user-profile/" + loggedinUser.uid}>
           <ListItemIcon>
             <AccountCircle fontSize="small" />
           </ListItemIcon>
@@ -171,11 +183,11 @@ export default function LoggedInAppBar() {
           <Typography>
             Notifications
           </Typography>
-          <Link component="button" variant="caption" onClick={()=> console.log("clear notifs")}>
+          <Typography variant="caption" onClick={()=> console.log("clear notifs")}>
             Clear
-          </Link>
+          </Typography>
         </Stack>
-        <NotificationList notificationData={notificationData}/>
+        <NotificationList notificationData={recommendationData} />
       </Menu>
     </Box>
   );
