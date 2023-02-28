@@ -105,10 +105,24 @@ Password: F0xg0fl00f
 
 - Log in using one of the logins provided 
 - Log out by clicking the profile icon in the upper right corner
-- Make post about a book by clicking "Write a post" from the home page, current user's profile page or book club profile page
-- View all posts from home page
+
 - Search for book clubs to join from the search input in the app bar (Every book is it's own book club)
+
+- Make post about a book by clicking "Write a post" from the home page, current user's profile page or book club profile page
+
+- View all posts from home page
+
+- View user profiles 
+- Edit bio in logged in user's profile
 - View posts made by user in user's profile
+- View posts liked by user in user's profile
+
+- View book club profiles
+- View posts made in a specific book club
+- View members of book club ("The terminal list" by "Carr, Jack" is the only one with a member)
+
+- like posts
+- unlike posts
 
 
 #### Functionalities in progress (Currently hard coded with temporary data): 
@@ -120,7 +134,6 @@ From Home page:
 - View trending readers
 
 From Book club profile page:
-- View posts made in a specific book club
 - Join a book club by clicking "Join the club"
 - Recommend book to a friend by clicking "Recommend"
 - Save a book by clicking "Save"
