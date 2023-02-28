@@ -40,6 +40,7 @@ public class RecommendBook implements Route {
             !body.has("recipient_username") ||
             !body.has("book_key")) {
             respJson.addProperty("status", "failure");
+            respJson.addProperty("failure_reason", "Body doesn't have necessary parameters");
             return respJson.toString() + "\n";
         }
 

@@ -37,6 +37,7 @@ public class SaveBook implements Route {
 
         if (!body.has("token") || !body.has("book_key")) {
             respJson.addProperty("status", "failure");
+            respJson.addProperty("failure_reason", "JSON doesn't have necessary parameters.");
             return respJson.toString() + "\n";
         }
 
