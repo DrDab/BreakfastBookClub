@@ -5,43 +5,45 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { goToBookClub } from '../Utils'
 import { avatarColorMap } from '../Constants'
 
 export default function NotificationList(props) {
-  const navigate = useNavigate();
 
 	return (
-    props.notificationData.map((notif, index) => {
-      return (
-        <MenuItem
-          sx={{whiteSpace: 'normal', backgroundColor: '#fafafa'}}
-          key={index}
-          onClick={() => goToBookClub(notif.book, navigate)}
-        >
-          <ListItemAvatar>
-            <Avatar
-              reloadDocument
-              component={RouterLink}
-              to={"/user-profile/" + notif.recommender}
-              sx={{ bgcolor: avatarColorMap.get(notif.recommender), width: 35, height: 35, textDecoration: "none" }}
-              aria-label={notif.recommender + " avatar"}
-            >
-             {notif.recommender.charAt(0)}
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText>
-            <Typography>
-              <strong>{notif.recommender}</strong> recommended <strong>{notif.book.title}</strong> to you
-            </Typography>
-            <Typography variant="caption">
-              {notif.time}
-            </Typography>
-          </ListItemText>
-        </MenuItem>
-      )
-    }
-    )
+    props.peopleData === "" ?
+      <></> :
+      props.notificationData.map((notif, index) => {
+
+        let userProfileUrl = "/user-profile/" + notif.recommender.uid;
+        let bookProfileUrl ="/book-club/" + notif.book.book_id;
+
+        return (
+          <MenuItem
+            className="list-item"
+            sx={{whiteSpace: 'normal', backgroundColor: '#fafafa'}}
+            key={index}
+          >
+            <ListItemAvatar>
+              <Avatar
+                reloadDocument
+                component={RouterLink}
+                to={userProfileUrl}
+                sx={{ bgcolor: avatarColorMap.get(notif.recommender.username), width: 35, height: 35, textDecoration: "none" }}
+                aria-label={notif.recommender.username + " avatar"}
+              >
+              {notif.recommender.username.charAt(0)}
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText>
+              <Typography>
+                <a href={userProfileUrl}>{notif.recommender.username}</a> recommended <a href={bookProfileUrl}>{notif.book.title}</a> to you
+              </Typography>
+              <Typography variant="caption">
+                {notif.time}
+              </Typography>
+            </ListItemText>
+          </MenuItem>
+        )
+      })
   );
 }

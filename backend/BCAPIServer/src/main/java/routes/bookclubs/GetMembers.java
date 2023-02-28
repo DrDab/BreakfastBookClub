@@ -1,6 +1,8 @@
 package routes.bookclubs;
 
+import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import daos.Books;
 import daos.User;
@@ -9,12 +11,16 @@ import java.util.List;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import types.UserProfile;
+import utils.FirebaseUtils;
 
 public class GetMembers implements Route {
 
+  private FirebaseApp fbApp;
   private Connection sqlConn;
 
-  public GetMembers(Connection sqlConn) {
+  public GetMembers(FirebaseApp fbApp, Connection sqlConn) {
+    this.fbApp = fbApp;
     this.sqlConn = sqlConn;
   }
 
@@ -30,9 +36,23 @@ public class GetMembers implements Route {
     }
 
     List<String> clubUIDs = new Books(sqlConn).bookClubUsers(searchBookKey);
-    //User user = new User()
+    JsonArray members = new JsonArray();
 
-    respJson.add("uids", new Gson().toJsonTree(clubUIDs));
+    for (String uid : clubUIDs) {
+      String username = FirebaseUtils.resolveBCUsername(fbApp, uid);
+      if (username == null) {
+        respJson.addProperty("status", "failure");
+        respJson.addProperty("failure_reason", "Failed to resolve username");
+        return respJson.toString() + "\n";
+      }
+
+      UserProfile profile = new User(uid, sqlConn).getUserProfile(username);
+      members.add(profile == null ? new Gson().toJsonTree(
+          new UserProfile(uid, username, null, null)) :
+          new Gson().toJsonTree(profile));
+    }
+
+    respJson.add("members", members);
     respJson.addProperty("status", "success");
     return respJson.toString() + "\n";
   }

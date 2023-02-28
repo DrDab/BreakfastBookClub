@@ -14,16 +14,9 @@ import UserProfile from "./webapp/pages/UserProfile";
 import BookClub from './webapp/pages/BookClub';
 import LogIn from './webapp/pages/LogIn';
 import SignUp from './webapp/pages/SignUp';
-//
-//import FirebaseConfig;
-//import * as firebase from 'firebase/app';
-//import * as auth from 'firebase/auth';
-//
-//const initFire = firebase.initializeApp(FirebaseConfig);
-//const authInit = initFire.getAuth();
 
 function App() {
-  const loggedOut = sessionStorage?.yourUser === undefined || sessionStorage.yourUser === JSON.stringify("loggedout");
+  const loggedOut = sessionStorage?.loggedinUser === undefined || sessionStorage.loggedinUser === JSON.stringify("loggedout");
 
   return (
     <div className="App">

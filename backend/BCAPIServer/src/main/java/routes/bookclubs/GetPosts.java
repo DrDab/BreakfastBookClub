@@ -13,6 +13,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import types.BookPost;
+import utils.BCGsonUtils;
 import utils.FirebaseUtils;
 import utils.OpenLibraryAPI;
 
@@ -44,31 +45,7 @@ public class GetPosts implements Route {
             searchUID != null ? new User(searchUID, sqlConn).getUserPosts()
                 : new Books(sqlConn).listBookPosts(searchBookKey);
 
-    JsonArray postsArr = new JsonArray();
-    Gson gson = new Gson();
-
-    for (BookPost post : posts) {
-      JsonObject postJson = new JsonObject();
-
-      postJson.addProperty("post_id", post.postId);
-
-      postJson.add("book", gson.toJsonTree(OpenLibraryAPI.getBookByKey(post.bookKey)));
-
-      JsonObject userObj = new JsonObject();
-      userObj.addProperty("userId", post.userId);
-      userObj.addProperty("username", FirebaseUtils.resolveBCUsername(fbApp, post.userId));
-      userObj.addProperty("bio", "");
-      userObj.addProperty("thumbnail", "");
-      postJson.add("user", userObj);
-
-      postJson.addProperty("title", post.postTitle);
-      postJson.addProperty("date", post.date);
-      postJson.addProperty("tag", post.tag);
-      postJson.addProperty("post", post.post);
-      postJson.addProperty("likes", post.likes);
-
-      postsArr.add(postJson);
-    }
+    JsonArray postsArr = BCGsonUtils.getPostsJsonArrFromList(fbApp, posts);
 
     respJson.add("posts", postsArr);
     respJson.addProperty("status", "success");

@@ -28,15 +28,21 @@ export default function SearchResults() {
     handleFetch();
 }, []);
 
-  let searchResultPeopleData = [];
-  for (let i = 0; i < 1; i++ ) {
-    searchResultPeopleData.push("Andrea")
-    searchResultPeopleData.push("Amanda")
-    searchResultPeopleData.push("Jocelyn")
-    searchResultPeopleData.push("Sanjana")
-    searchResultPeopleData.push("Zaynab")
-  }
-  
+  let searchResultPeopleData = [
+    {
+      "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
+      "username": "Amanda"
+    },
+    {
+      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD"
+    },
+    {
+      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+      "username": "zaynab"
+    }
+  ]
+ 
   return (
     <Stack sx={{ width: '70%', margin: '0 auto', marginBottom: '5rem' }} spacing={2}>
       <Typography>{"Showing search results for '" + sessionStorage.searchValue + "'"}</Typography>

@@ -18,14 +18,33 @@ export default function LogIn() {
   const [password, setPassword] = React.useState("");
   const [isError, setIsError] = React.useState(false);
 
+
+  const handleFetchUser = async (uid) => {
+    let query = "http://localhost:4567/api/get_user?userId=" + uid;
+    try {
+      const response = await fetch(query);
+      const json = await response.json();   
+      return json.user;
+    } catch (error) {
+      return error
+    }
+  }
+
+
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        sessionStorage.setItem('yourUser', JSON.stringify(user.uid));
-        navigate("/");
-        window.location.reload();
+
+        handleFetchUser(user.uid).then((user) => {
+          if (JSON.stringify(user) !== '{}') {
+            sessionStorage.setItem('loggedinUser', JSON.stringify(user));
+            navigate("/");
+            window.location.reload();
+          }
+        });
+
       })
     } catch (err) {
       setIsError(true);
