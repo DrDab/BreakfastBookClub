@@ -14,7 +14,6 @@ export default function Home() {
 
   const [popularBooksData, setPopularBooksData] = React.useState("");
   const [homePostsData, setHomePostsData] = React.useState("");
-  const [loggedinUserLikedPostsData, setLoggedinUserLikedPostsData] = React.useState('');
   const [isFetchPosts, setIsFetchPosts] = React.useState(false);
 
   React.useEffect(() => {
@@ -30,20 +29,7 @@ export default function Home() {
       }
     }
 
-    const handleFetchLoggedinUserLikedPosts = async () => {
-      let query = "http://localhost:4567/api/get_liked_posts?user_id=" + loggedinUser.uid;
-      try {
-        const response = await fetch(query);
-        const json = await response.json();
-        const posts = json.posts;
-        setLoggedinUserLikedPostsData(posts);
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-
     handleFetchPopularBooks();
-    handleFetchLoggedinUserLikedPosts();
   },[loggedinUser.uid]);
 
   React.useEffect(() => {
@@ -89,7 +75,7 @@ export default function Home() {
         <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
       </Grid>
       <Grid item xs={8}>
-        <PostList postsData={homePostsData} loggedinUserLikedPostsData={loggedinUserLikedPostsData} />
+        <PostList postsData={homePostsData} />
       </Grid>
       <Grid item xs={4}>
         <Stack spacing={2}>

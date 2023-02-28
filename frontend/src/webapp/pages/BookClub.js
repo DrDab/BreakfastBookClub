@@ -20,7 +20,6 @@ export default function BookClub() {
 
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
   const [bookClubPostsData, setBookClubPostsData] = React.useState('');
-  const [loggedinUserLikedPostsData, setLoggedinUserLikedPostsData] = React.useState('');
   const [bookProfileData, setBookProfileData] = React.useState('');
   const [isBookClubsJoinedData, setIsBookClubsJoinedData] = React.useState(false);
   const [bookClubMembersData, setBookClubMembersData] = React.useState('');
@@ -76,22 +75,9 @@ export default function BookClub() {
       }
     }
 
-    const handleFetchLoggedinUserLikedPosts = async () => {
-      let query = "http://localhost:4567/api/get_liked_posts?user_id=" + loggedinUser.uid;
-      try {
-        const response = await fetch(query);
-        const json = await response.json();
-        const posts = json.posts;
-        setLoggedinUserLikedPostsData(posts);
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-
     handleFetchBookProfile();
     handleFetchIsBookClubsJoined();
-    handleFetchBookClubsMembers();  
-    handleFetchLoggedinUserLikedPosts();
+    handleFetchBookClubsMembers();
   },[bid, loggedinUser.uid]);
 
 
@@ -162,7 +148,7 @@ export default function BookClub() {
               </Tabs>
             </Box>
             <TabPanel value={tabIndexValue} index={0}>
-              <PostList postsData={bookClubPostsData} loggedinUserLikedPostsData={loggedinUserLikedPostsData} />
+              <PostList postsData={bookClubPostsData} />
             </TabPanel>
           </Box>
         </Stack>
