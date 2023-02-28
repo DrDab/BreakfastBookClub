@@ -84,7 +84,7 @@ public class User {
   private PreparedStatement likePostStatement;
 
   private static final String UNLIKE_POST =
-      "DELETE FROM liked_posts WHERE post_id = ?";
+      "DELETE FROM liked_posts WHERE user_id = ? AND post_id = ?";
   private PreparedStatement unlikePostStatement;
 
   private static final String GET_LIKED_POSTS =
@@ -636,7 +636,8 @@ public class User {
     }
 
     unlikePostStatement.clearParameters();
-    unlikePostStatement.setString(1, post_id);
+    unlikePostStatement.setString(1, user);
+    unlikePostStatement.setString(2, post_id);
     int num_rows = unlikePostStatement.executeUpdate();
     return num_rows == 1 && posts.decreaseLikedPostByID(post_id) ? UserResult.SUCCESS : UserResult.FAIL;
   }
