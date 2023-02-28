@@ -3,6 +3,7 @@ package daos;
 import java.sql.*;
 import java.util.*;
 import types.BookPost;
+import types.Recommendation;
 import utils.ResultSetParsers;
 
 public class Books {
@@ -22,7 +23,7 @@ public class Books {
     private PreparedStatement allPostsStatement;
 
     private static final String GET_RECOMMENDATIONS_SQL =
-            "SELECT book_key FROM sent_recommendations WHERE recipient_username = ?";
+            "SELECT sender_username, book_key FROM sent_recommendations WHERE recipient_username = ?";
     private PreparedStatement getRecommendationsStatement;
 
     private static final String ADD_SAVED_BOOK_SQL =
@@ -83,14 +84,16 @@ public class Books {
         return users;
     }
 
-    public List<String> bookRecommendations(String recipientUsername) {
-        List<String> bookRecs = new ArrayList<>();
+    public List<Recommendation> bookRecommendations(String recipientUsername) {
+        List<Recommendation> bookRecs = new ArrayList<>();
         try {
             getRecommendationsStatement.clearParameters();
             getRecommendationsStatement.setString(1, recipientUsername);
             ResultSet result = getRecommendationsStatement.executeQuery();
             while (result.next()) {
-                bookRecs.add(result.getString("book_key"));
+                Recommendation rec = new Recommendation(result.getString("sender_username"),
+                        result.getString("book_key"));
+                bookRecs.add(rec);
             }
             result.close();
         } catch (SQLException e) {
