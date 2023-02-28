@@ -19,6 +19,7 @@ import net.sourceforge.argparse4j.inf.Namespace;
 import routes.bookclubs.*;
 
 import routes.bookmgmt.GetBook;
+import routes.bookmgmt.GetSaveBooks;
 import routes.bookmgmt.SaveBook;
 import routes.profile.GetUserProfile;
 import routes.profile.SetUserProfile;
@@ -90,6 +91,9 @@ public class BCServerMain {
     Spark.post("/api/update_user", new SetUserProfile(fbApp, sqlConn));
 
     Spark.get("/api/get_members", new GetMembers(fbApp, sqlConn));
+
+    // get saved books
+    Spark.get("/api/get_saved_books", new GetSaveBooks(sqlConn));
   }
 
   @SuppressWarnings("deprecation")
