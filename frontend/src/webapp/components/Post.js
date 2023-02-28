@@ -18,6 +18,7 @@ export default function Post(props) {
   const [numberOfLikes, setNumberOfLikes] = React.useState(props.post.likes);
 
   const handleFetchPostLikeStatus = (token, postId, status) => {
+    console.log(status)
     let url = "http://localhost:4567/api/"+ status + "?token=" + token + "&post_id=" + postId;
     fetch(url, {
       method: 'POST',

@@ -589,7 +589,7 @@ public class User {
     return count == 1;
   }
 
-  private int getNumLikesFromUser(String post_id) throws SQLException {
+  public int getNumLikesFromUser(String post_id) throws SQLException {
     countLikedPostsByPidStatement.clearParameters();
     countLikedPostsByPidStatement.setString(1, post_id);
     countLikedPostsByPidStatement.setString(2, user);
