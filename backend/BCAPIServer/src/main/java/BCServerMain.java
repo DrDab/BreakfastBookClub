@@ -16,14 +16,10 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 
-import routes.bookclubs.GetLikedPosts;
-import routes.bookclubs.GetIsUserLikedPost;
-import routes.bookclubs.GetMembers;
-import routes.bookclubs.GetPosts;
-import routes.bookclubs.LikePost;
-import routes.bookclubs.MakePost;
-import routes.bookclubs.UnlikePost;
+import routes.bookclubs.*;
+
 import routes.bookmgmt.GetBook;
+import routes.bookmgmt.SaveBook;
 import routes.profile.GetUserProfile;
 import routes.profile.SetUserProfile;
 import spark.Spark;
@@ -76,6 +72,14 @@ public class BCServerMain {
     GetPosts getPosts = new GetPosts(fbApp, sqlConn);
     Spark.get("/api/get_posts", getPosts);
     Spark.get("/api/list_feed", getPosts);
+
+    // getting user's recommendations
+    Spark.get("/api/get_recommendations", new GetRecommendations(sqlConn));
+    // user1 sends book recommendation to user2
+    Spark.post("/api/recommend_book", new RecommendBook(fbApp, sqlConn));
+    // user saves book
+    Spark.post("/api/save_book", new SaveBook(fbApp, sqlConn));
+
 
     Spark.post("/api/like_post", new LikePost(fbApp, sqlConn));
     Spark.post("/api/unlike_post", new UnlikePost(fbApp, sqlConn));
