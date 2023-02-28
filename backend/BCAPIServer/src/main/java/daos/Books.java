@@ -31,6 +31,10 @@ public class Books {
 
     private PreparedStatement addSavedBookStatement;
 
+    private static final String GET_SAVED_BOOKS_SQL =
+            "SELECT book_key FROM saved_books WHERE user_id = ?";
+    private PreparedStatement getSavedBooksStatement;
+
     public Books(Connection conn) throws SQLException {
         this.conn = conn;
         prepareStatements();
@@ -84,6 +88,12 @@ public class Books {
         return users;
     }
 
+    /**
+     * gets a list of recommendations for a specific user
+     * @param recipientUsername the user whose recommendations we want to get
+     * @return a list of recommendations, with the sender's userID and the book that the sender has sent
+     */
+
     public List<Recommendation> bookRecommendations(String recipientUsername) {
         List<Recommendation> bookRecs = new ArrayList<>();
         try {
@@ -100,6 +110,22 @@ public class Books {
             e.printStackTrace();
         }
         return bookRecs;
+    }
+
+    public List<String> getSavedBooks(String userID) {
+        List<String> bookIDs = new ArrayList<>();
+        try {
+            getSavedBooksStatement.clearParameters();
+            getSavedBooksStatement.setString(1, userID);
+            ResultSet result = getSavedBooksStatement.executeQuery();
+            while (result.next()) {
+                bookIDs.add(result.getString("book_key"));
+            }
+            result.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookIDs;
     }
 
     /**
@@ -127,6 +153,7 @@ public class Books {
         allPostsStatement = conn.prepareStatement(ALL_POSTS_SQL);
         getRecommendationsStatement = conn.prepareStatement(GET_RECOMMENDATIONS_SQL);
         addSavedBookStatement = conn.prepareStatement(ADD_SAVED_BOOK_SQL);
+        getSavedBooksStatement = conn.prepareStatement(GET_SAVED_BOOKS_SQL);
     }
 
     // Returns whether the error was caused by a deadlock
