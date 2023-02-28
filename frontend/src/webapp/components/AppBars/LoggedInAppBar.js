@@ -25,31 +25,47 @@ import { avatarColorMap } from '../Constants';
 
 export default function LoggedInAppBar() {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
+  const [recommendationData, setRecommendationData] = React.useState('');
 
-  let notificationData = [
-    {recommender: {
-        "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-        "username": "VictorD"
+  React.useEffect(() => {
+    let data = [
+      {recommender: {
+          "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+          "username": "VictorD"
+        }, 
+        time: "2h",
+        book: {
+          "book_id": "OL18417W",
+          "title": "The Wonderful Wizard of Oz",
+          "author": "Baum, L. Frank",
+          "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
+      }},
+      {recommender: {
+        "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+        "username": "zaynab"
       }, 
-      time: "2h",
+      time: "1h",
       book: {
-        "book_id": "OL18417W",
-        "title": "The Wonderful Wizard of Oz",
-        "author": "Baum, L. Frank",
-        "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
-    }},
-    {recommender: {
-      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
-      "username": "zaynab"
-    }, 
-    time: "1h",
-    book: {
-      "book_id": "OL27479W",
-      "title": "The Two Towers",
-      "author": "J.R.R. Tolkien",
-      "thumbnail": "https://covers.openlibrary.org/b/id/8167231-M.jpg"
-    }}
-  ]
+        "book_id": "OL27479W",
+        "title": "The Two Towers",
+        "author": "J.R.R. Tolkien",
+        "thumbnail": "https://covers.openlibrary.org/b/id/8167231-M.jpg"
+      }}
+    ]
+    const handleFetchRecommendations = async () => {
+      // let query = "http://localhost:4567/api/get_recommendations?userId=" + loggedinUser.uid;
+      try {
+        // const response = await fetch(query);
+        // const json = await response.json();
+        // setRecommendationData(json.recommendations);
+        setRecommendationData(data);
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+
+    handleFetchRecommendations();
+}, [loggedinUser.uid]);
 
   const [searchValue, setSearchValue] = React.useState(null);
   const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
@@ -108,7 +124,7 @@ export default function LoggedInAppBar() {
               onClick={(e) => setAnchorElNotifications(e.currentTarget)}
               sx={{width: 60, height: 60 }}
             >
-              <Badge badgeContent={notificationData.length} color="error">
+              <Badge badgeContent={recommendationData.length} color="error">
                 <NotificationsNoneOutlinedIcon />
               </Badge>
             </IconButton>
@@ -171,7 +187,7 @@ export default function LoggedInAppBar() {
             Clear
           </Typography>
         </Stack>
-        <NotificationList notificationData={notificationData}/>
+        <NotificationList notificationData={recommendationData} />
       </Menu>
     </Box>
   );
