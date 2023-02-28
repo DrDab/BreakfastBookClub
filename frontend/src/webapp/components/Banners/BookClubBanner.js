@@ -11,17 +11,78 @@ import Modal from '@mui/material/Modal';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import { auth } from "../../../FirebaseConfig"
 
 export default function BookClubBanner(props) {
   const [showRecomendModal, setShowRecomendModal] = React.useState(false);
-  const [friend, setFriend] = React.useState('');
+  const [selectFriendUserId, setSelectFriendUserId] = React.useState('');
+  const [isMissingFields, setIsMissingFields] = React.useState(true);
+
 
   let friendsData = [
-    {name: "Andrea"},
-    {name: "Zaynab"},
-    {name: "Sanjana"},
-    {name: "Jocelyn"}
-  ];
+    {
+      "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
+      "username": "Amanda"
+    },
+    {
+      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD"
+    },
+    {
+      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+      "username": "zaynab"
+    }
+  ]
+
+  React.useEffect(() => {
+    setIsMissingFields(selectFriendUserId === "");
+  }, [selectFriendUserId]);
+
+  const clearFormValues = () => {
+    setSelectFriendUserId("");
+    setIsMissingFields(true);
+  }
+
+  const handleCancelRecommendation = () => {
+    setShowRecomendModal(false);
+    clearFormValues();
+  };
+
+  const fetchPostRecommendation = (jsonData) => {
+    let url = "http://localhost:4567/api/recommend_book"
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(jsonData)
+    })
+    .then((data) => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+  const handleSendRecommendation = () => {
+    if (!isMissingFields) {
+      setShowRecomendModal(false);
+
+      auth.currentUser?.getIdToken(true).then(function(idToken){
+        let jsonData = {
+          token: idToken,
+          book_key: props.bookData.book_id,
+          recipient_userId: selectFriendUserId
+        }
+        console.log(jsonData)
+        // fetchPostRecommendation(jsonData);
+      })
+
+      clearFormValues();
+    }
+  };
   
   return (
     <>
@@ -65,38 +126,34 @@ export default function BookClubBanner(props) {
         <Box className="basic-modal recommend-modal">
           <Stack spacing={2}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              Recommend to
+              {"Recommend " + props.bookData.title + " to"}
             </Typography>
             <FormControl size="small" variant="filled">
               <InputLabel required id="select-friend-label">Friend</InputLabel>
               <Select
                 labelId="select-friend-label"
-                value={friend}
+                value={selectFriendUserId}
                 label="Friend"
                 disableUnderline
-                onChange={(e) => setFriend(e.target.value)}
+                onChange={(e) => setSelectFriendUserId(e.target.value)}
               >
                 <MenuItem value="">
                   <em>Choose Friend</em>
                 </MenuItem>
                 {friendsData.map((friend, index) => {
-                  return (<MenuItem key={index} value={friend.name}>{friend.name}</MenuItem>)
+                  return (<MenuItem key={index} value={friend.uid}>{friend.username}</MenuItem>)
                 })}
               </Select>
             </FormControl>
-            <TextField
-              InputProps={{ disableUnderline: true }}
-              required
-              label="Thoughts"
-              multiline
-              rows="4"
-              variant="filled"
-            />
             <Stack justifyContent="end" direction="row" spacing={1}>
-              <Button disableElevation size="small" variant="contained">
+              <Button 
+                disableElevation
+                size="small"
+                variant={isMissingFields ? 'disabled': 'contained'}
+                onClick={handleSendRecommendation}>
                 Send
               </Button>
-              <Button disableElevation size="small" variant='outlined' onClick={() => setShowRecomendModal(false)}>
+              <Button disableElevation size="small" variant='outlined' onClick={handleCancelRecommendation}>
                 Cancel
               </Button>
             </Stack>

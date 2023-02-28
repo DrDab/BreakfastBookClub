@@ -36,7 +36,7 @@ const mockGetPosts = {
   ]
 }
 
-// current book club, user's joined book club
+// current book club
 const mockGetBook = {
   "book": {
     "book_id": "OL18417W",
@@ -45,6 +45,20 @@ const mockGetBook = {
     "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
   }
 };
+
+// is book club joined
+const mockGetBookClubs = { 
+  "docs": [
+    {
+      "key": "/works/OL27448W",
+      "title": "The Lord of the Rings",
+      "author_name": [
+          "J.R.R. Tolkien"
+      ],
+      "cover_i": "https://covers.openlibrary.org/b/id/9255566-M.jpg"
+    }
+  ]
+}
 
 const mockGetMembers = {
   "members": [
@@ -64,7 +78,7 @@ describe("Renders Book club page", () => {
     const makeFetchResponse = value => ({ json: async() => value })
     const mockFetch = jest.fn()
       .mockReturnValueOnce(makeFetchResponse(mockGetBook))
-      .mockReturnValueOnce(makeFetchResponse(mockGetBook))
+      .mockReturnValueOnce(makeFetchResponse(mockGetBookClubs))
       .mockReturnValueOnce(makeFetchResponse(mockGetMembers))
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
