@@ -28,27 +28,24 @@ public class DeleteRecommendation implements Route {
         JsonObject respJson = new JsonObject();
 
 
-        String token = request.queryParams("token");
-        String sender_id = request.queryParams("sender_userId");
-        String bookKey = request.queryParams("book_key");
 
-//         JsonObject body = BCGsonUtils.fromStr(request.body());
-//
-//        if (body == null) {
-//            respJson.addProperty("status", "failure");
-//            respJson.addProperty("failure_reason", "Body is not valid JSON!");
-//            return respJson.toString() + "\n";
-//        }
-//
-//        if (!body.has("token") ||
-//                !body.has("sender_userId") ||
-//                !body.has("book_key")) {
-//            respJson.addProperty("status", "failure");
-//            respJson.addProperty("failure_reason", "Body doesn't have necessary parameters");
-//            return respJson.toString() + "\n";
-//        }
-//
-//        String token = body.get("token").getAsString();
+         JsonObject body = BCGsonUtils.fromStr(request.body());
+
+        if (body == null) {
+            respJson.addProperty("status", "failure");
+            respJson.addProperty("failure_reason", "Body is not valid JSON!");
+            return respJson.toString() + "\n";
+        }
+
+        if (!body.has("token") ||
+                !body.has("sender_userId") ||
+                !body.has("book_key")) {
+            respJson.addProperty("status", "failure");
+            respJson.addProperty("failure_reason", "Body doesn't have necessary parameters");
+            return respJson.toString() + "\n";
+        }
+
+        String token = body.get("token").getAsString();
         FirebaseToken decodedTokenSender;
 
 
@@ -62,8 +59,8 @@ public class DeleteRecommendation implements Route {
             return respJson.toString() + "\n";
         }
 
-//        String sender_id = body.get("sender_userId").getAsString();
-//        String bookKey = body.get("book_key").getAsString();
+        String sender_id = body.get("sender_userId").getAsString();
+        String bookKey = body.get("book_key").getAsString();
         String recipient_userId = decodedTokenSender.getUid();
         UserResult result = new User(recipient_userId, sqlConn).deleteRecommendation(sender_id, bookKey);
 
