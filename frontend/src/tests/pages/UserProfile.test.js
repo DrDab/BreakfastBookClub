@@ -10,35 +10,7 @@ const mockLoggedInUser = {
   "bio": "bio"
 }
 
-// book clubs saved
-const mockGetBooksSaved = { 
-  "book": [
-    {
-      "book_id": "OL18417W",
-      "title": "The Wonderful Wizard of Oz",
-      "author": "L. Frank Baum",
-      "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
-    }
-  ]
-}
-
-// book clubs
-const mockGetBooks = { 
-  "docs": [
-    {
-      "key": "/works/OL27448W",
-      "title": "The Lord of the Rings",
-      "author_name": [
-          "J.R.R. Tolkien"
-      ],
-      "cover_i": "https://covers.openlibrary.org/b/id/9255566-M.jpg"
-    }
-  ]
-}
-
-
-
-// user posts, liked posts, logged in user liked posts
+// user posts, liked posts
 const mockGetPosts = {
   "posts" : [
     {
@@ -72,6 +44,26 @@ const mockGetUser = {
   }
 };
 
+// book clubs saved
+const mockGetBooksSaved = { 
+  "book": [
+    {
+      "book_id": "OL18417W",
+      "title": "The Wonderful Wizard of Oz",
+      "author": "L. Frank Baum",
+      "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
+    }
+  ]
+}
+
+const mockGetIsPostLiked = {
+  "isUserLikedPost": "1"
+}
+
+
+
+
+
 describe("Renders User Profile page", () => { 
 
   test("Renders posts, user profile, book clubs, saved books", async () => {
@@ -79,13 +71,11 @@ describe("Renders User Profile page", () => {
 
     const makeFetchResponse = value => ({ json: async() => value })
     const mockFetch = jest.fn()
+      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
+      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
       .mockReturnValueOnce(makeFetchResponse(mockGetUser))
       .mockReturnValueOnce(makeFetchResponse(mockGetBooksSaved))
-      .mockReturnValueOnce(makeFetchResponse(mockGetBooks))
-      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
-      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
-      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
-     
+      .mockReturnValueOnce(makeFetchResponse(mockGetIsPostLiked)) 
     global.fetch = mockFetch
 
     await act(async () => {
@@ -99,7 +89,7 @@ describe("Renders User Profile page", () => {
       );
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(6);
+    expect(mockFetch).toHaveBeenCalledTimes(5);
 
     const userName = screen.getAllByText(mockGetUser.user.username)[0];
     const userBio = screen.queryByText(mockGetUser.user.bio);
