@@ -46,7 +46,7 @@ const mockGetUser = {
 
 // book clubs saved
 const mockGetBooksSaved = { 
-  "book": [
+  "books": [
     {
       "book_id": "OL18417W",
       "title": "The Wonderful Wizard of Oz",
