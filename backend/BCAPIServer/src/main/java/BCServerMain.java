@@ -21,6 +21,7 @@ import routes.bookclubs.*;
 import routes.bookmgmt.GetBook;
 import routes.bookmgmt.GetSaveBooks;
 import routes.bookmgmt.SaveBook;
+import routes.bookmgmt.UnsaveBook;
 import routes.profile.GetUserProfile;
 import routes.profile.SetUserProfile;
 import spark.Spark;
@@ -94,6 +95,9 @@ public class BCServerMain {
 
     // get saved books
     Spark.get("/api/get_saved_books", new GetSaveBooks(sqlConn));
+
+    // delete saved book
+    Spark.post("/api/usave_book", new UnsaveBook(fbApp, sqlConn));
   }
 
   @SuppressWarnings("deprecation")
