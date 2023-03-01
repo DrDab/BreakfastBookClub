@@ -98,6 +98,9 @@ public class BCServerMain {
 
     // delete saved book
     Spark.post("/api/unsave_book", new UnsaveBook(fbApp, sqlConn));
+
+    // delete post
+    Spark.post("/api/delete_post", new DeletePost(fbApp, sqlConn));
   }
 
   @SuppressWarnings("deprecation")
