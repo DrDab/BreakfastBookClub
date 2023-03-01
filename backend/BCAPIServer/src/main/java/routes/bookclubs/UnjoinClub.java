@@ -1,6 +1,9 @@
 package routes.bookclubs;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import com.google.gson.JsonObject;
 import daos.User;
 import daos.UserResult;
@@ -23,16 +26,29 @@ public class UnjoinClub implements Route {
     public Object handle(Request request, Response response) throws Exception {
         JsonObject respJson = new JsonObject();
 
-        String user = request.queryParams("userId");
+        String token = request.queryParams("token");
         String bookKey = request.queryParams("book_key");
 
-        if (user == null || bookKey == null) {
+        if (bookKey == null) {
             respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "Need to provide userId or book_key!");
+            respJson.addProperty("failure_reason", "Need to provide book_key!");
             return respJson.toString() + "\n";
         }
 
-        UserResult result = new User(user, sqlConn).leaveClub(bookKey);
+        FirebaseToken decodedToken;
+
+        try {
+        decodedToken = FirebaseAuth.getInstance(fbApp)
+            .verifyIdToken(token, true);
+        } catch (FirebaseAuthException e) {
+            respJson.addProperty("status", "failure");
+            respJson.addProperty("failure_reason", String.valueOf(e.getAuthErrorCode()));
+            return respJson.toString() + "\n";
+        }
+
+        String uid = decodedToken.getUid();
+
+        UserResult result = new User(uid, sqlConn).leaveClub(bookKey);
 
         if (result == UserResult.INVALID) {
             respJson.addProperty("status", "failure");

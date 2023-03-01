@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.*;
 import types.BookPost;
 import types.UserProfile;
+import types.Book;
+import utils.OpenLibraryAPI;
 import utils.ResultSetParsers;
 
 public class User {
@@ -529,15 +531,19 @@ public class User {
    * @return list of this user's book clubs
    * @throws SQLException if something goes wrong with the database
    */
-  public List<String> allClubs() throws SQLException {
-    List<String> clubs = new ArrayList<>();
+  public List<Book> allClubs() throws Exception {
+    List<Book> clubs = new ArrayList<>();
 
     getClubsStatement.clearParameters();
     getClubsStatement.setString(1, this.user);
 
     ResultSet rs = getClubsStatement.executeQuery();
     while (rs.next()) {
-      clubs.add(rs.getString("book_key"));
+      String searchBookKey = rs.getString("book_key");
+      Book bookObj = OpenLibraryAPI.getBookByKey(searchBookKey);
+      if (bookObj != null) {
+        clubs.add(bookObj);
+      }
     }
     rs.close();
 

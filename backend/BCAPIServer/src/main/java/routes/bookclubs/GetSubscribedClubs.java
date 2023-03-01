@@ -1,6 +1,9 @@
 package routes.bookclubs;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import com.google.gson.JsonObject;
 import com.google.gson.Gson;
 import daos.User;
@@ -10,6 +13,7 @@ import java.util.ArrayList;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import types.Book;
 
 public class GetSubscribedClubs implements Route {
 
@@ -25,17 +29,24 @@ public class GetSubscribedClubs implements Route {
     public Object handle(Request request, Response response) throws Exception {
         JsonObject respJson = new JsonObject();
 
-        String user = request.queryParams("userId");
+        String token = request.queryParams("token");
 
-        if (user == null) {
+        FirebaseToken decodedToken;
+
+        try {
+            decodedToken = FirebaseAuth.getInstance(fbApp)
+                    .verifyIdToken(token, true);
+        } catch (FirebaseAuthException e) {
             respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "Need to provide userId.");
+            respJson.addProperty("failure_reason", String.valueOf(e.getAuthErrorCode()));
             return respJson.toString() + "\n";
         }
 
-        List<String> clubs = new User(user, sqlConn).allClubs();
+        String uid = decodedToken.getUid();
 
-        respJson.add("book_keys", new Gson().toJsonTree(clubs));
+        List<Book> clubs = new User(uid, sqlConn).allClubs();
+
+        respJson.add("books", new Gson().toJsonTree(clubs));
         respJson.addProperty("status", "success");
         return respJson.toString() + "\n";
     }
