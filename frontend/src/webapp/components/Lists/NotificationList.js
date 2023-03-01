@@ -10,7 +10,7 @@ import { avatarColorMap } from '../Constants'
 export default function NotificationList(props) {
 
 	return (
-    props.peopleData === "" ?
+    props.notificationData === "" ?
       <></> :
       props.notificationData.map((notif, index) => {
 
@@ -35,11 +35,8 @@ export default function NotificationList(props) {
               </Avatar>
             </ListItemAvatar>
             <ListItemText>
-              <Typography>
+              <Typography mt={2} mb={2}>
                 <a href={userProfileUrl}>{notif.recommender.username}</a> recommended <a href={bookProfileUrl}>{notif.book.title}</a> to you
-              </Typography>
-              <Typography variant="caption">
-                {notif.time}
               </Typography>
             </ListItemText>
           </MenuItem>

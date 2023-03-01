@@ -26,39 +26,33 @@ import { avatarColorMap } from '../Constants';
 export default function LoggedInAppBar() {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
   const [recommendationData, setRecommendationData] = React.useState('');
-
+  const [searchValue, setSearchValue] = React.useState(null);
+  const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
+  const openNotifications = Boolean(anchorElNotifications);
+  const [anchorElAccount, setAnchorElAccount] = React.useState(null);
+  const openAccount = Boolean(anchorElAccount);
+  const navigate = useNavigate();
+  
+  // recommendations
   React.useEffect(() => {
-    let data = [
-      {recommender: {
-          "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-          "username": "VictorD"
-        }, 
-        time: "2h",
-        book: {
-          "book_id": "OL18417W",
-          "title": "The Wonderful Wizard of Oz",
-          "author": "Baum, L. Frank",
-          "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
-      }},
-      {recommender: {
-        "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
-        "username": "zaynab"
-      }, 
-      time: "1h",
-      book: {
-        "book_id": "OL27479W",
-        "title": "The Two Towers",
-        "author": "J.R.R. Tolkien",
-        "thumbnail": "https://covers.openlibrary.org/b/id/8167231-M.jpg"
-      }}
-    ]
     const handleFetchRecommendations = async () => {
-      // let query = "http://localhost:4567/api/get_recommendations?userId=" + loggedinUser.uid;
+      let query = "http://localhost:4567/api/get_recommendations?recipient_userId=" + loggedinUser.uid;
       try {
-        // const response = await fetch(query);
-        // const json = await response.json();
-        // setRecommendationData(json.recommendations);
-        setRecommendationData(data);
+        let recommendations = [];
+        const response = await fetch(query);
+        const json = await response.json();
+        for (let i = 0; i < json.recommendations.length; i++ ) {
+          let rec = json.recommendations[i];
+          handleFetchUserProfile(rec.userID)
+          .then((recommender) => {
+            handleFetchBookProfile(rec.bookKey)
+            .then((book) => {
+              let recommendation = {recommender, book};
+              recommendations.push(recommendation);
+            })
+          })
+        }
+        setRecommendationData(recommendations);
       } catch (error) {
         console.log("error", error);
       }
@@ -67,19 +61,35 @@ export default function LoggedInAppBar() {
     handleFetchRecommendations();
 }, [loggedinUser.uid]);
 
-  const [searchValue, setSearchValue] = React.useState(null);
-  const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
-  const openNotifications = Boolean(anchorElNotifications);
-  const [anchorElAccount, setAnchorElAccount] = React.useState(null);
-  const openAccount = Boolean(anchorElAccount);
+  const handleFetchUserProfile = async (uid) => {
+    let query = "http://localhost:4567/api/get_user?userId=" + uid;
+    try {
+      const response = await fetch(query);
+      const json = await response.json();
+      return json.user;
+    } catch (error) {
+      return error;
+    }
+  }
 
-  const navigate = useNavigate();
+  const handleFetchBookProfile = async (bid) => {
+    let query = "http://localhost:4567/api/get_book?book_key=" + bid;
+    try {
+      const response = await fetch(query);
+      const json = await response.json();
+      return json.book;
+    } catch (error) {
+      return error;
+    }
+  }
 
+  // search
   const handleSearchSubmission = () => {
     sessionStorage.setItem('searchValue', searchValue);
     navigate("/search-results");
   };
 
+  // log out
   const handleLogOut = () => {
     signOut(auth);
     sessionStorage.setItem('loggedinUser', JSON.stringify("loggedout"));
