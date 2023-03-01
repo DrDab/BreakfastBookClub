@@ -7,66 +7,58 @@ import PeopleList from '../components/Lists/PeopleList';
 import BookList from '../components/Lists/BookList';
 import CreatePost from '../components/CreatePost';
 import PostList from '../components/Lists/PostList';
-import { formatOpenLibraryData } from '../components/Utils';
+import { handleFetch } from '../components/Utils';
 
 export default function Home() {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
 
-  const [popularBooksData, setPopularBooksData] = React.useState("");
   const [homePostsData, setHomePostsData] = React.useState("");
+  const [bookClubsJoinedData, setBookClubsJoinedData] = React.useState("");
+  const [friendsData, setFriendsData] = React.useState("");
   const [isFetchPosts, setIsFetchPosts] = React.useState(false);
 
   React.useEffect(() => {
-    const handleFetchPopularBooks = async () => {
-      let searchQuery = "http://openlibrary.org/search.json?q=lord+of+the+rings&limit=3"
-      try {
-        const response = await fetch(searchQuery);
-        const json = await response.json();
-        let formattedData = formatOpenLibraryData(json);
-        setPopularBooksData(formattedData);
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
+    handleFetch("list_feed", "").then((json) => {
+      let posts = json.posts;
+      posts.sort(function (a, b) {
+          return b.date - a.date;
+      });
+      setHomePostsData(posts);
+    });
+  }, [isFetchPosts]);
 
-    handleFetchPopularBooks();
-  },[loggedinUser.uid]);
 
   React.useEffect(() => {
-    const handleFetchPosts = async () => {
-      let query = "http://localhost:4567/api/list_feed";
-      try {
-        const response = await fetch(query);
-        const json = await response.json();
-        const posts = json.posts;
-        posts.sort(function (a, b) {
-          return b.date - a.date;
-        });
-        setHomePostsData(posts);
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-    handleFetchPosts();
-  },[isFetchPosts]);
 
-  let popularPeopleData = [
-    {
-      "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
-      "username": "Amanda",
-      "bio": "bio"
-    },
-    {
-      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-      "username": "VictorD",
-      "bio": "bio"
-    },
-    {
-      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
-      "username": "zaynab",
-      "bio": "bio"
-    }
-  ]
+    // handleFetch("list_friends?userID=", loggedinUser.uid).then((json) => {
+    //   setFriendsData(json.friends);
+    // });
+    setFriendsData([
+      {
+        "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+        "username": "VictorD",
+        "bio": "bio"
+      },
+      {
+        "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+        "username": "zaynab",
+        "bio": "bio"
+      }
+    ])
+
+    // handleFetch("get_subscribed_clubs?userId=", loggedinUser.uid).then((json) => {
+    //   setBookClubsJoinedData(json.bookClubs);
+    // });
+    setBookClubsJoinedData([
+      {
+        "book_id": "OL1168007W",
+        "title": "Animal Farm",
+        "author": "George Orwell",
+        "thumbnail": "https://covers.openlibrary.org/b/id/11261770-M.jpg"
+      }
+    ])
+
+  }, [loggedinUser.uid]);
 
   return (
     <Box sx={{ width: '70%', margin: '0 auto' }}>
@@ -81,15 +73,15 @@ export default function Home() {
         <Stack spacing={2}>
           <div>
             <Typography variant="overline">
-              Trending Books
+              Book Clubs
             </Typography>
-            <BookList bookData={popularBooksData} isFromOpenLibrary />
+            <BookList bookData={bookClubsJoinedData} />
           </div>
           <div>
             <Typography variant="overline">
-              Trending Readers
+              Friends
             </Typography>
-            <PeopleList peopleData={popularPeopleData}/>
+            <PeopleList peopleData={friendsData}/>
           </div>
         </Stack>
       </Grid>

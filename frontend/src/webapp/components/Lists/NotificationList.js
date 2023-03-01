@@ -11,12 +11,10 @@ export default function NotificationList(props) {
 
 	return (
     props.notificationData === "" ?
-      <></> :
+      <Typography variant="body2"> No notifications </Typography> :
       props.notificationData.map((notif, index) => {
-
         let userProfileUrl = "/user-profile/" + notif.recommender.uid;
         let bookProfileUrl ="/book-club/" + notif.book.book_id;
-
         return (
           <MenuItem
             className="list-item"

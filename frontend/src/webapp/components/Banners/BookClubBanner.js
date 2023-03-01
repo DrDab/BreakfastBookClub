@@ -11,11 +11,17 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { auth } from "../../../FirebaseConfig"
+import { useParams } from "react-router-dom";
+import { handleFetch } from '../Utils'
 
 export default function BookClubBanner(props) {
+  let { bid } = useParams(); // clicked book
+  let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
+
   const [showRecomendModal, setShowRecomendModal] = React.useState(false);
   const [selectFriendUserId, setSelectFriendUserId] = React.useState('');
   const [isMissingFields, setIsMissingFields] = React.useState(true);
+
   
   // Recommendations
   React.useEffect(() => {
@@ -61,7 +67,7 @@ export default function BookClubBanner(props) {
           recipient_userId: selectFriendUserId
         }
         console.log(jsonData)
-        fetchPostRecommendation(jsonData);
+        // fetchPostRecommendation(jsonData);
       })
 
       clearFormValues();
@@ -83,7 +89,10 @@ export default function BookClubBanner(props) {
     })
     .then((data) => {
       console.log('Success:', data);
-      props.setIsFetchIsBookSaved(!props.isFetchIsBookSaved)
+      handleFetch("get_saved_books?userID=", loggedinUser.uid).then((json) => {
+        let books = json.book;
+        props.setIsBookSavedData(books.some(book => book.book_id === bid));
+      });
     })
     .catch((error) => {
       console.log(error);
