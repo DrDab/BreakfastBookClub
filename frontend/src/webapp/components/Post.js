@@ -18,6 +18,7 @@ export default function Post(props) {
   
   const [isPostLikedData, setIsPostLikedData] = React.useState(false);
   const [numberOfLikes, setNumberOfLikes] = React.useState(props.post.likes);
+  const [deleteDisplay, setDeleteDisplay] = React.useState(false);
 
 
   React.useEffect(() => {
@@ -77,7 +78,7 @@ export default function Post(props) {
     })
     .then((data) => {
       console.log('Success:', data);
-      props.setIsFetchPosts(!props.isFetchPosts)
+      setDeleteDisplay(true);
     })
     .catch((error) => {
       console.log(error);
@@ -102,7 +103,7 @@ export default function Post(props) {
   let bookProfileUrl ="/book-club/" + props.post.book.book_id;
 
   return (
-    <Card elevation={0} className="post">
+    <Card elevation={0} className="post" sx={{display: deleteDisplay? 'none': ""}}>
       <CardHeader
         avatar={
           <Avatar
@@ -118,7 +119,7 @@ export default function Post(props) {
         action={
           props.post.user.userId === loggedinUser.uid ? 
             <IconButton aria-label="delete-post" onClick={handleDeletePost}>
-              <DeleteIcon />
+              <DeleteIcon fontSize="small"/>
             </IconButton> :
             <></>
           }
@@ -151,7 +152,7 @@ export default function Post(props) {
       <CardActions disableSpacing>
         <IconButton 
           onClick={() => handleLikeUnlikePost(props.post.post_id)}
-          sx={{color: isPostLikedData ? "red" : "grey"}}
+          sx={{color: isPostLikedData ? "#ff4d67" : "#d9d9d9"}}
           aria-label="like"
         >
           <FavoriteIcon />

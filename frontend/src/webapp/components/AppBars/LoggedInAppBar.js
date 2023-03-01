@@ -54,9 +54,9 @@ export default function LoggedInAppBar() {
           })
         })
       }
+    }).then(() => {
+      setRecommendationData(recommendations);
     });
-
-    setRecommendationData(recommendations);
 }, [loggedinUser.uid, isFetchRecommendations]);
 
 
@@ -158,7 +158,10 @@ export default function LoggedInAppBar() {
       <Menu
         anchorEl={anchorElNotifications}
         open={openNotifications}
-        onClose={() => setAnchorElNotifications(null)}
+        onClose={() => {
+          setAnchorElNotifications(null);
+          setIsFetchRecommendations(!isFetchRecommendations);
+        }}
         PaperProps={{
           style: {
             maxHeight: 250,
@@ -169,11 +172,7 @@ export default function LoggedInAppBar() {
         <Typography m={1} ml={2}>
           Notifications
         </Typography>
-        <NotificationList 
-          notificationData={recommendationData}
-          setIsFetchRecommendations={setIsFetchRecommendations}
-          isFetchRecommendations={isFetchRecommendations}
-        />
+        <NotificationList notificationData={recommendationData} />
       </Menu>
     </Box>
   );
