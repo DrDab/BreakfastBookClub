@@ -16,7 +16,8 @@ export default function BookClubBanner(props) {
   const [showRecomendModal, setShowRecomendModal] = React.useState(false);
   const [selectFriendUserId, setSelectFriendUserId] = React.useState('');
   const [isMissingFields, setIsMissingFields] = React.useState(true);
-
+  
+  // Recommendations
   React.useEffect(() => {
     setIsMissingFields(selectFriendUserId === "");
   }, [selectFriendUserId]);
@@ -66,7 +67,40 @@ export default function BookClubBanner(props) {
       clearFormValues();
     }
   };
-  
+
+
+  // Save UnSave
+  const handleFetchPostSaveStatus = (status, token) => {
+    console.log(status)
+    let url = "http://localhost:4567/api/" + status + "?token=" + token + "&book_key=" + props.bookData.book_id;
+    console.log(url)
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then((data) => {
+      console.log('Success:', data);
+      props.setIsFetchIsBookSaved(!props.isFetchIsBookSaved)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+  const handleSaveUnSaveBook = () => {
+    auth.currentUser?.getIdToken(true).then(function(idToken) {
+      if (props.isBookSavedData) {
+        // handleFetchPostSaveStatus("unsave_book", idToken);
+        console.log("unsave book")
+      } else {
+        handleFetchPostSaveStatus("save_book", idToken);
+      }
+    })
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -88,8 +122,12 @@ export default function BookClubBanner(props) {
                 {props.bookData.author}
               </Typography>
               <Stack spacing={2} direction="row">
-                <Button disableElevation variant="contained" size="small">
-                  Save
+                <Button
+                  disableElevation
+                  variant={props.isBookSavedData ? "outlined" : "contained"}
+                  onClick={handleSaveUnSaveBook}
+                >
+                  {props.isBookSavedData ? "Unsave" : "Save"} 
                 </Button>
                 <Button disableElevation variant="outlined" size="small" onClick={() => setShowRecomendModal(true)}> 
                   Recommend
@@ -99,7 +137,6 @@ export default function BookClubBanner(props) {
           </Grid>
         </Grid>
       </Box>
-
       <Modal
         open={showRecomendModal}
         onClose={() => setShowRecomendModal(false)}

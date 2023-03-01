@@ -47,12 +47,12 @@ export default function UserProfile() {
 
   React.useEffect(() => {
     const handleFetchBooksSaved = async () => {
-      let query = "http://openlibrary.org/search.json?q=good&limit=3";
+      let query = "http://localhost:4567/api/get_saved_books?userID=" + uid;
       try {
         const response = await fetch(query);
         const json = await response.json();
-        let formattedData = formatOpenLibraryData(json);
-        setBooksSavedData(formattedData)
+        let books = json.book;
+        setBooksSavedData(books)
       } catch (error) {
         console.log("error", error);
       }
@@ -225,11 +225,11 @@ export default function UserProfile() {
               <Typography variant="overline">
                 Book Clubs
               </Typography>
-              <BookList bookData={bookClubsJoinedData} />
+              <BookList bookData={bookClubsJoinedData} isFromOpenLibrary />
             </div>
             <div>
               <Typography variant="overline">
-                Saved Books
+                Saved Book Clubs
               </Typography>
               <BookList bookData={booksSavedData} />
             </div>

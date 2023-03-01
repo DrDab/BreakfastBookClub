@@ -10,7 +10,19 @@ const mockLoggedInUser = {
   "bio": "bio"
 }
 
-// saved books, book clubs
+// book clubs saved
+const mockGetBooksSaved = { 
+  "book": [
+    {
+      "book_id": "OL18417W",
+      "title": "The Wonderful Wizard of Oz",
+      "author": "L. Frank Baum",
+      "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
+    }
+  ]
+}
+
+// book clubs
 const mockGetBooks = { 
   "docs": [
     {
@@ -23,6 +35,8 @@ const mockGetBooks = {
     }
   ]
 }
+
+
 
 // user posts, liked posts, logged in user liked posts
 const mockGetPosts = {
@@ -66,7 +80,7 @@ describe("Renders User Profile page", () => {
     const makeFetchResponse = value => ({ json: async() => value })
     const mockFetch = jest.fn()
       .mockReturnValueOnce(makeFetchResponse(mockGetUser))
-      .mockReturnValueOnce(makeFetchResponse(mockGetBooks))
+      .mockReturnValueOnce(makeFetchResponse(mockGetBooksSaved))
       .mockReturnValueOnce(makeFetchResponse(mockGetBooks))
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))

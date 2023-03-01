@@ -21,6 +21,8 @@ export default function BookClub() {
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
   const [bookClubPostsData, setBookClubPostsData] = React.useState('');
   const [bookProfileData, setBookProfileData] = React.useState('');
+  const [isBookSavedData, setIsBookSavedData] = React.useState('');
+  const [isFetchIsBookSaved, setIsFetchIsBookSaved] = React.useState(false);
   const [isBookClubsJoinedData, setIsBookClubsJoinedData] = React.useState(false);
   const [bookClubMembersData, setBookClubMembersData] = React.useState('');
   const [loggedinUserFriendsData, setLoggedinUserFriendsData] = React.useState('');
@@ -39,19 +41,6 @@ export default function BookClub() {
       }
     }
 
-    // const handleFetchIsBookClubsJoined = async () => {
-    //   let query = "http://localhost:4567/api/get_subscribed_clubs?userId=" + uid;
-    //   try {
-    //     const response = await fetch(query);
-    //     const json = await response.json();
-    //     const bookClubs = json.bookClubs;
-    //     setIsBookClubsJoinedData(bookClubs.some(bookClub => bookClub.book_id === bid));
-    //   } catch (error) {
-    //     console.log("error", error);
-    //   }
-    // }
-
-
     const handleFetchIsBookClubsJoined = async () => {
       let query = "http://openlibrary.org/search.json?q=george+orwell&limit=4";
       try {
@@ -62,6 +51,15 @@ export default function BookClub() {
       } catch (error) {
         console.log("error", error);
       }
+      // let query = "http://localhost:4567/api/get_subscribed_clubs?userId=" + uid;
+      // try {
+      //   const response = await fetch(query);
+      //   const json = await response.json();
+      //   const bookClubs = json.bookClubs;
+      //   setIsBookClubsJoinedData(bookClubs.some(bookClub => bookClub.book_id === bid));
+      // } catch (error) {
+      //   console.log("error", error);
+      // }
     }
 
     const handleFetchBookClubsMembers = async () => {
@@ -122,6 +120,20 @@ export default function BookClub() {
     handleFetchBookClubPosts();
   }, [bid, isFetchPosts]);
 
+  React.useEffect(() => {
+    const handleFetchIsBookSaved = async () => {
+      let query = "http://localhost:4567/api/get_saved_books?userID=" + loggedinUser.uid;
+      try {
+        const response = await fetch(query);
+        const json = await response.json();
+        let books = json.book;
+        setIsBookSavedData(books.some(books => books.book_id === bid));
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+    handleFetchIsBookSaved();
+  }, [loggedinUser.uid, bid, isFetchIsBookSaved]);
 
   const handleFetchPostJoinStatus = (status) => {
     let url = "http://localhost:4567/api/" + status + "?userId=" + loggedinUser.uid + "&book_key=" + bid;
@@ -134,7 +146,8 @@ export default function BookClub() {
     //   },
     // })
     // .then((data) => {
-    //   console.log('Success:', data);
+    //   console.log('Success:', data); 
+    //   refetch members
     // })
     // .catch((error) => {
     //   console.log(error);
@@ -142,7 +155,6 @@ export default function BookClub() {
 
     console.log(status);
   }
-
 
   const handleJoinUnJoinBookClub = () => {
     if (isBookClubsJoinedData){
@@ -158,7 +170,13 @@ export default function BookClub() {
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
-        <BookClubBanner bookData={bookProfileData} loggedinUserFriendsData={loggedinUserFriendsData}/>
+        <BookClubBanner
+          bookData={bookProfileData}
+          loggedinUserFriendsData={loggedinUserFriendsData}
+          isBookSavedData={isBookSavedData}
+          setIsFetchIsBookSaved={setIsFetchIsBookSaved}
+          isFetchIsBookSaved={isFetchIsBookSaved}
+        />
       </Grid>
       <Grid item xs={8}>
         <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />

@@ -83,7 +83,7 @@ export default function Home() {
             <Typography variant="overline">
               Trending Books
             </Typography>
-            <BookList bookData={popularBooksData} />
+            <BookList bookData={popularBooksData} isFromOpenLibrary />
           </div>
           <div>
             <Typography variant="overline">

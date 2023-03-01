@@ -54,7 +54,7 @@ export default function SearchResults() {
           </Tabs>
         </Box>
         <TabPanel value={tabIndexValue} index={0}>
-          <BookList bookData={searchResultBookData}/>
+          <BookList bookData={searchResultBookData} isFromOpenLibrary />
         </TabPanel>
         <TabPanel value={tabIndexValue} index={1}>
           <PeopleList peopleData={searchResultPeopleData}/>
