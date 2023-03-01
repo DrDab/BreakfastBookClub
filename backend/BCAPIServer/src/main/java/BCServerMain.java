@@ -28,7 +28,6 @@ import routes.friends.ListFriends;
 import routes.friends.RemoveFriend;
 import routes.profile.GetUserProfile;
 import routes.profile.SetUserProfile;
-import routes.friends.*;
 import spark.Spark;
 import utils.BCCORSFilter;
 
