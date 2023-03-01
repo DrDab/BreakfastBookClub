@@ -90,8 +90,7 @@ export default function BookClubBanner(props) {
     .then((data) => {
       console.log('Success:', data);
       handleFetch("get_saved_books?userID=", loggedinUser.uid).then((json) => {
-        let books = json.book;
-        props.setIsBookSavedData(books.some(book => book.book_id === bid));
+        props.setIsBookSavedData(json.books.some(book => book.book_id === bid));
       });
     })
     .catch((error) => {

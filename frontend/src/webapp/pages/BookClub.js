@@ -48,7 +48,7 @@ export default function BookClub() {
     });
 
     handleFetch("get_saved_books?userID=", loggedinUser.uid).then((json) => {
-      setIsBookSavedData(json.book.some(book => book.book_id === bid));
+      setIsBookSavedData(json.books.some(book => book.book_id === bid));
     });
 
     // for sending reccomendations

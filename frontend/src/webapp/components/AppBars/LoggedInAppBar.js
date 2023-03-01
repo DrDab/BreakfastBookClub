@@ -28,6 +28,7 @@ export default function LoggedInAppBar() {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
 
   const [recommendationData, setRecommendationData] = React.useState('');
+  const [isFetchRecommendations, setIsFetchRecommendations] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState(null);
   const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
   const openNotifications = Boolean(anchorElNotifications);
@@ -56,7 +57,7 @@ export default function LoggedInAppBar() {
     });
 
     setRecommendationData(recommendations);
-}, [loggedinUser.uid]);
+}, [loggedinUser.uid, isFetchRecommendations]);
 
 
   // search
@@ -165,15 +166,14 @@ export default function LoggedInAppBar() {
           },
         }}
       >
-        <Stack direction="row" justifyContent="space-between" m={1.5}>
-          <Typography>
-            Notifications
-          </Typography>
-          <Typography variant="caption" onClick={()=> console.log("clear notifs")}>
-            Clear
-          </Typography>
-        </Stack>
-        <NotificationList notificationData={recommendationData} />
+        <Typography m={1} ml={2}>
+          Notifications
+        </Typography>
+        <NotificationList 
+          notificationData={recommendationData}
+          setIsFetchRecommendations={setIsFetchRecommendations}
+          isFetchRecommendations={isFetchRecommendations}
+        />
       </Menu>
     </Box>
   );

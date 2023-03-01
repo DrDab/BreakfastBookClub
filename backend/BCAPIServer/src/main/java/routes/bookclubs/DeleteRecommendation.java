@@ -27,31 +27,17 @@ public class DeleteRecommendation implements Route {
     public Object handle(Request request, Response response) throws Exception {
         JsonObject respJson = new JsonObject();
 
-
         String token = request.queryParams("token");
         String sender_id = request.queryParams("sender_userId");
         String bookKey = request.queryParams("book_key");
 
-//         JsonObject body = BCGsonUtils.fromStr(request.body());
-//
-//        if (body == null) {
-//            respJson.addProperty("status", "failure");
-//            respJson.addProperty("failure_reason", "Body is not valid JSON!");
-//            return respJson.toString() + "\n";
-//        }
-//
-//        if (!body.has("token") ||
-//                !body.has("sender_userId") ||
-//                !body.has("book_key")) {
-//            respJson.addProperty("status", "failure");
-//            respJson.addProperty("failure_reason", "Body doesn't have necessary parameters");
-//            return respJson.toString() + "\n";
-//        }
-//
-//        String token = body.get("token").getAsString();
+        if (token == null || sender_id == null || bookKey == null) {
+           respJson.addProperty("status", "failure");
+           respJson.addProperty("failure_reason", "token, sender id, and book key must be present!");
+           return respJson.toString() + "\n";
+       }
+
         FirebaseToken decodedTokenSender;
-
-
         // authenticating user
         try {
             decodedTokenSender = FirebaseAuth.getInstance()

@@ -57,7 +57,7 @@ export default function UserProfile() {
     });
 
     handleFetch("get_saved_books?userID=", uid).then((json) => {      
-      setBooksSavedData(json.book)
+      setBooksSavedData(json.books)
     });
 
     // handleFetch("get_subscribed_clubs?userId=", loggedinUser.uid).then((json) => {
