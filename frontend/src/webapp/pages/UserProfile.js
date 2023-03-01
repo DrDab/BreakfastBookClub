@@ -124,18 +124,10 @@ export default function UserProfile() {
                 </Tabs>
               </Box>
               <TabPanel value={tabIndexValue} index={0}>
-                <PostList
-                  postsData={userPostsData}
-                  setIsFetchPosts={setIsFetchPosts}
-                  isFetchPosts={isFetchPosts}
-                />
+                <PostList postsData={userPostsData} />
               </TabPanel>
               <TabPanel value={tabIndexValue} index={1}>
-                <PostList
-                  postsData={userLikedPostsData}
-                  setIsFetchPosts={setIsFetchPosts}
-                  isFetchPosts={isFetchPosts}
-                />
+                <PostList postsData={userLikedPostsData} />
               </TabPanel>
             </Box>
           </Stack>

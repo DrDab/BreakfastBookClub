@@ -14,6 +14,7 @@ import { auth } from "../../FirebaseConfig";
 export default function Notification(props) {
   let userProfileUrl = "/user-profile/" + props.notif.recommender.uid;
   let bookProfileUrl ="/book-club/" + props.notif.book.book_id;
+  const [deleteDisplay, setDeleteDisplay] = React.useState(false);
 
   const handleFetchPostDeleteRecommendation = (token, recommenderUid, bookKey) => {
     let url = "http://localhost:4567/api/delete_recommendation?token=" + token + "&sender_userId=" + recommenderUid + "&book_key=" + bookKey;
@@ -26,7 +27,7 @@ export default function Notification(props) {
     })
     .then((data) => {
       console.log('Success:', data);
-      props.setIsFetchRecommendations(!props.isFetchRecommendations);
+      setDeleteDisplay(true);
     })
     .catch((error) => {
       console.log(error);
@@ -43,7 +44,7 @@ export default function Notification(props) {
   return (
     <MenuItem
       className="list-item"
-      sx={{whiteSpace: 'normal', backgroundColor: '#fafafa'}}
+      sx={{whiteSpace: 'normal', backgroundColor: '#fafafa', display: deleteDisplay? 'none': ""}}
     >
       <ListItemAvatar>
         <Avatar
