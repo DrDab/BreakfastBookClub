@@ -13,10 +13,15 @@ import MenuItem from '@mui/material/MenuItem';
 import { auth } from "../../../FirebaseConfig"
 
 export default function BookClubBanner(props) {
+  let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
+
   const [showRecomendModal, setShowRecomendModal] = React.useState(false);
   const [selectFriendUserId, setSelectFriendUserId] = React.useState('');
   const [isMissingFields, setIsMissingFields] = React.useState(true);
+  const [isBookSavedData, setIsBookSavedData] = React.useState(false);
 
+  
+  // Recommendations
   React.useEffect(() => {
     setIsMissingFields(selectFriendUserId === "");
   }, [selectFriendUserId]);
@@ -66,6 +71,59 @@ export default function BookClubBanner(props) {
       clearFormValues();
     }
   };
+
+
+
+  // Save UnSave
+  React.useEffect(() => {
+    const handleFetchIsBookSaved = async () => {
+      console.log("fetch")
+      let query = "http://localhost:4567/api/get_saved_books?userID=" + loggedinUser.uid;
+      try {
+        const response = await fetch(query);
+        const json = await response.json();
+        let books = json.book;
+        setIsBookSavedData(books.some(books => books.book_id === props.bookData.book_id));
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+    handleFetchIsBookSaved();
+  },[loggedinUser.uid, props.bookData.book_id]);
+
+
+  const handleFetchPostSaveStatus = (status, token) => {
+    console.log(status)
+    let url = "http://localhost:4567/api/" + status + "?token=" + token + "&book_key=" + props.bookData.book_id;
+    console.log(url)
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then((data) => {
+      console.log('Success:', data);
+      // setIsFetchIsBookSaved(!isfetchIsBookSaved);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+  const handleSaveUnSaveBook = () => {
+    auth.currentUser?.getIdToken(true).then(function(idToken) {
+      if (isBookSavedData) {
+        // handleFetchPostSaveStatus("unsave_book", idToken);
+        console.log("unsave book")
+      } else {
+        handleFetchPostSaveStatus("save_book", idToken);
+      }
+    })
+    setIsBookSavedData(!isBookSavedData);
+  };
+
   
   return (
     <>
@@ -88,9 +146,14 @@ export default function BookClubBanner(props) {
                 {props.bookData.author}
               </Typography>
               <Stack spacing={2} direction="row">
-                <Button disableElevation variant="contained" size="small">
-                  Save
+                <Button
+                  disableElevation
+                  variant={isBookSavedData ? "outlined" : "contained"}
+                  onClick={handleSaveUnSaveBook}
+                >
+                  {isBookSavedData ? "Unsave" : "Save"}
                 </Button>
+
                 <Button disableElevation variant="outlined" size="small" onClick={() => setShowRecomendModal(true)}> 
                   Recommend
                 </Button>
