@@ -35,6 +35,10 @@ public class Books {
             "SELECT book_key FROM saved_books WHERE user_id = ?";
     private PreparedStatement getSavedBooksStatement;
 
+    private static final String UNSAVE_BOOK_SQL =
+            "DELETE FROM saved_books WHERE user_id = ? AND book_key = ?";
+    private PreparedStatement unsaveBookStatement;
+
     public Books(Connection conn) throws SQLException {
         this.conn = conn;
         prepareStatements();
@@ -63,6 +67,25 @@ public class Books {
         }
         return UserResult.SUCCESS;
 
+    }
+
+    /**
+     * Deletes a saved book from the user's saved books.
+     * @param username user ID of the username to delete a book
+     * @param bookKey key of a book to be deleted
+     * @return UserResult.SUCCESS if the book is successfully deleted. UserResult.FAIL if there is a database error.
+     */
+    public UserResult unsaveBook (String username, String bookKey) {
+        try {
+            unsaveBookStatement.clearParameters();
+            unsaveBookStatement.setString(1, username);
+            unsaveBookStatement.setString(2, bookKey);
+            unsaveBookStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return UserResult.FAIL;
+        }
+        return UserResult.SUCCESS;
     }
 
     /**
@@ -154,6 +177,7 @@ public class Books {
         getRecommendationsStatement = conn.prepareStatement(GET_RECOMMENDATIONS_SQL);
         addSavedBookStatement = conn.prepareStatement(ADD_SAVED_BOOK_SQL);
         getSavedBooksStatement = conn.prepareStatement(GET_SAVED_BOOKS_SQL);
+        unsaveBookStatement = conn.prepareStatement(UNSAVE_BOOK_SQL);
     }
 
     // Returns whether the error was caused by a deadlock
