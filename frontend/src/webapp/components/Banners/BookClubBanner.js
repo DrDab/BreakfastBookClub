@@ -102,8 +102,7 @@ export default function BookClubBanner(props) {
   const handleSaveUnSaveBook = () => {
     auth.currentUser?.getIdToken(true).then(function(idToken) {
       if (props.isBookSavedData) {
-        // handleFetchPostSaveStatus("unsave_book", idToken);
-        console.log("unsave book")
+        handleFetchPostSaveStatus("unsave_book", idToken);
       } else {
         handleFetchPostSaveStatus("save_book", idToken);
       }

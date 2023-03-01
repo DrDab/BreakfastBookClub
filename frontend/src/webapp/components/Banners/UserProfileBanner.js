@@ -61,7 +61,7 @@ export default function UserProfileBanner(props) {
       setShowEditBioModal(false);
       auth.currentUser?.getIdToken(true).then(function(idToken){
         sessionStorage.setItem("postNewBio", "token="+ idToken +",bio="+bio);
-        handleFetchPostBio(idToken, bio);
+        // handleFetchPostBio(idToken, bio);
       })
       clearFormValues();
     }
