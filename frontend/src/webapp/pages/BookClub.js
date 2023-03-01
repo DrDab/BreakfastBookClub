@@ -131,7 +131,11 @@ export default function BookClub() {
               </Tabs>
             </Box>
             <TabPanel value={tabIndexValue} index={0}>
-              <PostList postsData={bookClubPostsData} />
+              <PostList 
+                postsData={bookClubPostsData}
+                setIsFetchPosts={setIsFetchPosts}
+                isFetchPosts={isFetchPosts}
+              />
             </TabPanel>
           </Box>
         </Stack>

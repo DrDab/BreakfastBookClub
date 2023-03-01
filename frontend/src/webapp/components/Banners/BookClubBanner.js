@@ -66,7 +66,7 @@ export default function BookClubBanner(props) {
           book_key: props.bookData.book_id,
           recipient_userId: selectFriendUserId
         }
-        console.log(jsonData)
+        console.log("post rec", jsonData)
         fetchPostRecommendation(jsonData);
       })
 

@@ -59,7 +59,6 @@ export default function LoggedInAppBar() {
 }, [loggedinUser.uid]);
 
 
-
   // search
   const handleSearchSubmission = () => {
     sessionStorage.setItem('searchValue', searchValue);
