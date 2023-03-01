@@ -28,7 +28,7 @@ public class GetRecommendations implements Route {
 
         if (searchRecepientID == null) {
             respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "Need to provide userID for " +
+            respJson.addProperty("failure_reason", "Need to provide recipient_userId for " +
                     "recipient of recommendations");
             return respJson.toString() + "\n";
         }
