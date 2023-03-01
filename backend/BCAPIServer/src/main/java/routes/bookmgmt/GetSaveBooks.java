@@ -45,7 +45,7 @@ public class GetSaveBooks implements Route {
         }
 
         Gson gson = new Gson();
-        respJson.add("book", gson.toJsonTree(books));
+        respJson.add("books", gson.toJsonTree(books));
         respJson.addProperty("status", "success");
         return respJson.toString() + "\n";
     }

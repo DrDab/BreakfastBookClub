@@ -11,7 +11,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link as RouterLink } from "react-router-dom";
 import { tagsList, avatarColorMap } from './Constants';
-import { auth } from "../../FirebaseConfig"
+import { auth } from "../../FirebaseConfig";
 
 export default function Post(props) {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
@@ -84,10 +84,10 @@ export default function Post(props) {
     });
   }
 
-  const handleDeletePost = (postId) => {
-    console.log("delete post", postId)
+  const handleDeletePost = () => {
+    console.log("delete post", props.post.post_id)
     auth.currentUser?.getIdToken(true).then(function(idToken){
-      handleFetchPostDeletePost(idToken, postId);
+      handleFetchPostDeletePost(idToken, props.post.post_id);
     })
   }
 
@@ -117,7 +117,7 @@ export default function Post(props) {
         }
         action={
           props.post.user.userId === loggedinUser.uid ? 
-            <IconButton aria-label="delete-post" onClick={() => handleDeletePost(props.post.post_id)}>
+            <IconButton aria-label="delete-post" onClick={handleDeletePost}>
               <DeleteIcon />
             </IconButton> :
             <></>

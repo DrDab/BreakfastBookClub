@@ -58,7 +58,7 @@ const mockGetMembers = {
 
 // is book club saved
 const mockGetBooksSaved = {
-  "book": [
+  "books": [
       {
         "book_id": "OL1168007W",
         "title": "Animal Farm",

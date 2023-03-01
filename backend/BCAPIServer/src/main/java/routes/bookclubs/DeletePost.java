@@ -32,6 +32,7 @@ public class DeletePost implements Route {
         if (postID == null || token == null) {
             respJson.addProperty("status", "failure");
             respJson.addProperty("failure_reason", "post_id and token must be present!");
+            return respJson;
         }
 
         FirebaseToken decodedTokenSender;
