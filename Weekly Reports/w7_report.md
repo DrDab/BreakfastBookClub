@@ -34,7 +34,8 @@
 - Progress / Issues:
 
   Zaynab Khan:
-
+  - Implemented backend for getting a user's clubs
+  - Implemented API routes for join club, leave club and get user's clubs
 
   Victor Du:
 
@@ -57,6 +58,9 @@
   Jocelyn Thomson:
   - Finish all of the API routes that need to be implemented.
   - Test all of the API routes that haven't been tested yet. 
+
+  Zaynab Khan:
+  - Finish testing my API routes
 
 
 
