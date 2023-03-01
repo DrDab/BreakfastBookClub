@@ -17,3 +17,15 @@ export const formatOpenLibraryData = (openlibraryJson) => {
   }
   return formattedData;
 }
+
+export const handleFetch = async (route, id) => {
+  console.log("fetch " + route + id)
+  let query = "http://localhost:4567/api/" + route + id ;
+  try {
+    const response = await fetch(query);
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    return error;
+  }
+}

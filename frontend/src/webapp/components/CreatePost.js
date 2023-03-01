@@ -56,7 +56,7 @@ export default function CreatePost(props) {
     clearFormValues();
   };
 
-  const fetchPost = (jsonData) => {
+  const fetchPostCreatePost = (jsonData) => {
     let url = "http://localhost:4567/api/make_post";
     fetch(url, {
       method: 'POST',
@@ -87,8 +87,8 @@ export default function CreatePost(props) {
           body: body,
           ...indexOfTagSelected > -1 && {tag: tagsList[indexOfTagSelected].label}
         }
-        sessionStorage.setItem("sendingPost", JSON.stringify(jsonData));
-        fetchPost(jsonData);
+        console.log("creating post", JSON.stringify(jsonData));
+        fetchPostCreatePost(jsonData);
       })
 
       clearFormValues();

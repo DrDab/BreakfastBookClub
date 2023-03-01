@@ -9,10 +9,14 @@ import PeopleList from '../Lists/PeopleList';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import { avatarColorMap } from '../Constants';
+import { handleFetch } from '../Utils';
 import { auth } from "../../../FirebaseConfig"
+import { useParams } from "react-router-dom";
 
 export default function UserProfileBanner(props) {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
+  let { uid } = useParams(); // clicked user
+
   const [showFriendsModal, setShowFriendsModal] = React.useState(false);
   const [showEditBioModal, setShowEditBioModal] = React.useState(false);
   const [bio, setBio] = React.useState(props.clickedUserData.bio? props.clickedUserData.bio : "");
@@ -43,7 +47,9 @@ export default function UserProfileBanner(props) {
     })
     .then((data) => {
       console.log('Success:', data);
-      props.setIsFetchUserProfile(!props.isFetchUserProfile)
+      handleFetch("get_user?userId=", uid).then((json) => {      
+        props.setUserProfileData(json.user);
+      });
     })
     .catch((error) => {
       console.log(error);

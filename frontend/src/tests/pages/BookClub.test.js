@@ -10,60 +10,7 @@ const mockLoggedInUser = {
   "bio": "bio"
 }
 
-// current book club
-const mockGetBook = {
-  "book": {
-    "book_id": "OL18417W",
-    "title": "The Wonderful Wizard of Oz",
-    "author": "L. Frank Baum",
-    "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
-  }
-};
-
-// is book club saved
-const mockGetBooksSaved = {
-  "book": [
-      {
-        "book_id": "OL1168007W",
-        "title": "Animal Farm",
-        "author": "George Orwell",
-        "thumbnail": "https://covers.openlibrary.org/b/id/11261770-M.jpg"
-      }
-  ]
-}
-
-
-
-
-// is book club joined
-const mockGetBookClubs = { 
-  "docs": [
-    {
-      "key": "/works/OL27448W",
-      "title": "The Lord of the Rings",
-      "author_name": [
-          "J.R.R. Tolkien"
-      ],
-      "cover_i": "https://covers.openlibrary.org/b/id/9255566-M.jpg"
-    }
-  ]
-}
-
-const mockGetMembers = {
-  "members": [
-    {
-      "userId": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-      "username": "VictorD",
-      "bio": "Victor's bio"
-    }
-  ]
-};
-
-const mockGetIsPostLiked = {
-  "isUserLikedPost": "1"
-}
-
-// book club posts, logged in user liked posts
+// book club posts
 const mockGetPosts = {
   "posts" : [
     {
@@ -89,6 +36,45 @@ const mockGetPosts = {
   ]
 }
 
+// current book club
+const mockGetBook = {
+  "book": {
+    "book_id": "OL18417W",
+    "title": "The Wonderful Wizard of Oz",
+    "author": "L. Frank Baum",
+    "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
+  }
+};
+
+const mockGetMembers = {
+  "members": [
+    {
+      "userId": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD",
+      "bio": "Victor's bio"
+    }
+  ]
+};
+
+// is book club saved
+const mockGetBooksSaved = {
+  "book": [
+      {
+        "book_id": "OL1168007W",
+        "title": "Animal Farm",
+        "author": "George Orwell",
+        "thumbnail": "https://covers.openlibrary.org/b/id/11261770-M.jpg"
+      }
+  ]
+}
+
+
+const mockGetIsPostLiked = {
+  "isUserLikedPost": "1"
+}
+
+
+
 describe("Renders Book club page", () => { 
 
   test("Renders posts and book profile ", async () => {
@@ -96,10 +82,9 @@ describe("Renders Book club page", () => {
 
     const makeFetchResponse = value => ({ json: async() => value })
     const mockFetch = jest.fn()
-      .mockReturnValueOnce(makeFetchResponse(mockGetBook))
-      .mockReturnValueOnce(makeFetchResponse(mockGetBookClubs))
-      .mockReturnValueOnce(makeFetchResponse(mockGetMembers))
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
+      .mockReturnValueOnce(makeFetchResponse(mockGetBook))
+      .mockReturnValueOnce(makeFetchResponse(mockGetMembers))
       .mockReturnValueOnce(makeFetchResponse(mockGetBooksSaved))
       .mockReturnValueOnce(makeFetchResponse(mockGetIsPostLiked))
       
@@ -116,7 +101,7 @@ describe("Renders Book club page", () => {
       );
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(6);
+    expect(mockFetch).toHaveBeenCalledTimes(5);
 
     const bookTitle = screen.getAllByText(mockGetBook.book.title)[0];
     const bookAuthor = screen.queryByText(mockGetBook.book.author);

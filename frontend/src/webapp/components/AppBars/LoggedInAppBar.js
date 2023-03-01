@@ -22,66 +22,43 @@ import Badge from '@mui/material/Badge';
 import { signOut } from "firebase/auth";
 import { auth } from "../../../FirebaseConfig"
 import { avatarColorMap } from '../Constants';
+import { handleFetch } from '../Utils';
 
 export default function LoggedInAppBar() {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
+
   const [recommendationData, setRecommendationData] = React.useState('');
   const [searchValue, setSearchValue] = React.useState(null);
   const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
   const openNotifications = Boolean(anchorElNotifications);
   const [anchorElAccount, setAnchorElAccount] = React.useState(null);
   const openAccount = Boolean(anchorElAccount);
+
   const navigate = useNavigate();
   
   // recommendations
+  
   React.useEffect(() => {
-    const handleFetchRecommendations = async () => {
-      let query = "http://localhost:4567/api/get_recommendations?recipient_userId=" + loggedinUser.uid;
-      try {
-        let recommendations = [];
-        const response = await fetch(query);
-        const json = await response.json();
-        for (let i = 0; i < json.recommendations.length; i++ ) {
-          let rec = json.recommendations[i];
-          handleFetchUserProfile(rec.userID)
-          .then((recommender) => {
-            handleFetchBookProfile(rec.bookKey)
-            .then((book) => {
-              let recommendation = {recommender, book};
-              recommendations.push(recommendation);
-            })
-          })
-        }
-        setRecommendationData(recommendations);
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
+    let recommendations = [];
 
-    handleFetchRecommendations();
+    handleFetch("get_recommendations?recipient_userId=", loggedinUser.uid).then((json) => {
+      for (let i = 0; i < json.recommendations.length; i++ ) {
+        let rec = json.recommendations[i];
+        handleFetch("get_user?userId=", rec.userID).then((json) => {
+          let recommender = json.user;
+          handleFetch("get_book?book_key=", rec.bookKey).then((json) => {
+            let book = json.book;
+            let recommendation = {recommender, book};
+            recommendations.push(recommendation);
+          })
+        })
+      }
+    });
+
+    setRecommendationData(recommendations);
 }, [loggedinUser.uid]);
 
-  const handleFetchUserProfile = async (uid) => {
-    let query = "http://localhost:4567/api/get_user?userId=" + uid;
-    try {
-      const response = await fetch(query);
-      const json = await response.json();
-      return json.user;
-    } catch (error) {
-      return error;
-    }
-  }
 
-  const handleFetchBookProfile = async (bid) => {
-    let query = "http://localhost:4567/api/get_book?book_key=" + bid;
-    try {
-      const response = await fetch(query);
-      const json = await response.json();
-      return json.book;
-    } catch (error) {
-      return error;
-    }
-  }
 
   // search
   const handleSearchSubmission = () => {
