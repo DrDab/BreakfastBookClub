@@ -1,4 +1,4 @@
-# Breakfast Book Club Week 6 Status Report
+# Breakfast Book Club Week 7 Status Report
 ## Team Report
 - Last week’s goals: Work on finishing API routes that have yet to be implemented fully from frontend to backend. 
 
