@@ -58,7 +58,7 @@ public class SaveBook implements Route {
 
         respJson.addProperty("status", "success");
 
-        return respJson;
+        return respJson.toString() + "\n";
     }
 
 }

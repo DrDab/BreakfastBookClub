@@ -54,7 +54,7 @@ public class UnsaveBook implements Route {
         }
 
         respJson.addProperty("status", "success");
-        return respJson;
+        return respJson.toString() + "\n";
 
 
     }
