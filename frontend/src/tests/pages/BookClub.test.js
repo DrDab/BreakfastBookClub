@@ -46,6 +46,18 @@ const mockGetBook = {
   }
 };
 
+// is book club saved
+const mockGetBooksSaved = { 
+  "book": [
+    {
+      "book_id": "OL18417W",
+      "title": "The Wonderful Wizard of Oz",
+      "author": "L. Frank Baum",
+      "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
+    }
+  ]
+}
+
 // is book club joined
 const mockGetBookClubs = { 
   "docs": [
@@ -82,6 +94,7 @@ describe("Renders Book club page", () => {
       .mockReturnValueOnce(makeFetchResponse(mockGetMembers))
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
+      .mockReturnValueOnce(makeFetchResponse(mockGetBooksSaved))
     global.fetch = mockFetch
 
     await act(async () => {
@@ -95,7 +108,7 @@ describe("Renders Book club page", () => {
       );
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(5);
+    expect(mockFetch).toHaveBeenCalledTimes(6);
 
     const bookTitle = screen.getAllByText(mockGetBook.book.title)[0];
     const bookAuthor = screen.queryByText(mockGetBook.book.author);

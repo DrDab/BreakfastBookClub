@@ -13,13 +13,9 @@ import MenuItem from '@mui/material/MenuItem';
 import { auth } from "../../../FirebaseConfig"
 
 export default function BookClubBanner(props) {
-  let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
-
   const [showRecomendModal, setShowRecomendModal] = React.useState(false);
   const [selectFriendUserId, setSelectFriendUserId] = React.useState('');
   const [isMissingFields, setIsMissingFields] = React.useState(true);
-  const [isBookSavedData, setIsBookSavedData] = React.useState(false);
-
   
   // Recommendations
   React.useEffect(() => {
@@ -73,25 +69,7 @@ export default function BookClubBanner(props) {
   };
 
 
-
   // Save UnSave
-  React.useEffect(() => {
-    const handleFetchIsBookSaved = async () => {
-      console.log("fetch")
-      let query = "http://localhost:4567/api/get_saved_books?userID=" + loggedinUser.uid;
-      try {
-        const response = await fetch(query);
-        const json = await response.json();
-        let books = json.book;
-        setIsBookSavedData(books.some(books => books.book_id === props.bookData.book_id));
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-    handleFetchIsBookSaved();
-  },[loggedinUser.uid, props.bookData.book_id]);
-
-
   const handleFetchPostSaveStatus = (status, token) => {
     console.log(status)
     let url = "http://localhost:4567/api/" + status + "?token=" + token + "&book_key=" + props.bookData.book_id;
@@ -105,7 +83,7 @@ export default function BookClubBanner(props) {
     })
     .then((data) => {
       console.log('Success:', data);
-      // setIsFetchIsBookSaved(!isfetchIsBookSaved);
+      props.setIsFetchIsBookSaved(!props.isFetchIsBookSaved)
     })
     .catch((error) => {
       console.log(error);
@@ -114,17 +92,15 @@ export default function BookClubBanner(props) {
 
   const handleSaveUnSaveBook = () => {
     auth.currentUser?.getIdToken(true).then(function(idToken) {
-      if (isBookSavedData) {
+      if (props.isBookSavedData) {
         // handleFetchPostSaveStatus("unsave_book", idToken);
         console.log("unsave book")
       } else {
         handleFetchPostSaveStatus("save_book", idToken);
       }
     })
-    setIsBookSavedData(!isBookSavedData);
   };
 
-  
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -148,12 +124,11 @@ export default function BookClubBanner(props) {
               <Stack spacing={2} direction="row">
                 <Button
                   disableElevation
-                  variant={isBookSavedData ? "outlined" : "contained"}
+                  variant={props.isBookSavedData ? "outlined" : "contained"}
                   onClick={handleSaveUnSaveBook}
                 >
-                  {isBookSavedData ? "Unsave" : "Save"}
+                  {props.isBookSavedData ? "Unsave" : "Save"} 
                 </Button>
-
                 <Button disableElevation variant="outlined" size="small" onClick={() => setShowRecomendModal(true)}> 
                   Recommend
                 </Button>
@@ -162,7 +137,6 @@ export default function BookClubBanner(props) {
           </Grid>
         </Grid>
       </Box>
-
       <Modal
         open={showRecomendModal}
         onClose={() => setShowRecomendModal(false)}
