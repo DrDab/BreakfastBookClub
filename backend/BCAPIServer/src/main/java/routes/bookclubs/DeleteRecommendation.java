@@ -14,12 +14,11 @@ import utils.BCGsonUtils;
 
 import java.sql.Connection;
 
-public class RecommendBook implements Route {
+public class DeleteRecommendation implements Route {
 
-    private FirebaseApp fbApp;
-    private Connection sqlConn;
-
-    public RecommendBook(FirebaseApp fbApp, Connection sqlConn) {
+    FirebaseApp fbApp;
+    Connection sqlConn;
+    public DeleteRecommendation(FirebaseApp fbApp, Connection sqlConn) {
         this.fbApp = fbApp;
         this.sqlConn = sqlConn;
     }
@@ -35,17 +34,15 @@ public class RecommendBook implements Route {
             return respJson.toString() + "\n";
         }
 
-        // check to make sure request has necessary parameters (token, recipient username, and book_key)
         if (!body.has("token") ||
-            !body.has("recipient_userId") ||
-            !body.has("book_key")) {
+                !body.has("sender_userId") ||
+                !body.has("book_key")) {
             respJson.addProperty("status", "failure");
             respJson.addProperty("failure_reason", "Body doesn't have necessary parameters");
             return respJson.toString() + "\n";
         }
 
         String token = body.get("token").getAsString();
-
         FirebaseToken decodedTokenSender;
 
 
@@ -59,13 +56,10 @@ public class RecommendBook implements Route {
             return respJson.toString() + "\n";
         }
 
-        // getting usernames and book id and adding to the backend
-        String senderUsername = decodedTokenSender.getUid();
-        String recipientUsername = body.get("recipient_userId").getAsString();
+        String sender_id = body.get("sender_userId").getAsString();
         String bookKey = body.get("book_key").getAsString();
-        User sender = new User(senderUsername, sqlConn);
-        User recipient = new User(recipientUsername, sqlConn);
-        UserResult result = sender.recommend(recipient, bookKey);
+        String recipient_userId = decodedTokenSender.getUid();
+        UserResult result = new User(recipient_userId, sqlConn).deleteRecommendation(sender_id, bookKey);
 
         if (result != UserResult.SUCCESS) {
             respJson.addProperty("status", "failure");
@@ -76,7 +70,5 @@ public class RecommendBook implements Route {
         respJson.addProperty("status", "success");
         return respJson.toString() +  "\n";
 
-
     }
-
 }

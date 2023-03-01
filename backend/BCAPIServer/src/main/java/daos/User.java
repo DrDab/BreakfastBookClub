@@ -98,6 +98,10 @@ public class User {
   private static final String GET_POSTS_BY_ID_STUB =
       "SELECT * FROM book_posts WHERE ";
 
+  private static final String DELETE_RECOMMENDATION_SQL =
+          "DELETE FROM sent_recommendations WHERE sender_username = ? AND recipient_username = ? AND book_key = ?";
+  private PreparedStatement deleteRecommendationStatement;
+
   /**
    * Creates a User class which allows user-specific interaction with the database. This class
    * assumes that user exists (has an account, logged in, etc).
@@ -139,6 +143,23 @@ public class User {
     rs.close();
 
     return userProfile;
+  }
+
+  public UserResult deleteRecommendation(String senderID, String bookKey) {
+    if (senderID.equals("") || bookKey.equals("")) {
+      return UserResult.INVALID;
+    }
+    try {
+      deleteRecommendationStatement.clearParameters();
+      deleteRecommendationStatement.setString(1, senderID);
+      deleteRecommendationStatement.setString(2, this.user);
+      deleteRecommendationStatement.setString(3, bookKey);
+      deleteRecommendationStatement.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return UserResult.FAIL;
+    }
+    return UserResult.SUCCESS;
   }
 
   public UserResult updateUserProfile(String username, String bio, String thumbnail)
@@ -717,5 +738,7 @@ public class User {
     getLikedPostsStatement = conn.prepareStatement(GET_LIKED_POSTS);
 
     countLikedPostsByPidStatement = conn.prepareStatement(COUNT_LIKED_POSTS_BY_PID);
+
+    deleteRecommendationStatement = conn.prepareStatement(DELETE_RECOMMENDATION_SQL);
   }
 }
