@@ -61,9 +61,6 @@ const mockGetIsPostLiked = {
 }
 
 
-
-
-
 describe("Renders User Profile page", () => { 
 
   test("Renders posts, user profile, book clubs, saved books", async () => {

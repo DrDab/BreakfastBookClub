@@ -39,8 +39,6 @@ const mockGetIsPostLiked = {
 }
 
 
-
-
 describe("Renders Home page", () => {
 
   it("Renders posts and popular books", async () => {

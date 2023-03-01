@@ -68,7 +68,6 @@ const mockGetBooksSaved = {
   ]
 }
 
-
 const mockGetIsPostLiked = {
   "isUserLikedPost": "1"
 }

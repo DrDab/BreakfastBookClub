@@ -19,7 +19,7 @@ export const formatOpenLibraryData = (openlibraryJson) => {
 }
 
 export const handleFetch = async (route, id) => {
-  console.log("fetch " + route + id)
+  // console.log("fetch " + route + id)
   let query = "http://localhost:4567/api/" + route + id ;
   try {
     const response = await fetch(query);
