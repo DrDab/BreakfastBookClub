@@ -11,7 +11,12 @@ export default function PostList(props) {
         <Typography variant="body2"> No posts yet </Typography>:
         props.postsData.map((post, index) => {
           return (
-            <Post key={index} post={post} />
+            <Post 
+              key={index}
+              post={post}
+              setIsFetchPosts={props.setIsFetchPosts}
+              isFetchPosts={props.isFetchPosts}
+            />
           )
         })
   );

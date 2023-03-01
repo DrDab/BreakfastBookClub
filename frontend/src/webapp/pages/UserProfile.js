@@ -111,8 +111,10 @@ export default function UserProfile() {
         />
       </Grid>
       <Grid item xs={8}>
-        {uid === loggedinUser.uid? 
-          <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts}/> : <></> }
+        {uid === loggedinUser.uid?
+          <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts}/>:
+          <></>
+        }
           <Stack sx={{ marginBottom: '5rem' }} spacing={2}>
             <Box>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -122,10 +124,18 @@ export default function UserProfile() {
                 </Tabs>
               </Box>
               <TabPanel value={tabIndexValue} index={0}>
-                <PostList postsData={userPostsData} />
+                <PostList
+                  postsData={userPostsData}
+                  setIsFetchPosts={setIsFetchPosts}
+                  isFetchPosts={isFetchPosts}
+                />
               </TabPanel>
               <TabPanel value={tabIndexValue} index={1}>
-                <PostList postsData={userLikedPostsData} />
+                <PostList
+                  postsData={userLikedPostsData}
+                  setIsFetchPosts={setIsFetchPosts}
+                  isFetchPosts={isFetchPosts}
+                />
               </TabPanel>
             </Box>
           </Stack>

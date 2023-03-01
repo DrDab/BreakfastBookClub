@@ -8,6 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Link as RouterLink } from "react-router-dom";
 import { tagsList, avatarColorMap } from './Constants';
 import { auth } from "../../FirebaseConfig"
@@ -33,6 +34,7 @@ export default function Post(props) {
     }
     handleFetchIsPostLiked();
   },[loggedinUser.uid, props.post.post_id]);
+
 
   const handleFetchPostLikeStatus = (token, postId, status) => {
     console.log(status)
@@ -63,6 +65,32 @@ export default function Post(props) {
     })
   }
 
+
+  const handleFetchPostDeletePost = (token, postId) => {
+    let url = "http://localhost:4567/api/delete_post?token=" + token + "&postId=" + postId;
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((data) => {
+      console.log('Success:', data);
+      props.setIsFetchPosts(!props.isFetchPosts)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+  const handleDeletePost = (postId) => {
+    console.log("delete post", postId)
+    auth.currentUser?.getIdToken(true).then(function(idToken){
+      handleFetchPostDeletePost(idToken, postId);
+    })
+  }
+
   let tagIcon = null;
   let tagColor = null;
   if (props.post.tag === "Spoiler" || props.post.tag === "Discussion" || props.post.tag === "Theory") {
@@ -87,6 +115,13 @@ export default function Post(props) {
             {props.post.user.username.charAt(0)}
           </Avatar>
         }
+        action={
+          props.post.user.userId === loggedinUser.uid ? 
+            <IconButton aria-label="delete-post" onClick={() => handleDeletePost(props.post.post_id)}>
+              <DeleteIcon />
+            </IconButton> :
+            <></>
+          }
         title={
           <Typography gutterBottom variant="p4">
             <a href={userProfileUrl}>{props.post.user.username}</a> in the <a href={bookProfileUrl}>{props.post.book.title}</a> Book Club

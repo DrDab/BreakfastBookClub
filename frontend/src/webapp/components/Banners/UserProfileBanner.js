@@ -60,8 +60,8 @@ export default function UserProfileBanner(props) {
     if (!isOverBioLength) {
       setShowEditBioModal(false);
       auth.currentUser?.getIdToken(true).then(function(idToken){
-        sessionStorage.setItem("postNewBio", "token="+ idToken +",bio="+bio);
-        // handleFetchPostBio(idToken, bio);
+        console.log("postNewBio", "token="+ idToken +", bio="+bio);
+        handleFetchPostBio(idToken, bio);
       })
       clearFormValues();
     }

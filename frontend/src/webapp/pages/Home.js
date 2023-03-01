@@ -67,7 +67,11 @@ export default function Home() {
         <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
       </Grid>
       <Grid item xs={8}>
-        <PostList postsData={homePostsData} />
+        <PostList 
+          postsData={homePostsData}
+          setIsFetchPosts={setIsFetchPosts}
+          isFetchPosts={isFetchPosts}
+        />
       </Grid>
       <Grid item xs={4}>
         <Stack spacing={2}>
