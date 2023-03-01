@@ -101,6 +101,8 @@ public class BCServerMain {
 
     // delete post
     Spark.post("/api/delete_post", new DeletePost(fbApp, sqlConn));
+
+    Spark.post("/api/delete_recommendation", new DeleteRecommendation(fbApp, sqlConn));
   }
 
   @SuppressWarnings("deprecation")

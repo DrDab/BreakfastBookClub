@@ -74,7 +74,7 @@ public class RecommendBook implements Route {
         }
 
         respJson.addProperty("status", "success");
-        return respJson;
+        return respJson.toString() +  "\n";
 
 
     }
