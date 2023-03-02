@@ -38,6 +38,8 @@
   - Implemented API routes for join club, leave club and get user's clubs
 
   Victor Du:
+  - Implemented routes on backend API for adding book club members and getting book club member data (profile links)
+  - Improved posting listing query processing.
 
 
   Jocelyn Thomson:
@@ -82,5 +84,7 @@
   - Research caching methods
   - Speeding up fetch posts and notifications on frontend
 
+  Victor Du:
+  - Add profile thumbnail hosting to backend API.
 
 
