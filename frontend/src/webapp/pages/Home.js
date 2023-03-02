@@ -30,21 +30,9 @@ export default function Home() {
 
   React.useEffect(() => {
 
-    // handleFetch("list_friends?userID=", loggedinUser.uid).then((json) => {
-    //   setFriendsData(json.friends);
-    // });
-    setFriendsData([
-      {
-        "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-        "username": "VictorD",
-        "bio": "bio"
-      },
-      {
-        "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
-        "username": "zaynab",
-        "bio": "bio"
-      }
-    ])
+    handleFetch("list_friends?user_id=", loggedinUser.uid).then((json) => {
+      setFriendsData(json.friends);
+    });
 
     // handleFetch("get_subscribed_clubs?userId=", loggedinUser.uid).then((json) => {
     //   setBookClubsJoinedData(json.bookClubs);

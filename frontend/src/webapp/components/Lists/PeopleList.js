@@ -35,16 +35,9 @@ export default function PeopleList(props) {
               <ListItemText
                 primary={person.username}
                 secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {person.bio}
-                    </Typography>
-                  </React.Fragment>
+                  <Typography noWrap variant="body2" color="text.primary">
+                    {person.bio}
+                  </Typography>
                 }
               />
             </ListItem>

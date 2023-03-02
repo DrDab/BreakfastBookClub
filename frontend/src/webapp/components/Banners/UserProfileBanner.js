@@ -68,32 +68,33 @@ export default function UserProfileBanner(props) {
   };
 
 
-  const handleFetchPostFriendStatus = (status) => {
-    let url = "http://localhost:4567/api/" + status + "?userId=" + loggedinUser.uid + "&friendUserId=" + props.clickedUserData.uid;
-    console.log(url)
-    // fetch(url, {
-    //   method: 'POST',
-    //   mode: 'no-cors',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    // })
-    // .then((data) => {
-    //   console.log('Success:', data);
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
+  const handleFetchPostFriendStatus = (status, token) => {
+    let url = "http://localhost:4567/api/" + status + "?token=" + token + "&friend_userId=" + props.clickedUserData.uid;
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then((data) => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
     console.log(status);
   }
 
   const handleAddRemoveFriend = () => {
-    if (props.isFriendData){
-      handleFetchPostFriendStatus("remove_friend");
-    } else {
-      handleFetchPostFriendStatus("add_friend");
-    }
+    auth.currentUser?.getIdToken(true).then(function(idToken){
+      if (props.isFriendData){
+        handleFetchPostFriendStatus("remove_friend", idToken);
+      } else {
+        handleFetchPostFriendStatus("add_friend", idToken);
+      }
+    })
     props.setIsFriendData(!props.isFriendData);
   };
 
