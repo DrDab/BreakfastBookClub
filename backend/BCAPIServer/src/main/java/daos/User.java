@@ -86,7 +86,7 @@ public class User {
   private PreparedStatement getClubPostsStatement;
 
   private static final String GET_ALL_USER_POSTS =
-          "SELECT * FROM book_posts WHERE user_id = ?";
+          "SELECT * FROM book_posts WHERE user_id = ? ORDER BY post_date DESC";
   private PreparedStatement getAllUserPostsStatement;
 
   private static final String LIKE_POST =
