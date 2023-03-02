@@ -29,7 +29,7 @@ public class BCGsonUtils {
     } catch (JsonSyntaxException ex) {
       return null;
     }
-    
+
     if (!bodyElement.isJsonObject()) {
       return null;
     }
@@ -37,9 +37,8 @@ public class BCGsonUtils {
     return bodyElement.getAsJsonObject();
   }
 
-  public static JsonArray getPostsJsonArrFromList(FirebaseApp fbApp, List<BookPost> posts)
-      throws ExecutionException, InterruptedException, IOException {
-    JsonArray postsArr = new JsonArray();
+  public static void ingestBookPostsListIntoJson(FirebaseApp fbApp, List<BookPost> posts,
+      JsonArray postsArr) throws ExecutionException, InterruptedException, IOException {
     Gson gson = new Gson();
 
     for (BookPost post : posts) {
@@ -64,7 +63,12 @@ public class BCGsonUtils {
 
       postsArr.add(postJson);
     }
+  }
 
+  public static JsonArray getPostsJsonArrFromList(FirebaseApp fbApp, List<BookPost> posts)
+      throws ExecutionException, InterruptedException, IOException {
+    JsonArray postsArr = new JsonArray();
+    ingestBookPostsListIntoJson(fbApp, posts, postsArr);
     return postsArr;
   }
 }
