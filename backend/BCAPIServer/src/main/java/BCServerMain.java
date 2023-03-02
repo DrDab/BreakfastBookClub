@@ -98,7 +98,10 @@ public class BCServerMain {
     Spark.post("/api/update_user", new SetUserProfile(fbApp, sqlConn));
 
     Spark.get("/api/get_members", new GetMembers(fbApp, sqlConn));
-
+    
+    Spark.post("/api/join_club", new JoinClub(fbApp, sqlConn));
+    Spark.post("/api/unjoin_club", new UnjoinClub(fbApp, sqlConn));
+    Spark.get("/api/get_subscribed_clubs", new GetSubscribedClubs(fbApp, sqlConn));
 
     Spark.get("/api/list_friends", new ListFriends(fbApp, sqlConn));
     Spark.post("/api/add_friend", new AddFriend(fbApp, sqlConn));
@@ -114,7 +117,6 @@ public class BCServerMain {
     Spark.post("/api/delete_post", new DeletePost(fbApp, sqlConn));
 
     Spark.post("/api/delete_recommendation", new DeleteRecommendation(fbApp, sqlConn));
-
   }
 
   @SuppressWarnings("deprecation")

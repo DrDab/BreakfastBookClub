@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.*;
 import types.BookPost;
 import types.UserProfile;
+import types.Book;
+import utils.OpenLibraryAPI;
 import utils.ResultSetParsers;
 
 public class User {
@@ -12,30 +14,30 @@ public class User {
   private String user; // Current user
 
   private static final String GET_PROFILE =
-      "SELECT * FROM user_profiles WHERE user_id = ?";
+          "SELECT * FROM user_profiles WHERE user_id = ?";
   private PreparedStatement getProfileStatement;
 
   private static final String UPDATE_PROFILE_STUB =
-      "UPDATE user_profiles SET ";
+          "UPDATE user_profiles SET ";
 
   private static final String CREATE_PROFILE =
-      "INSERT INTO user_profiles(user_id) VALUES(?)";
+          "INSERT INTO user_profiles(user_id) VALUES(?)";
   private PreparedStatement createProfileStatement;
 
   private static final String ADD_POST =
-      "INSERT INTO book_posts VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+          "INSERT INTO book_posts VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
   private PreparedStatement addPostStatement;
 
   private static final String IS_FRIEND =
-      "SELECT COUNT(*) AS count FROM friends WHERE user_id_1 = ? AND user_id_2 = ?";
+          "SELECT COUNT(*) AS count FROM friends WHERE user_id_1 = ? AND user_id_2 = ?";
   private PreparedStatement isFriendStatement;
 
   private static final String ADD_FRIEND =
-      "INSERT INTO friends VALUES (?, ?), (?, ?)";
+          "INSERT INTO friends VALUES (?, ?), (?, ?)";
   private PreparedStatement addFriendStatement;
 
   private static final String UNFRIEND =
-      "DELETE FROM friends WHERE user_id_1 = ? AND user_id_2 = ?";
+          "DELETE FROM friends WHERE user_id_1 = ? AND user_id_2 = ?";
   private PreparedStatement unfriendStatement;
 
   private static final String GET_SUBSCRIBED_CLUBS =
@@ -43,44 +45,48 @@ public class User {
   private PreparedStatement getSubscribedClubsStatement;
 
   private static final String IS_CLUB_MEMBER =
-      "SELECT COUNT(*) AS count FROM user_clubs WHERE user_id = ? AND book_key = ?";
+          "SELECT COUNT(*) FROM user_clubs WHERE user_id = ? AND book_key = ?";
   private PreparedStatement isClubMemberStatement;
 
   private static final String ADD_USER_CLUB =
-      "INSERT INTO user_clubs VALUES (?, ?)";
+          "INSERT INTO user_clubs VALUES (?, ?)";
   private PreparedStatement addUserClubStatement;
 
   private static final String LEAVE_USER_CLUB =
-      "DELETE FROM user_clubs WHERE user_id = ? AND book_key = ?";
+          "DELETE FROM user_clubs WHERE user_id = ? AND book_key = ?";
   private PreparedStatement leaveUserClubStatement;
 
   private static final String IS_BOOK_SAVED =
-      "SELECT COUNT(*) AS count FROM saved_books WHERE user_id = ? AND book_key = ?";
+          "SELECT COUNT(*) FROM saved_books WHERE user_id = ? AND book_key = ?";
   private PreparedStatement isBookSavedStatement;
 
   private static final String ADD_SAVED_BOOK =
-      "INSERT INTO saved_books VALUES (?, ?)";
+          "INSERT INTO saved_books VALUES (?, ?)";
   private PreparedStatement addSavedBookStatement;
 
   private static final String UNSAVE_BOOK =
-      "DELETE FROM saved_books WHERE user_id = ? AND book_key = ?";
+          "DELETE FROM saved_books WHERE user_id = ? AND book_key = ?";
   private PreparedStatement unsaveBookStatement;
 
   private static final String RECOMMEND =
-      "INSERT INTO sent_recommendations VALUES (?, ?, ?)";
+          "INSERT INTO sent_recommendations VALUES (?, ?, ?)";
   private PreparedStatement recommendStatement;
 
   private static final String GET_FRIENDS =
-      "SELECT user_id_2 FROM friends WHERE user_id_1 = ?";
+          "SELECT user_id_2 FROM friends WHERE user_id_1 = ?";
   private PreparedStatement getFriendsStatement;
 
+  private static final String GET_CLUBS =
+          "SELECT book_key FROM user_clubs WHERE user_id = ?";
+  private PreparedStatement getClubsStatement;
+
   private static final String GET_CLUB_POSTS =
-      "SELECT * FROM book_posts WHERE book_key IN " +
-          "(SELECT book_key FROM user_clubs WHERE user_id = ?)";
+          "SELECT * FROM book_posts WHERE book_key IN " +
+                  "(SELECT book_key FROM user_clubs WHERE user_id = ?)";
   private PreparedStatement getClubPostsStatement;
 
   private static final String GET_ALL_USER_POSTS =
-      "SELECT * FROM book_posts WHERE user_id = ?";
+          "SELECT * FROM book_posts WHERE user_id = ?";
   private PreparedStatement getAllUserPostsStatement;
 
   private static final String LIKE_POST =
@@ -131,7 +137,7 @@ public class User {
   }
 
   public UserProfile getUserProfile(String username)
-      throws SQLException {
+          throws SQLException {
     getProfileStatement.clearParameters();
     getProfileStatement.setString(1, user);
 
@@ -167,7 +173,7 @@ public class User {
   }
 
   public UserResult updateUserProfile(String username, String bio, String thumbnail)
-      throws SQLException {
+          throws SQLException {
     if (username == null && bio == null && thumbnail == null) {
       return UserResult.INVALID;
     }
@@ -237,8 +243,8 @@ public class User {
    * database error UserResult.INVALID if the input is invalid
    */
   public UserResult bookPost(String bookKey, String postTitle, String post, String tag,
-      String postId,
-      long date, long likes) {
+                             String postId,
+                             long date, long likes) {
     if (bookKey == null || bookKey.equals("")) {
       return UserResult.INVALID;
     }
@@ -358,8 +364,8 @@ public class User {
    *
    * @param bookKey id of the book in the club, not null or empty, at most 20 characters
    * @return UserResult.SUCCESS if the user joins the book club. UserResult.INVALID if the input is
-   * invalid. UserResult.IMPOSSIBLE if the user was already in the book club. UserResult.FAIL if
-   * there is a database error.
+   * invalid. UserResult.IMPOSSIBLE if the user was already in the book club. UserResult.FAIL if there
+   * is a database error.
    * @throws SQLException if something goes wrong with the database
    */
   public UserResult joinClub(String bookKey) throws SQLException {
@@ -464,8 +470,8 @@ public class User {
    *
    * @param bookKey id of the book to be unsaved, not null or empty, at most 20 characters
    * @return UserResult.SUCCESS if the book is removed from saved books. UserResult.INVALID if the
-   * input is invalid. UserResult.IMPOSSIBLE if the book is not saved. UserResult.FAIL if there is a
-   * database error.
+   * input is invalid. UserResult.IMPOSSIBLE if the book is not saved. UserResult.FAIL if there
+   * is a database error.
    * @throws SQLException if something goes wrong with the database
    */
   public UserResult unsaveBook(String bookKey) throws SQLException {
@@ -542,6 +548,31 @@ public class User {
     rs.close();
 
     return friends;
+  }
+
+  /**
+   * List all the book clubs that this user is subscribed to.
+   *
+   * @return list of this user's book clubs
+   * @throws SQLException if something goes wrong with the database
+   */
+  public List<Book> allClubs() throws Exception {
+    List<Book> clubs = new ArrayList<>();
+
+    getClubsStatement.clearParameters();
+    getClubsStatement.setString(1, this.user);
+
+    ResultSet rs = getClubsStatement.executeQuery();
+    while (rs.next()) {
+      String searchBookKey = rs.getString("book_key");
+      Book bookObj = OpenLibraryAPI.getBookByKey(searchBookKey);
+      if (bookObj != null) {
+        clubs.add(bookObj);
+      }
+    }
+    rs.close();
+
+    return clubs;
   }
 
   /**
@@ -747,6 +778,8 @@ public class User {
     recommendStatement = conn.prepareStatement(RECOMMEND);
 
     getFriendsStatement = conn.prepareStatement(GET_FRIENDS);
+
+    getClubsStatement = conn.prepareStatement(GET_CLUBS);
 
     getClubPostsStatement = conn.prepareStatement(GET_CLUB_POSTS);
 
