@@ -8,7 +8,7 @@ const mockLoggedInUser = {
   "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
   "username": "Amanda",
   "bio": "bio"
-}
+};
 
 // book club posts
 const mockGetPosts = {
@@ -34,7 +34,7 @@ const mockGetPosts = {
       "likes": 2
     }
   ]
-}
+};
 
 // current book club
 const mockGetBook = {
@@ -56,18 +56,6 @@ const mockGetMembers = {
   ]
 };
 
-// is book club saved
-const mockGetBooksSaved = {
-  "books": [
-      {
-        "book_id": "OL1168007W",
-        "title": "Animal Farm",
-        "author": "George Orwell",
-        "thumbnail": "https://covers.openlibrary.org/b/id/11261770-M.jpg"
-      }
-  ]
-}
-
 const mockGetFriends = {
   "friends": [
     {
@@ -78,10 +66,21 @@ const mockGetFriends = {
   ]
 };
 
+// is book club saved, is joined club
+const mockGetBooks = {
+  "books": [
+      {
+        "book_id": "OL1168007W",
+        "title": "Animal Farm",
+        "author": "George Orwell",
+        "thumbnail": "https://covers.openlibrary.org/b/id/11261770-M.jpg"
+      }
+  ]
+};
+
 const mockGetIsPostLiked = {
   "isUserLikedPost": "1"
-}
-
+};
 
 
 describe("Renders Book club page", () => { 
@@ -94,9 +93,9 @@ describe("Renders Book club page", () => {
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
       .mockReturnValueOnce(makeFetchResponse(mockGetBook))
       .mockReturnValueOnce(makeFetchResponse(mockGetMembers))
-      .mockReturnValueOnce(makeFetchResponse(mockGetBooksSaved))
       .mockReturnValueOnce(makeFetchResponse(mockGetFriends))
-      .mockReturnValueOnce(makeFetchResponse(mockGetFriends))
+      .mockReturnValueOnce(makeFetchResponse(mockGetBooks))
+      .mockReturnValueOnce(makeFetchResponse(mockGetBooks))
       .mockReturnValueOnce(makeFetchResponse(mockGetIsPostLiked))
       
     global.fetch = mockFetch
@@ -112,7 +111,7 @@ describe("Renders Book club page", () => {
       );
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(6);
+    expect(mockFetch).toHaveBeenCalledTimes(7);
 
     const bookTitle = screen.getAllByText(mockGetBook.book.title)[0];
     const bookAuthor = screen.queryByText(mockGetBook.book.author);

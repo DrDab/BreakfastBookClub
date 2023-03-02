@@ -27,32 +27,25 @@ export default function Home() {
     });
   }, [isFetchPosts]);
 
-
   React.useEffect(() => {
-
     handleFetch("list_friends?user_id=", loggedinUser.uid).then((json) => {
       setFriendsData(json.friends);
     });
 
-    // handleFetch("get_subscribed_clubs?userId=", loggedinUser.uid).then((json) => {
-    //   setBookClubsJoinedData(json.bookClubs);
-    // });
-    setBookClubsJoinedData([
-      {
-        "book_id": "OL1168007W",
-        "title": "Animal Farm",
-        "author": "George Orwell",
-        "thumbnail": "https://covers.openlibrary.org/b/id/11261770-M.jpg"
-      }
-    ])
-
+    handleFetch("get_subscribed_clubs?userId=", loggedinUser.uid).then((json) => {
+      setBookClubsJoinedData(json.books);
+    });
   }, [loggedinUser.uid]);
 
   return (
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={8}>
-        <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
+        <CreatePost 
+          setIsFetchPosts={setIsFetchPosts}
+          isFetchPosts={isFetchPosts}
+          bookClubs={bookClubsJoinedData}
+        />
       </Grid>
       <Grid item xs={8}>
         <PostList postsData={homePostsData} />

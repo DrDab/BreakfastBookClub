@@ -31,7 +31,7 @@ public class GetPosts implements Route {
   public Object handle(Request request, Response response) throws Exception {
     JsonObject respJson = new JsonObject();
 
-    String searchUID = request.queryParams("userId"); // url: api/ asdfjals/ ?userid=
+    String searchUID = request.queryParams("userId");
     String searchBookKey = request.queryParams("book_key");
 
     if ((searchUID != null && searchBookKey != null)) {

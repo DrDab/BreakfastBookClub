@@ -21,7 +21,7 @@ export default function CreatePost(props) {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
 
   const [showPostModal, setShowPostModal] = React.useState(false);
-  const [bookClub, setBookClub] = React.useState("");
+  const [bookClubId, setBookClubId] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [body, setBody] = React.useState("");
   const [indexOfTagSelected, setIndexOfTagSelected] = React.useState(-1);
@@ -29,21 +29,14 @@ export default function CreatePost(props) {
   const [isOverBodyLength, setIsOverBodyLength] = React.useState(false);
   const [isOverTitleLength, setIsOverTitleLength] = React.useState(false);
 
-  let bookClubsJoinedData = [
-    {title: "Animal Farm", key: "OL1168007W"},
-    {title: "Nineteen Eighty-Four", key: "OL1168083W"},
-    {title: "Homage to Catalonia", key: "OL1168169W"},
-    {title: "George Orwell", key: "OL7968129W"}
-  ];
-
   React.useEffect(() => {
     setIsOverBodyLength(body.length > 1000);
     setIsOverTitleLength(title.length > 100);
-    setIsMissingFields(bookClub === "" || title === "" || body === "");
-  }, [bookClub, title, body]);
+    setIsMissingFields(bookClubId === "" || title === "" || body === "");
+  }, [bookClubId, title, body]);
 
   const clearFormValues = () => {
-    setBookClub("");
+    setBookClubId(props.isInBookClub ? props.bookClubs[0].book_id : "");
     setTitle("");
     setBody("");
     setIndexOfTagSelected(-1);
@@ -82,7 +75,7 @@ export default function CreatePost(props) {
       auth.currentUser?.getIdToken(true).then(function(idToken){
         let jsonData = {
           token: idToken,
-          book_key: bookClub,
+          book_key: bookClubId,
           title: title,
           body: body,
           ...indexOfTagSelected > -1 && {tag: tagsList[indexOfTagSelected].label}
@@ -90,7 +83,6 @@ export default function CreatePost(props) {
         console.log("creating post", JSON.stringify(jsonData));
         fetchPostCreatePost(jsonData);
       })
-
       clearFormValues();
     }
   };
@@ -115,7 +107,10 @@ export default function CreatePost(props) {
               fullWidth
               label="Write a post"
               variant="filled"
-              onClick={() => setShowPostModal(true)}
+              onClick={() => {
+                setBookClubId(props.isInBookClub ? props.bookClubs[0].book_id : bookClubId);
+                setShowPostModal(true);
+              }} 
             />
           </Stack>
         </CardContent>
@@ -131,29 +126,42 @@ export default function CreatePost(props) {
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Create Post
             </Typography>
-            <FormControl size="small" variant="filled">
-              <InputLabel required id="select-book-club-label">
-                Book Club
-              </InputLabel>
-              <Select
-                labelId="select-book-club-label"
-                value={bookClub}
+            {props.isInBookClub ?
+              <TextField
+                InputProps={{ disableUnderline: true }}
+                disabled
                 label="Book Club"
-                disableUnderline
-                onChange={(e) => setBookClub(e.target.value)}
-              >
-                <MenuItem value="">
-                  <em>Choose Book Club</em>
-                </MenuItem>
-                {bookClubsJoinedData.map((bookClub, index) => {
-                  return (
-                    <MenuItem key={index} value={bookClub.key}>
-                      {bookClub.title}
-                    </MenuItem>
-                  )
-                })}
-              </Select>
-            </FormControl>
+                variant="filled"
+                value={props.bookClubs[0].title}
+              /> :
+              <FormControl size="small" variant="filled">
+                <InputLabel required id="select-book-club-label">
+                  Book Club
+                </InputLabel>
+                <Select
+                  labelId="select-book-club-label"
+                  value={bookClubId}
+                  label="Book Club"
+                  disableUnderline
+                  onChange={(e) => setBookClubId(e.target.value)}
+                >
+                  {props.bookClubs === "" ?
+                    <MenuItem /> :
+                    Array.isArray(props.bookClubs) && props.bookClubs.length === 0 ? 
+                      <MenuItem>
+                        You haven't joined any book clubs yet
+                      </MenuItem> :
+                      props.bookClubs.map((bookClub, index) => {
+                        return (
+                          <MenuItem key={index} value={bookClub.book_id}>
+                            {bookClub.title}
+                          </MenuItem>
+                        )
+                      })
+                  }
+                </Select>
+              </FormControl>
+            }
             <TextField
               InputProps={{ disableUnderline: true }}
               required
@@ -194,7 +202,9 @@ export default function CreatePost(props) {
               <Button 
                 disableElevation
                 size="small"
-                variant={(isMissingFields || isOverBodyLength || isOverTitleLength) ? 'disabled': 'contained'}
+                variant={
+                  (isMissingFields || isOverBodyLength || isOverTitleLength) ? 'disabled': 'contained'
+                }
                 onClick={handlePost}
               >
                 Post
