@@ -11,6 +11,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore"
 import { auth, db} from "../../FirebaseConfig";
+import { handleGetFetch } from '../components/Utils';
 
 export default function SignUp() {
   let navigate = useNavigate();
@@ -22,23 +23,30 @@ export default function SignUp() {
 
   const handleSignUp = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        addDoc(collection(db, "users"), {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      const user = res.user;
+      try {
+        await addDoc(collection(db, "users"), {
           uid: user.uid,
           name,
           email,
-        })
-        sessionStorage.setItem('yourUser', JSON.stringify(user.uid));
-        navigate("/");
-        window.location.reload();
-      })
+        }).then(() => {
+          // get user with bcapi
+          handleGetFetch("get_user?userId=" + user.uid).then((json) => {
+            if (JSON.stringify(json.user) !== '{}') {
+              sessionStorage.setItem('loggedinUser', JSON.stringify(json.user));
+              navigate("/");
+              window.location.reload();
+            }
+          });
+        });
+      } catch (err) {
+        setIsError(true);
+      }
     } catch (err) {
       setIsError(true);
     }
   };
-
   return (
     <Box className="login-signup">
       <Stack spacing={2}>
