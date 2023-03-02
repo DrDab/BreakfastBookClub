@@ -103,8 +103,15 @@ public class User {
       "SELECT * FROM book_posts WHERE ";
 
   private static final String DELETE_RECOMMENDATION_SQL =
-          "DELETE FROM sent_recommendations WHERE sender_username = ? AND recipient_username = ? AND book_key = ?";
+      "DELETE FROM sent_recommendations WHERE sender_username = ? AND recipient_username = ? AND book_key = ?";
   private PreparedStatement deleteRecommendationStatement;
+
+  private static final String GET_USER_FEED_SQL =
+      "SELECT * FROM book_posts WHERE book_key IN "
+          + "(SELECT book_key FROM user_clubs WHERE user_id = ?) "
+          + "OR user_id IN (SELECT user_id_2 AS user_id FROM friends WHERE user_id_1 = ?) "
+          + "ORDER BY post_date DESC LIMIT 50";
+  private PreparedStatement getUserFeedStatement;
 
   /**
    * Creates a User class which allows user-specific interaction with the database. This class
@@ -680,7 +687,8 @@ public class User {
     unlikePostStatement.setString(1, user);
     unlikePostStatement.setString(2, post_id);
     int num_rows = unlikePostStatement.executeUpdate();
-    return num_rows == 1 && posts.decreaseLikedPostByID(post_id) ? UserResult.SUCCESS : UserResult.FAIL;
+    return num_rows == 1 && posts.decreaseLikedPostByID(post_id) ? UserResult.SUCCESS
+        : UserResult.FAIL;
   }
 
   private List<BookPost> getBatchPostIdPost(List<String> postIds) throws SQLException {
@@ -722,6 +730,15 @@ public class User {
     return result;
   }
 
+  public List<BookPost> getUserFeedPosts() throws SQLException {
+    getUserFeedStatement.clearParameters();
+    getUserFeedStatement.setString(1, user);
+    getUserFeedStatement.setString(2, user);
+
+    ResultSet rs = getUserFeedStatement.executeQuery();
+    return ResultSetParsers.getBookPostsFromResultSet(rs);
+  }
+
   private void prepareStatements() throws SQLException {
     getProfileStatement = conn.prepareStatement(GET_PROFILE);
     createProfileStatement = conn.prepareStatement(CREATE_PROFILE);
@@ -761,5 +778,7 @@ public class User {
     countLikedPostsByPidStatement = conn.prepareStatement(COUNT_LIKED_POSTS_BY_PID);
 
     deleteRecommendationStatement = conn.prepareStatement(DELETE_RECOMMENDATION_SQL);
+
+    getUserFeedStatement = conn.prepareStatement(GET_USER_FEED_SQL);
   }
 }

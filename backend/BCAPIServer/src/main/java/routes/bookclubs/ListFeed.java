@@ -22,6 +22,7 @@ import types.BookPost;
 
 import java.util.List;
 import utils.BCGsonUtils;
+import utils.ResultSetParsers;
 
 public class ListFeed implements Route {
 
@@ -58,32 +59,7 @@ public class ListFeed implements Route {
     String uid = decodedToken.getUid();
     User user = new User(uid, sqlConn);
 
-    List<BookPost> masterList = new ArrayList<>();
-    Set<String> knownIds = new HashSet<>();
-    JsonArray postsArr = new JsonArray();
-
-    for (BookPost post : user.getClubPosts()) {
-      if (!knownIds.contains(post.postId)) {
-        masterList.add(post);
-        knownIds.add(post.postId);
-      }
-    }
-
-    List<String> friendUIDs = user.allFriends();
-
-    for (String friendUID : friendUIDs) {
-      User friend = new User(friendUID, sqlConn);
-
-      for (BookPost post : friend.getUserPosts()) {
-        if (!knownIds.contains(post.postId)) {
-          masterList.add(post);
-          knownIds.add(post.postId);
-        }
-      }
-    }
-
-    Collections.sort(masterList, Comparator.comparingLong(p -> p.date));
-    BCGsonUtils.ingestBookPostsListIntoJson(fbApp, masterList, postsArr);
+    JsonArray postsArr = BCGsonUtils.getPostsJsonArrFromList(fbApp, user.getUserFeedPosts());
     respJson.add("posts", postsArr);
     respJson.addProperty("status", "success");
     return respJson;
