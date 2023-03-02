@@ -13,7 +13,9 @@ export default function BookList(props) {
     props.bookData === "" ?
       <BookListSkeleton/> :
       Array.isArray(props.bookData) && props.bookData.length === 0?
-        <Typography variant="body2"> No book clubs found </Typography>:
+        <Typography variant="body2">
+          No book clubs
+        </Typography> :
         props.bookData.map((book, index) => {
           return (
             <ListItem

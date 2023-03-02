@@ -28,23 +28,16 @@ public class GetSubscribedClubs implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
         JsonObject respJson = new JsonObject();
+        
+        String searchUID = request.queryParams("userId");
 
-        String token = request.queryParams("token");
-
-        FirebaseToken decodedToken;
-
-        try {
-            decodedToken = FirebaseAuth.getInstance(fbApp)
-                    .verifyIdToken(token, true);
-        } catch (FirebaseAuthException e) {
+        if ((searchUID == null)) {
             respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", String.valueOf(e.getAuthErrorCode()));
+            respJson.addProperty("failure_reason", "Need to provide userId!");
             return respJson.toString() + "\n";
         }
 
-        String uid = decodedToken.getUid();
-
-        List<Book> clubs = new User(uid, sqlConn).allClubs();
+        List<Book> clubs = new User(searchUID, sqlConn).allClubs();
 
         respJson.add("books", new Gson().toJsonTree(clubs));
         respJson.addProperty("status", "success");

@@ -60,17 +60,9 @@ export default function UserProfile() {
       setBooksSavedData(json.books)
     });
 
-    // handleFetch("get_subscribed_clubs?userId=", loggedinUser.uid).then((json) => {
-    //   setBookClubsJoinedData(json.bookClubs);
-    // });
-    setBookClubsJoinedData([
-      {
-        "book_id": "OL1168007W",
-        "title": "Animal Farm",
-        "author": "George Orwell",
-        "thumbnail": "https://covers.openlibrary.org/b/id/11261770-M.jpg"
-      }
-    ])
+    handleFetch("get_subscribed_clubs?userId=", uid).then((json) => {
+      setBookClubsJoinedData(json.books);
+    });
 
     handleFetch("list_friends?user_id=", uid).then((json) => {
       setFriendsData(json.friends);
@@ -81,7 +73,6 @@ export default function UserProfile() {
     });
 
   }, [loggedinUser.uid, uid]);
-
 
   return (
     <>
@@ -98,8 +89,12 @@ export default function UserProfile() {
         />
       </Grid>
       <Grid item xs={8}>
-        {uid === loggedinUser.uid?
-          <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts}/>:
+        {uid === loggedinUser.uid ?
+          <CreatePost 
+            setIsFetchPosts={setIsFetchPosts}
+            isFetchPosts={isFetchPosts}
+            bookClubs={bookClubsJoinedData}
+          /> :
           <></>
         }
           <Stack sx={{ marginBottom: '5rem' }} spacing={2}>

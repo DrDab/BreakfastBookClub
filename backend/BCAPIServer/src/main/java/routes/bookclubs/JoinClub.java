@@ -29,9 +29,9 @@ public class JoinClub implements Route {
         String token = request.queryParams("token");
         String bookKey = request.queryParams("book_key");
 
-        if (bookKey == null) {
+        if (token == null || bookKey == null) {
             respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "Need to provide book_key!");
+            respJson.addProperty("failure_reason", "Need to provide a token and book_key!");
             return respJson.toString() + "\n";
         }
 
@@ -45,6 +45,7 @@ public class JoinClub implements Route {
             respJson.addProperty("failure_reason", String.valueOf(e.getAuthErrorCode()));
             return respJson.toString() + "\n";
         }
+
 
         String uid = decodedToken.getUid();
 
@@ -62,7 +63,6 @@ public class JoinClub implements Route {
         } else { // result == UserResult.SUCCESS
             respJson.addProperty("status", "success");
         }
-
         return respJson.toString() + "\n";
     }
 }

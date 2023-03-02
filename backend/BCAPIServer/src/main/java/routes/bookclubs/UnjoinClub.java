@@ -29,9 +29,9 @@ public class UnjoinClub implements Route {
         String token = request.queryParams("token");
         String bookKey = request.queryParams("book_key");
 
-        if (bookKey == null) {
+        if (token == null || bookKey == null) {
             respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "Need to provide book_key!");
+            respJson.addProperty("failure_reason", "Need to provide token and book_key!");
             return respJson.toString() + "\n";
         }
 

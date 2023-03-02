@@ -45,7 +45,7 @@ public class User {
   private PreparedStatement getSubscribedClubsStatement;
 
   private static final String IS_CLUB_MEMBER =
-          "SELECT COUNT(*) FROM user_clubs WHERE user_id = ? AND book_key = ?";
+          "SELECT COUNT(*) AS count FROM user_clubs WHERE user_id = ? AND book_key = ?";
   private PreparedStatement isClubMemberStatement;
 
   private static final String ADD_USER_CLUB =
@@ -57,7 +57,7 @@ public class User {
   private PreparedStatement leaveUserClubStatement;
 
   private static final String IS_BOOK_SAVED =
-          "SELECT COUNT(*) FROM saved_books WHERE user_id = ? AND book_key = ?";
+          "SELECT COUNT(*) AS count FROM saved_books WHERE user_id = ? AND book_key = ?";
   private PreparedStatement isBookSavedStatement;
 
   private static final String ADD_SAVED_BOOK =

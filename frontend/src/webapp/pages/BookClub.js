@@ -13,6 +13,7 @@ import PostList from '../components/Lists/PostList';
 import { useParams } from "react-router-dom";
 import TabPanel from "../components/TabPanel";
 import { a11yProps, handleFetch } from '../components/Utils';
+import { auth } from "../../FirebaseConfig"
 
 export default function BookClub() {
   let { bid } = useParams(); // clicked book
@@ -56,21 +57,16 @@ export default function BookClub() {
       setLoggedinUserFriendsData(json.friends);
     });
 
-    // handleFetch("get_subscribed_clubs?userId=", loggedinUser.uid).then((json) => {
-    //     const bookClubs = json.bookClubs;
-    //     setIsBookClubJoinedData(bookClubs.some(bookClub => bookClub.book_id === bid));
-    // });
-    setIsBookClubJoinedData(false);
+    handleFetch("get_subscribed_clubs?userId=", loggedinUser.uid).then((json) => {
+      setIsBookClubJoinedData(json.books.some(bookClub => bookClub.book_id === bid));
+    });
 
   }, [loggedinUser.uid, bid]);
 
 
 
-  const handleFetchPostJoinStatus = (status) => {
-    // let url = "http://localhost:4567/api/" + status + "?userId=" + loggedinUser.uid + "&book_key=" + bid;
-    let url = "https://example.com/"
-    console.log(status);
-
+  const handleFetchPostJoinStatus = (status, token) => {
+    let url = "http://localhost:4567/api/" + status + "?token=" + token + "&book_key=" + bid;
     fetch(url, {
       method: 'POST',
       mode: 'no-cors',
@@ -90,11 +86,13 @@ export default function BookClub() {
   }
 
   const handleJoinUnJoinBookClub = () => {
-    if (isBookClubJoinedData){
-      handleFetchPostJoinStatus("unjoin_club");
-    } else {
-      handleFetchPostJoinStatus("join_club");
-    }
+    auth.currentUser?.getIdToken(true).then(function(idToken){
+      if (isBookClubJoinedData) {
+        handleFetchPostJoinStatus("unjoin_club", idToken);
+      } else {
+        handleFetchPostJoinStatus("join_club", idToken);
+      }
+    })
     setIsBookClubJoinedData(!isBookClubJoinedData);
   }
 
@@ -110,7 +108,12 @@ export default function BookClub() {
         />
       </Grid>
       <Grid item xs={8}>
-        <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
+        <CreatePost
+          setIsFetchPosts={setIsFetchPosts}
+          isFetchPosts={isFetchPosts}
+          bookClubs={[bookProfileData]}
+          isInBookClub
+        />
         <Stack sx={{ marginBottom: '5rem' }} spacing={2}>
           <Box>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
