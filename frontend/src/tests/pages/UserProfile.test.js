@@ -56,6 +56,16 @@ const mockGetBooksSaved = {
   ]
 }
 
+const mockGetFriends = {
+  "friends": [
+    {
+      "userId": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD",
+      "bio": "Victor's bio"
+    }
+  ]
+};
+
 const mockGetIsPostLiked = {
   "isUserLikedPost": "1"
 }
@@ -72,6 +82,8 @@ describe("Renders User Profile page", () => {
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
       .mockReturnValueOnce(makeFetchResponse(mockGetUser))
       .mockReturnValueOnce(makeFetchResponse(mockGetBooksSaved))
+      .mockReturnValueOnce(makeFetchResponse(mockGetFriends))
+      .mockReturnValueOnce(makeFetchResponse(mockGetFriends))
       .mockReturnValueOnce(makeFetchResponse(mockGetIsPostLiked)) 
     global.fetch = mockFetch
 
@@ -86,7 +98,7 @@ describe("Renders User Profile page", () => {
       );
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(5);
+    expect(mockFetch).toHaveBeenCalledTimes(7);
 
     const userName = screen.getAllByText(mockGetUser.user.username)[0];
     const userBio = screen.queryByText(mockGetUser.user.bio);
