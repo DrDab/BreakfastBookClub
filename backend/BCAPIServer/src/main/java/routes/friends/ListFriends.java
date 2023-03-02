@@ -30,23 +30,12 @@ public class ListFriends implements Route {
     public Object handle(Request request, Response response) throws Exception {
         JsonObject respJson = new JsonObject();
 
-        String token = request.queryParams("token");
-        if (token == null) {
+        String uid = request.queryParams("user_id");
+        if (uid == null) {
             respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "token is missing");
+            respJson.addProperty("failure_reason", "user_id is missing");
             return respJson.toString() + "\n";
         }
-
-        FirebaseToken decodedToken;
-        try {
-            decodedToken = FirebaseAuth.getInstance().verifyIdToken(token, true);
-        } catch (FirebaseAuthException e) {
-            respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", String.valueOf(e.getAuthErrorCode()));
-            return respJson.toString() + "\n";
-        }
-
-        String uid = decodedToken.getUid();
 
         List<String> friendsUIDs = new User(uid, sqlConn).allFriends();
         JsonArray friends = new JsonArray();

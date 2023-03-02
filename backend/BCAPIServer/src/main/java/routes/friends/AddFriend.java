@@ -27,7 +27,7 @@ public class AddFriend implements Route {
         JsonObject respJson = new JsonObject();
 
         String token = request.queryParams("token");
-        String friendName = request.queryParams("friend_name");
+        String friendUID = request.queryParams("friend_userId");
 
         if (token == null) {
             respJson.addProperty("status", "failure");
@@ -35,13 +35,13 @@ public class AddFriend implements Route {
             return respJson.toString() + "\n";
         }
 
-        if (friendName == null) {
+        if (friendUID == null) {
             respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "friend_name is missing");
+            respJson.addProperty("failure_reason", "friend_userId is missing");
             return respJson.toString() + "\n";
         }
 
-        User friend = new User(friendName, sqlConn);
+        User friend = new User(friendUID, sqlConn);
 
         FirebaseToken decodedToken;
         try {

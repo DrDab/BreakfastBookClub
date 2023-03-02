@@ -19,9 +19,15 @@ import net.sourceforge.argparse4j.inf.Namespace;
 import routes.bookclubs.*;
 
 import routes.bookmgmt.GetBook;
+
+import routes.friends.AddFriend;
+import routes.friends.ListFriends;
+import routes.friends.RemoveFriend;
+
 import routes.bookmgmt.GetSaveBooks;
 import routes.bookmgmt.SaveBook;
 import routes.bookmgmt.UnsaveBook;
+
 import routes.profile.GetUserProfile;
 import routes.profile.SetUserProfile;
 import spark.Spark;
@@ -93,6 +99,11 @@ public class BCServerMain {
 
     Spark.get("/api/get_members", new GetMembers(fbApp, sqlConn));
 
+
+    Spark.get("/api/list_friends", new ListFriends(fbApp, sqlConn));
+    Spark.post("/api/add_friend", new AddFriend(fbApp, sqlConn));
+    Spark.post("/api/remove_friend", new RemoveFriend(fbApp, sqlConn));
+
     // get saved books
     Spark.get("/api/get_saved_books", new GetSaveBooks(sqlConn));
 
@@ -103,6 +114,7 @@ public class BCServerMain {
     Spark.post("/api/delete_post", new DeletePost(fbApp, sqlConn));
 
     Spark.post("/api/delete_recommendation", new DeleteRecommendation(fbApp, sqlConn));
+
   }
 
   @SuppressWarnings("deprecation")
