@@ -89,8 +89,8 @@ public class BCServerMain {
     Spark.get("/api/get_members", new GetMembers(fbApp, sqlConn));
 
     Spark.get("/api/list_friends", new ListFriends(fbApp, sqlConn));
-    Spark.get("/api/add_friend", new AddFriend(fbApp, sqlConn));
-    Spark.get("/api/remove_friend", new RemoveFriend(fbApp, sqlConn));
+    Spark.post("/api/add_friend", new AddFriend(fbApp, sqlConn));
+    Spark.post("/api/remove_friend", new RemoveFriend(fbApp, sqlConn));
   }
 
   @SuppressWarnings("deprecation")
