@@ -38,6 +38,10 @@ public class User {
       "DELETE FROM friends WHERE user_id_1 = ? AND user_id_2 = ?";
   private PreparedStatement unfriendStatement;
 
+  private static final String GET_SUBSCRIBED_CLUBS =
+      "SELECT * FROM user_clubs WHERE user_id = ?";
+  private PreparedStatement getSubscribedClubsStatement;
+
   private static final String IS_CLUB_MEMBER =
       "SELECT COUNT(*) AS count FROM user_clubs WHERE user_id = ? AND book_key = ?";
   private PreparedStatement isClubMemberStatement;
@@ -582,6 +586,22 @@ public class User {
     return count == 1;
   }
 
+  public List<String> getSubscribedClubs() throws SQLException {
+    getSubscribedClubsStatement.clearParameters();
+    getSubscribedClubsStatement.setString(1, user);
+
+    List<String> res = new ArrayList<>();
+    ResultSet rs = getSubscribedClubsStatement.executeQuery();
+
+    while (rs.next()) {
+      String bookKey = rs.getString("book_key");
+      res.add(bookKey);
+    }
+
+    rs.close();
+    return res;
+  }
+
   // Returns true if this user is a member of the club for the book.
   private boolean isClubMember(String bookKey) throws SQLException {
     isClubMemberStatement.clearParameters();
@@ -713,6 +733,7 @@ public class User {
 
     unfriendStatement = conn.prepareStatement(UNFRIEND);
 
+    getSubscribedClubsStatement = conn.prepareStatement(GET_SUBSCRIBED_CLUBS);
     isClubMemberStatement = conn.prepareStatement(IS_CLUB_MEMBER);
     addUserClubStatement = conn.prepareStatement(ADD_USER_CLUB);
 
