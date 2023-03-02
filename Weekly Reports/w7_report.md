@@ -46,7 +46,8 @@
   - Tested all of the API routes that I have implemented. 
   
   Amanda Ha:
-
+  - added majority of routes into frontend
+  - reviewed and tested api routes
   
   Andrea Ha:
   - Wrote all frontend tests
@@ -61,19 +62,21 @@
 
   Jocelyn Thomson:
   - Finish all of the API routes that need to be implemented.
-  - Test all of the API routes that haven't been tested yet. 
+  - Test all of the API routes that haven't been tested yet.
 
   Zaynab Khan:
   - Finish testing my API routes
-  
-  Sanjana Janakiraman:
-  - Add user search backend functionality and API route
-  - Complete user sign up functionality
 
-  Andrea Ha:
+  Amanda Ha:
+  - finish adding remaing routes
+  - get joined book clubs
+  - join club
+  - unjoin clubs
+  - list feed with user token
+
+ Andrea Ha:
   - Research caching methods
   - Speeding up fetch posts and notifications on frontend
-
 
 
 
