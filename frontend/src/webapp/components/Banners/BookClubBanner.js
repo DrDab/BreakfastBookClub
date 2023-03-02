@@ -18,7 +18,6 @@ export default function BookClubBanner(props) {
   const [selectFriendUserId, setSelectFriendUserId] = React.useState('');
   const [isMissingFields, setIsMissingFields] = React.useState(true);
 
-  // Recommendations
   React.useEffect(() => {
     setIsMissingFields(selectFriendUserId === "");
   }, [selectFriendUserId]);
@@ -50,8 +49,6 @@ export default function BookClubBanner(props) {
     }
   };
 
-
-  // Save UnSave
   const handleSaveUnSaveBook = () => {
     auth.currentUser?.getIdToken(true).then(function(idToken) {
       if (props.isBookSavedData) {

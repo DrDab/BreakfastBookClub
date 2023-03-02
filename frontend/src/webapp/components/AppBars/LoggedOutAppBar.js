@@ -9,7 +9,6 @@ import EggAltOutlinedIcon from '@mui/icons-material/EggAltOutlined';
 import { Link as RouterLink } from "react-router-dom";
 
 export default function LoggedOutAppBar() {
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar elevation={0} position="fixed" sx={{backgroundColor: '#ffffff'}}>

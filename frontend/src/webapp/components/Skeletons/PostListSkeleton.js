@@ -7,8 +7,7 @@ import CardContent from '@mui/material/CardContent';
 export default function PostListSkeleton(props) {
   const posts = [...Array(5).keys()]
   return (
-    posts.map((post, index) => {
-
+    posts.map((index) => {
       return (
         <Card key={index} elevation={0} className="post">
           <CardHeader

@@ -26,6 +26,7 @@ import { handleGetFetch } from '../Utils';
 
 export default function LoggedInAppBar() {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
+  const navigate = useNavigate();
 
   const [recommendationData, setRecommendationData] = React.useState('');
   const [isFetchRecommendations, setIsFetchRecommendations] = React.useState(false);
@@ -34,11 +35,7 @@ export default function LoggedInAppBar() {
   const openNotifications = Boolean(anchorElNotifications);
   const [anchorElAccount, setAnchorElAccount] = React.useState(null);
   const openAccount = Boolean(anchorElAccount);
-
-  const navigate = useNavigate();
-  
-  // recommendations
-  
+    
   React.useEffect(() => {
     let recommendations = [];
 

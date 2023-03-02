@@ -7,7 +7,7 @@ import BookList from '../components/Lists/BookList';
 import PeopleList from '../components/Lists/PeopleList';
 import Stack from '@mui/material/Stack';
 import TabPanel from "../components/TabPanel";
-import { a11yProps, formatOpenLibraryData } from '../components/Utils';
+import { a11yProps, formatOpenLibraryData, handleGetFetch } from '../components/Utils';
 
 export default function SearchResults() {
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
@@ -16,7 +16,7 @@ export default function SearchResults() {
   
   useEffect(() => {
     const handleFetchSearchBooks = async () => {
-      let query = "http://openlibrary.org/search.json?q=" + sessionStorage.searchValue.replace(/ /g, '+') + "&limit=20" // ex searchQuery: http://openlibrary.org/search.json?q=the+lord+of+the+rings
+      let query = "http://openlibrary.org/search.json?q=" + sessionStorage.searchValue.replace(/ /g, '+') + "&limit=20";
       try {
         const response = await fetch(query);
         const json = await response.json();
@@ -28,7 +28,7 @@ export default function SearchResults() {
     }
     handleFetchSearchBooks();
 
-    // handleFetch("search_users?username=", sessionStorage.searchValue).then((json) => {
+    // handleGetFetch("search_users?username=" + sessionStorage.searchValue).then((json) => {
     //   setSearchResultUsersData(json.users);
     // });
     setSearchResultUsersData([
