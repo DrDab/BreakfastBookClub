@@ -38,6 +38,7 @@ public class ListFeed implements Route {
   public Object handle(Request request, Response response) throws Exception {
     JsonObject respJson = new JsonObject();
 
+    /*
     String token = request.queryParams("token");
     if (token == null) {
       respJson.addProperty("status", "failure");
@@ -55,8 +56,15 @@ public class ListFeed implements Route {
       respJson.addProperty("failure_reason", String.valueOf(e.getAuthErrorCode()));
       return respJson.toString() + "\n";
     }
+     */
 
-    String uid = decodedToken.getUid();
+    String uid = request.queryParams("user_id"); //decodedToken.getUid();
+    if (uid == null) {
+      respJson.addProperty("status", "failure");
+      respJson.addProperty("failure_reason", "Expected fields are missing!");
+      return respJson.toString() + "\n";
+    }
+
     User user = new User(uid, sqlConn);
     Books books = new Books(sqlConn);
 
