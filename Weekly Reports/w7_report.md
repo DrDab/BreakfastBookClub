@@ -67,6 +67,10 @@
   Zaynab Khan:
   - Finish testing my API routes
 
+  Sanjana Janakiraman:
+  - Add user search backend functionality and API route
+  - Complete user sign up functionality
+
   Amanda Ha:
   - finish adding remaing routes
   - get joined book clubs
@@ -74,7 +78,7 @@
   - unjoin clubs
   - list feed with user token
 
- Andrea Ha:
+  Andrea Ha:
   - Research caching methods
   - Speeding up fetch posts and notifications on frontend
 
