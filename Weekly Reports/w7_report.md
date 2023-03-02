@@ -39,7 +39,7 @@
 
   Victor Du:
   - Implemented routes on backend API for adding book club members and getting book club member data (profile links)
-  - Improved posting listing query processing.
+  - Improved posting listing query processing for ListFeed API route.
 
 
   Jocelyn Thomson:
