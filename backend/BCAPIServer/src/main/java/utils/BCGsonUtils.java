@@ -54,7 +54,7 @@ public class BCGsonUtils {
 
       //postJson.addProperty("book_key", post.bookKey);
       postJson.add("book", gson.toJsonTree(
-          OpenLibraryAPI.getBookByKeyWithCache(books, bookRequestCache, post.bookKey)));
+          OpenLibraryAPI.getBookByKeyWithCache(books, bookRequestCache, post.book_key)));
 
       JsonObject userObj = new JsonObject();
       userObj.addProperty("userId", post.userId);

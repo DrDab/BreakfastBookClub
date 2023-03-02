@@ -167,15 +167,15 @@ public class User {
     return userProfile;
   }
 
-  public UserResult deleteRecommendation(String senderID, String bookKey) {
-    if (senderID.equals("") || bookKey.equals("")) {
+  public UserResult deleteRecommendation(String senderID, String book_key) {
+    if (senderID.equals("") || book_key.equals("")) {
       return UserResult.INVALID;
     }
     try {
       deleteRecommendationStatement.clearParameters();
       deleteRecommendationStatement.setString(1, senderID);
       deleteRecommendationStatement.setString(2, this.user);
-      deleteRecommendationStatement.setString(3, bookKey);
+      deleteRecommendationStatement.setString(3, book_key);
       deleteRecommendationStatement.execute();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -244,7 +244,7 @@ public class User {
   /**
    * Creates a post for the user for the book. This method assumes that the book exists.
    *
-   * @param bookKey   id of the book, not null or empty, at most 20 characters
+   * @param book_key   id of the book, not null or empty, at most 20 characters
    * @param postTitle title of the post, not null or empty, at most 100 characters
    * @param post      text of the post being made, not null or empty, at most 1000 chacters
    * @param tag       associated description, not null or empty, at most 20 charaters
@@ -254,10 +254,10 @@ public class User {
    * @return UserResult.SUCCESS if the query is successfully executed UserResult.FAIL if there is a
    * database error UserResult.INVALID if the input is invalid
    */
-  public UserResult bookPost(String bookKey, String postTitle, String post, String tag,
+  public UserResult bookPost(String book_key, String postTitle, String post, String tag,
                              String postId,
                              long date, long likes) {
-    if (bookKey == null || bookKey.equals("")) {
+    if (book_key == null || book_key.equals("")) {
       return UserResult.INVALID;
     }
 
@@ -273,7 +273,7 @@ public class User {
       return UserResult.INVALID;
     }
 
-    if (bookKey.length() > 20) {
+    if (book_key.length() > 20) {
       return UserResult.INVALID;
     }
 
@@ -297,7 +297,7 @@ public class User {
       addPostStatement.clearParameters();
       addPostStatement.setString(1, postId);
       addPostStatement.setString(2, this.user);
-      addPostStatement.setString(3, bookKey);
+      addPostStatement.setString(3, book_key);
       addPostStatement.setString(4, postTitle);
       addPostStatement.setString(5, post);
       addPostStatement.setString(6, tag);
@@ -374,29 +374,29 @@ public class User {
   /**
    * Adds the user to the club associated to the book. This method assumes that the book exists.
    *
-   * @param bookKey id of the book in the club, not null or empty, at most 20 characters
+   * @param book_key id of the book in the club, not null or empty, at most 20 characters
    * @return UserResult.SUCCESS if the user joins the book club. UserResult.INVALID if the input is
    * invalid. UserResult.IMPOSSIBLE if the user was already in the book club. UserResult.FAIL if there
    * is a database error.
    * @throws SQLException if something goes wrong with the database
    */
-  public UserResult joinClub(String bookKey) throws SQLException {
-    if (bookKey == null || bookKey.equals("")) {
+  public UserResult joinClub(String book_key) throws SQLException {
+    if (book_key == null || book_key.equals("")) {
       return UserResult.INVALID;
     }
 
-    if (bookKey.length() > 20) {
+    if (book_key.length() > 20) {
       return UserResult.INVALID;
     }
 
-    if (isClubMember(bookKey)) {
+    if (isClubMember(book_key)) {
       return UserResult.IMPOSSIBLE;
     }
 
     try {
       addUserClubStatement.clearParameters();
       addUserClubStatement.setString(1, this.user);
-      addUserClubStatement.setString(2, bookKey);
+      addUserClubStatement.setString(2, book_key);
       addUserClubStatement.execute();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -410,29 +410,29 @@ public class User {
    * Remove the user from the club associated to the book. This method assumes that the book
    * exists.
    *
-   * @param bookKey id of the book in the club, not null or empty, at most 20 characters
+   * @param book_key id of the book in the club, not null or empty, at most 20 characters
    * @return UserResult.SUCCESS if the user leaves the book club. UserResult.INVALID if the input is
    * invalid. UserResult.IMPOSSIBLE if the user was not in the book club. UserResult.FAIL if there
    * is a database error.
    * @throws SQLException if something goes wrong with the database
    */
-  public UserResult leaveClub(String bookKey) throws SQLException {
-    if (bookKey == null || bookKey.equals("")) {
+  public UserResult leaveClub(String book_key) throws SQLException {
+    if (book_key == null || book_key.equals("")) {
       return UserResult.INVALID;
     }
 
-    if (bookKey.length() > 20) {
+    if (book_key.length() > 20) {
       return UserResult.INVALID;
     }
 
-    if (!isClubMember(bookKey)) {
+    if (!isClubMember(book_key)) {
       return UserResult.IMPOSSIBLE;
     }
 
     try {
       leaveUserClubStatement.clearParameters();
       leaveUserClubStatement.setString(1, this.user);
-      leaveUserClubStatement.setString(2, bookKey);
+      leaveUserClubStatement.setString(2, book_key);
       leaveUserClubStatement.execute();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -445,29 +445,29 @@ public class User {
   /**
    * Adds the book to this user's saved books. This method assumes that the book exists.
    *
-   * @param bookKey id of the book to be saved, not null or empty, at most 20 characters
+   * @param book_key id of the book to be saved, not null or empty, at most 20 characters
    * @return UserResult.SUCCESS if the book is saved. UserResult.INVALID if the input is invalid.
    * UserResult.FAIL if there is a database error. UserResult.IMPOSSIBLE if the book is already
    * saved.
    * @throws SQLException if something goes wrong with the database
    */
-  public UserResult saveBook(String bookKey) throws SQLException {
-    if (bookKey == null || bookKey.equals("")) {
+  public UserResult saveBook(String book_key) throws SQLException {
+    if (book_key == null || book_key.equals("")) {
       return UserResult.INVALID;
     }
 
-    if (bookKey.length() > 20) {
+    if (book_key.length() > 20) {
       return UserResult.INVALID;
     }
 
-    if (isBookSaved(bookKey)) {
+    if (isBookSaved(book_key)) {
       return UserResult.IMPOSSIBLE;
     }
 
     try {
       addSavedBookStatement.clearParameters();
       addSavedBookStatement.setString(1, this.user);
-      addSavedBookStatement.setString(2, bookKey);
+      addSavedBookStatement.setString(2, book_key);
       addSavedBookStatement.execute();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -480,29 +480,29 @@ public class User {
   /**
    * Removes the book from this user's saved books. This method assumes that the book exists.
    *
-   * @param bookKey id of the book to be unsaved, not null or empty, at most 20 characters
+   * @param book_key id of the book to be unsaved, not null or empty, at most 20 characters
    * @return UserResult.SUCCESS if the book is removed from saved books. UserResult.INVALID if the
    * input is invalid. UserResult.IMPOSSIBLE if the book is not saved. UserResult.FAIL if there
    * is a database error.
    * @throws SQLException if something goes wrong with the database
    */
-  public UserResult unsaveBook(String bookKey) throws SQLException {
-    if (bookKey == null || bookKey.equals("")) {
+  public UserResult unsaveBook(String book_key) throws SQLException {
+    if (book_key == null || book_key.equals("")) {
       return UserResult.INVALID;
     }
 
-    if (bookKey.length() > 20) {
+    if (book_key.length() > 20) {
       return UserResult.INVALID;
     }
 
-    if (!isBookSaved(bookKey)) {
+    if (!isBookSaved(book_key)) {
       return UserResult.IMPOSSIBLE;
     }
 
     try {
       unsaveBookStatement.clearParameters();
       unsaveBookStatement.setString(1, this.user);
-      unsaveBookStatement.setString(2, bookKey);
+      unsaveBookStatement.setString(2, book_key);
       unsaveBookStatement.execute();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -517,13 +517,13 @@ public class User {
    * book exists.
    *
    * @param other   the user to whom the book is recommended, not null/empty, at most 20 characters
-   * @param bookKey id of the book being recommended
+   * @param book_key id of the book being recommended
    * @return UserResult.SUCCESS if the book is recommended to the other user. UserResult.INVALID if
    * the input is invalid. UserResult.FAIL if there is a database error.
    * @throws SQLException if something goes wrong with the database
    */
-  public UserResult recommend(User other, String bookKey) throws SQLException {
-    if (bookKey == null || bookKey.equals("") || bookKey.length() > 20) {
+  public UserResult recommend(User other, String book_key) throws SQLException {
+    if (book_key == null || book_key.equals("") || book_key.length() > 20) {
       return UserResult.INVALID;
     }
 
@@ -531,7 +531,7 @@ public class User {
       recommendStatement.clearParameters();
       recommendStatement.setString(1, this.user);
       recommendStatement.setString(2, other.user);
-      recommendStatement.setString(3, bookKey);
+      recommendStatement.setString(3, book_key);
       recommendStatement.execute();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -576,8 +576,8 @@ public class User {
 
     ResultSet rs = getClubsStatement.executeQuery();
     while (rs.next()) {
-      String searchBookKey = rs.getString("book_key");
-      Book bookObj = OpenLibraryAPI.getBookByKey(searchBookKey);
+      String searchbook_key = rs.getString("book_key");
+      Book bookObj = OpenLibraryAPI.getBookByKey(searchbook_key);
       if (bookObj != null) {
         clubs.add(bookObj);
       }
@@ -637,8 +637,8 @@ public class User {
     ResultSet rs = getSubscribedClubsStatement.executeQuery();
 
     while (rs.next()) {
-      String bookKey = rs.getString("book_key");
-      res.add(bookKey);
+      String book_key = rs.getString("book_key");
+      res.add(book_key);
     }
 
     rs.close();
@@ -646,10 +646,10 @@ public class User {
   }
 
   // Returns true if this user is a member of the club for the book.
-  private boolean isClubMember(String bookKey) throws SQLException {
+  private boolean isClubMember(String book_key) throws SQLException {
     isClubMemberStatement.clearParameters();
     isClubMemberStatement.setString(1, this.user);
-    isClubMemberStatement.setString(2, bookKey);
+    isClubMemberStatement.setString(2, book_key);
 
     ResultSet rs = isClubMemberStatement.executeQuery();
     rs.next();
@@ -660,10 +660,10 @@ public class User {
   }
 
   // Returns true if the book is in this user's saved books
-  private boolean isBookSaved(String bookKey) throws SQLException {
+  private boolean isBookSaved(String book_key) throws SQLException {
     isBookSavedStatement.clearParameters();
     isBookSavedStatement.setString(1, this.user);
-    isBookSavedStatement.setString(2, bookKey);
+    isBookSavedStatement.setString(2, book_key);
 
     ResultSet rs = isBookSavedStatement.executeQuery();
     rs.next();

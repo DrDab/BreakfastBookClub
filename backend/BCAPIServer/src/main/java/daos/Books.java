@@ -56,18 +56,18 @@ public class Books {
 
   /**
    * @param user    user ID that is saving book
-   * @param bookKey key of book that is being saved
+   * @param book_key key of book that is being saved
    * @return UserResult.SUCCESS if the book is recommended to the other user. UserResult.INVALID if
    * * the input is invalid. UserResult.FAIL if there is a database error.
    */
-  public UserResult saveBook(String user, String bookKey) {
-    if (bookKey == null || bookKey.equals("") || bookKey.length() > 20) {
+  public UserResult saveBook(String user, String book_key) {
+    if (book_key == null || book_key.equals("") || book_key.length() > 20) {
       return UserResult.INVALID;
     }
     try {
       addSavedBookStatement.clearParameters();
       addSavedBookStatement.setString(1, user);
-      addSavedBookStatement.setString(2, bookKey);
+      addSavedBookStatement.setString(2, book_key);
       addSavedBookStatement.execute();
 
     } catch (SQLException e) {
@@ -82,15 +82,15 @@ public class Books {
    * Deletes a saved book from the user's saved books.
    *
    * @param username user ID of the username to delete a book
-   * @param bookKey  key of a book to be deleted
+   * @param book_key  key of a book to be deleted
    * @return UserResult.SUCCESS if the book is successfully deleted. UserResult.FAIL if there is a
    * database error.
    */
-  public UserResult unsaveBook(String username, String bookKey) {
+  public UserResult unsaveBook(String username, String book_key) {
     try {
       unsaveBookStatement.clearParameters();
       unsaveBookStatement.setString(1, username);
-      unsaveBookStatement.setString(2, bookKey);
+      unsaveBookStatement.setString(2, book_key);
       unsaveBookStatement.execute();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -100,16 +100,16 @@ public class Books {
   }
 
   /**
-   * Gets the list all the users in the book club for bookKey.
+   * Gets the list all the users in the book club for book_key.
    *
-   * @param bookKey is the ID for the book club's book
-   * @return list of userIds that are in the bookKey book club
+   * @param book_key is the ID for the book club's book
+   * @return list of userIds that are in the book_key book club
    */
-  public List<String> bookClubUsers(String bookKey) {
+  public List<String> bookClubUsers(String book_key) {
     List<String> users = new ArrayList<>();
     try {
       usersInBookClubStatement.clearParameters();
-      usersInBookClubStatement.setString(1, bookKey);
+      usersInBookClubStatement.setString(1, book_key);
       ResultSet rs = usersInBookClubStatement.executeQuery();
 
       while (rs.next()) {
@@ -166,15 +166,15 @@ public class Books {
   }
 
   /**
-   * Gets the list all the books posts in the book club for the book with ID bookKey.
+   * Gets the list all the books posts in the book club for the book with ID book_key.
    *
-   * @param bookKey is the ID for the book club's book
-   * @return list of book posts that are in the bookKey book club
+   * @param book_key is the ID for the book club's book
+   * @return list of book posts that are in the book_key book club
    */
-  public List<BookPost> listBookPosts(String bookKey) {
+  public List<BookPost> listBookPosts(String book_key) {
     try {
       postsInBookClubStatement.clearParameters();
-      postsInBookClubStatement.setString(1, bookKey);
+      postsInBookClubStatement.setString(1, book_key);
       ResultSet rs = postsInBookClubStatement.executeQuery();
       return ResultSetParsers.getBookPostsFromResultSet(rs);
     } catch (SQLException e) {
@@ -184,10 +184,10 @@ public class Books {
     return new ArrayList<>();
   }
 
-  public Book getCachedBookByKey(String bookKey) {
+  public Book getCachedBookByKey(String book_key) {
     try {
       searchBookByKeyStatement.clearParameters();
-      searchBookByKeyStatement.setString(1, bookKey);
+      searchBookByKeyStatement.setString(1, book_key);
       ResultSet rs = searchBookByKeyStatement.executeQuery();
       if (rs.next()) {
         return new Book(rs.getString("book_key"), rs.getString("book_title"),

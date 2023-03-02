@@ -110,14 +110,14 @@ public class Posts {
       }
 
       String userId = rs.getString("user_id");
-      String bookKey = rs.getString("book_key");
+      String book_key = rs.getString("book_key");
       String postTitle = rs.getString("post_title");
       String post = rs.getString("post");
       String tag = rs.getString("tag");
       long date = rs.getLong("post_date");
       long likes = rs.getLong("likes");
 
-      retPost = new BookPost(userId, bookKey, postTitle, post, tag, postId, date, likes);
+      retPost = new BookPost(userId, book_key, postTitle, post, tag, postId, date, likes);
       rs.close();
     } catch (SQLException e) {
       e.printStackTrace();

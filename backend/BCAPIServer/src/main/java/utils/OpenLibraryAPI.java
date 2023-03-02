@@ -83,9 +83,9 @@ public class OpenLibraryAPI {
     return !jsonObject.has("error");
   }
 
-  public static Book getBookByKey(String bookKey)
+  public static Book getBookByKey(String book_key)
       throws IOException, InterruptedException {
-    URI targetURI = getBookTargetURI(bookKey);
+    URI targetURI = getBookTargetURI(book_key);
 
     if (targetURI == null) {
       return null;
@@ -124,7 +124,7 @@ public class OpenLibraryAPI {
       }
     }
 
-    return new Book(bookKey, title, author, coverUrl);
+    return new Book(book_key, title, author, coverUrl);
   }
 
   public static Book getBookByKeyWithCache(Books books, Map<String, Book> requestCache,
