@@ -10,13 +10,7 @@ export default function PostList(props) {
       Array.isArray(props.postsData) && props.postsData.length === 0? 
         <Typography variant="body2"> No posts yet </Typography>:
         props.postsData.map((post, index) => {
-          return (
-            <Post
-              key={index}
-              post={post}
-              isPostLiked={props.loggedinUserLikedPostsData !== "" ? props.loggedinUserLikedPostsData.some(likedPost => likedPost.post_id === post.post_id) : false}
-            />
-          )   
+          return (<Post key={index} post={post} />)
         })
   );
 }

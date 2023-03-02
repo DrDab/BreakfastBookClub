@@ -19,7 +19,7 @@ export default function BookList(props) {
             <ListItem
               reloadDocument
               component={RouterLink}
-              to={"/book-club/" + book.key.split("/")[2]} 
+              to={"/book-club/" + (props.isFromOpenLibrary? book.key.split("/")[2] :  book.book_id)} 
               className="list-item"
               alignItems="flex-start"
               key={index}
@@ -29,7 +29,7 @@ export default function BookList(props) {
                   className="list-item-book-cover"
                   variant="rounded"
                   alt={book.title + " cover"}
-                  src={book.coverUrl}
+                  src={props.isFromOpenLibrary? book.coverUrl : book.thumbnail}
                   sx={{ width: 70, height: 100 }}
                 />
               </ListItemAvatar>

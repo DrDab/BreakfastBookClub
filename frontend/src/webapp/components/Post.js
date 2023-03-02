@@ -8,16 +8,37 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Link as RouterLink } from "react-router-dom";
 import { tagsList, avatarColorMap } from './Constants';
-import { auth } from "../../FirebaseConfig"
+import { auth } from "../../FirebaseConfig";
 
 export default function Post(props) {
+  let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
   
-  const [isPostLiked, setIsPostLiked] = React.useState(props.isPostLiked);
+  const [isPostLikedData, setIsPostLikedData] = React.useState(false);
   const [numberOfLikes, setNumberOfLikes] = React.useState(props.post.likes);
+  const [deleteDisplay, setDeleteDisplay] = React.useState(false);
+
+
+  React.useEffect(() => {
+    const handleFetchIsPostLiked = async () => {
+      let query = "http://localhost:4567/api/get_is_user_liked_posts?user_id="+ loggedinUser.uid + "&post_id=" + props.post.post_id;
+      try {
+        const response = await fetch(query);
+        const json = await response.json();
+        const isLiked = json.isUserLikedPost;
+        setIsPostLikedData(isLiked === "1");
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+    handleFetchIsPostLiked();
+  },[loggedinUser.uid, props.post.post_id]);
+
 
   const handleFetchPostLikeStatus = (token, postId, status) => {
+    console.log(status)
     let url = "http://localhost:4567/api/"+ status + "?token=" + token + "&post_id=" + postId;
     fetch(url, {
       method: 'POST',
@@ -36,12 +57,38 @@ export default function Post(props) {
 
   const handleLikeUnlikePost = (postId) => {
     auth.currentUser?.getIdToken(true).then(function(idToken){
-      if (isPostLiked){
+      if (isPostLikedData){
         handleFetchPostLikeStatus(idToken, postId, "unlike_post");
       } else {
         handleFetchPostLikeStatus(idToken, postId, "like_post"); 
       }
-      setIsPostLiked(!isPostLiked);
+      setIsPostLikedData(!isPostLikedData);
+    })
+  }
+
+
+  const handleFetchPostDeletePost = (token, postId) => {
+    let url = "http://localhost:4567/api/delete_post?token=" + token + "&postId=" + postId;
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((data) => {
+      console.log('Success:', data);
+      setDeleteDisplay(true);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+  const handleDeletePost = () => {
+    console.log("delete post", props.post.post_id)
+    auth.currentUser?.getIdToken(true).then(function(idToken){
+      handleFetchPostDeletePost(idToken, props.post.post_id);
     })
   }
 
@@ -56,7 +103,7 @@ export default function Post(props) {
   let bookProfileUrl ="/book-club/" + props.post.book.book_id;
 
   return (
-    <Card elevation={0} className="post">
+    <Card elevation={0} className="post" sx={{display: deleteDisplay? 'none': ""}}>
       <CardHeader
         avatar={
           <Avatar
@@ -69,6 +116,13 @@ export default function Post(props) {
             {props.post.user.username.charAt(0)}
           </Avatar>
         }
+        action={
+          props.post.user.userId === loggedinUser.uid ? 
+            <IconButton aria-label="delete-post" onClick={handleDeletePost}>
+              <DeleteIcon fontSize="small"/>
+            </IconButton> :
+            <></>
+          }
         title={
           <Typography gutterBottom variant="p4">
             <a href={userProfileUrl}>{props.post.user.username}</a> in the <a href={bookProfileUrl}>{props.post.book.title}</a> Book Club
@@ -98,7 +152,7 @@ export default function Post(props) {
       <CardActions disableSpacing>
         <IconButton 
           onClick={() => handleLikeUnlikePost(props.post.post_id)}
-          sx={{color: isPostLiked ? "red" : "grey"}}
+          sx={{color: isPostLikedData ? "#ff4d67" : "#d9d9d9"}}
           aria-label="like"
         >
           <FavoriteIcon />

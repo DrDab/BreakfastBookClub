@@ -12,12 +12,13 @@ import { a11yProps, formatOpenLibraryData } from '../components/Utils';
 export default function SearchResults() {
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
   const [searchResultBookData, setSearchResultBookData] = useState("");
-
+  const [searchResultUsersData, setSearchResultUsersData] = useState("");
+  
   useEffect(() => {
-    const handleFetch = async () => {
-      let searchQuery = "http://openlibrary.org/search.json?q=" + sessionStorage.searchValue.replace(/ /g, '+') + "&limit=20" // ex searchQuery: http://openlibrary.org/search.json?q=the+lord+of+the+rings
+    const handleFetchSearchBooks = async () => {
+      let query = "http://openlibrary.org/search.json?q=" + sessionStorage.searchValue.replace(/ /g, '+') + "&limit=20" // ex searchQuery: http://openlibrary.org/search.json?q=the+lord+of+the+rings
       try {
-        const response = await fetch(searchQuery);
+        const response = await fetch(query);
         const json = await response.json();
         let formattedData = formatOpenLibraryData(json);
         setSearchResultBookData(formattedData);
@@ -25,24 +26,30 @@ export default function SearchResults() {
         console.log("error", error);
       }
     }
-    handleFetch();
-}, []);
+    handleFetchSearchBooks();
 
-  let searchResultPeopleData = [
-    {
-      "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
-      "username": "Amanda"
-    },
-    {
-      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-      "username": "VictorD"
-    },
-    {
-      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
-      "username": "zaynab"
-    }
-  ]
- 
+    // handleFetch("search_users?username=", sessionStorage.searchValue).then((json) => {
+    //   setSearchResultUsersData(json.users);
+    // });
+    setSearchResultUsersData([
+      {
+        "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
+        "username": "Amanda",
+        "bio": "bio"
+      },
+      {
+        "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+        "username": "VictorD",
+        "bio": "bio"
+      },
+      {
+        "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+        "username": "zaynab",
+        "bio": "bio"
+      }
+    ])
+  }, []);
+
   return (
     <Stack sx={{ width: '70%', margin: '0 auto', marginBottom: '5rem' }} spacing={2}>
       <Typography>{"Showing search results for '" + sessionStorage.searchValue + "'"}</Typography>
@@ -54,10 +61,10 @@ export default function SearchResults() {
           </Tabs>
         </Box>
         <TabPanel value={tabIndexValue} index={0}>
-          <BookList bookData={searchResultBookData}/>
+          <BookList bookData={searchResultBookData} isFromOpenLibrary />
         </TabPanel>
         <TabPanel value={tabIndexValue} index={1}>
-          <PeopleList peopleData={searchResultPeopleData}/>
+          <PeopleList peopleData={searchResultUsersData}/>
         </TabPanel>
       </Box>
     </Stack>
