@@ -9,7 +9,7 @@ import PeopleList from '../Lists/PeopleList';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import { avatarColorMap } from '../Constants';
-import { handleGetFetch } from '../Utils';
+import { handleGetFetch, handlePostFetch } from '../Utils';
 import { auth } from "../../../FirebaseConfig"
 import { useParams } from "react-router-dom";
 
@@ -30,82 +30,46 @@ export default function UserProfileBanner(props) {
     setBio(props.clickedUserData.bio? props.clickedUserData.bio : "");
     setIsOverBioLength(false);
   }
-    
+
   const handleCancelEdit = () => {
     setShowEditBioModal(false);
     clearFormValues();
   };
-    
-  const handleFetchPostBio = (token, bio) => {
-    let url = "http://localhost:4567/api/update_user?token="+token+"&bio="+bio;
-    fetch(url, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((data) => {
-      console.log('Success:', data);
-      handleGetFetch("get_user?userId=" + uid).then((json) => {      
-        props.setUserProfileData(json.user);
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
-    
+
   const handleEditProfile = () => {
     if (!isOverBioLength) {
       setShowEditBioModal(false);
       auth.currentUser?.getIdToken(true).then(function(idToken){
-        console.log("postNewBio", "token="+ idToken +", bio="+bio);
-        handleFetchPostBio(idToken, bio);
+        handlePostFetch("update_user?token=" + idToken + "&bio=" + bio, "").then(() => {
+          handleGetFetch("get_user?userId=" + uid).then((json) => {
+            props.setUserProfileData(json.user);
+          });
+        })
+
       })
       clearFormValues();
     }
   };
 
-
-  const handleFetchPostFriendStatus = (status, token) => {
-    let url = "http://localhost:4567/api/" + status + "?token=" + token + "&friend_userId=" + props.clickedUserData.uid;
-    fetch(url, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    .then((data) => {
-      console.log('Success:', data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-    console.log(status);
-  }
-
   const handleAddRemoveFriend = () => {
     auth.currentUser?.getIdToken(true).then(function(idToken){
-      if (props.isFriendData){
-        handleFetchPostFriendStatus("remove_friend", idToken);
+      if (props.isFriendData) {
+        handlePostFetch("remove_friend?token=" + idToken + "&friend_userId=" + props.clickedUserData.uid, "");
       } else {
-        handleFetchPostFriendStatus("add_friend", idToken);
+        handlePostFetch("add_friend?token=" + idToken + "&friend_userId=" + props.clickedUserData.uid, "");
       }
+      props.setIsFriendData(!props.isFriendData);
     })
-    props.setIsFriendData(!props.isFriendData);
   };
 
   return (
     <>
-    {props.clickedUserData !== "" && 
+    {props.clickedUserData !== "" &&
       <>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={30}>
           <Grid item xs={2}>
-            <Avatar 
+            <Avatar
               alt={props.clickedUserData.username + " avatar"}
               sx={{ bgcolor: avatarColorMap.get(props.clickedUserData.username), width: 150, height: 150 }}
               // src={props.clickedUserData.thumbnail}
@@ -118,7 +82,7 @@ export default function UserProfileBanner(props) {
               <Typography variant="h5">{props.clickedUserData.username}</Typography>
               <Stack spacing={2} direction="row">
                 {props.clickedUserData.uid === loggedinUser.uid?
-                  <Button 
+                  <Button
                     disableElevation
                     variant="contained"
                     size="small"
@@ -126,7 +90,7 @@ export default function UserProfileBanner(props) {
                   >
                     Edit Profile
                   </Button>:
-                  <Button 
+                  <Button
                     disableElevation
                     variant={props.isFriendData ? "outlined" : "contained"}
                     size="small"
@@ -134,8 +98,8 @@ export default function UserProfileBanner(props) {
                   >
                     {props.isFriendData ? "Remove Friend" : "Add Friend"}
                   </Button>
-                } 
-                <Button 
+                }
+                <Button
                   disableElevation
                   variant="outlined"
                   size="small"
@@ -146,7 +110,7 @@ export default function UserProfileBanner(props) {
               </Stack>
               <Typography>
                 {props.clickedUserData.bio ? props.clickedUserData.bio : ""}
-              </Typography> 
+              </Typography>
             </Stack>
           </Grid>
         </Grid>

@@ -16,6 +16,7 @@ import Button from '@mui/material/Button';
 import { auth } from "../../FirebaseConfig"
 import { Link as RouterLink } from "react-router-dom";
 import { tagsList, avatarColorMap } from './Constants';
+import { handlePostFetch } from './Utils'
 
 export default function CreatePost(props) {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
@@ -49,30 +50,12 @@ export default function CreatePost(props) {
     clearFormValues();
   };
 
-  const fetchPostCreatePost = (jsonData) => {
-    let url = "http://localhost:4567/api/make_post";
-    fetch(url, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(jsonData)
-    })
-    .then((data) => {
-      console.log('Success:', data);
-      props.setIsFetchPosts(!props.isFetchPosts);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
-
   const handlePost = () => {
     if (!isMissingFields && !isOverBodyLength && !isOverTitleLength) {
       setShowPostModal(false);
 
-      auth.currentUser?.getIdToken(true).then(function(idToken){
+      auth.currentUser?.getIdToken(true).then(function(idToken) {
+
         let jsonData = {
           token: idToken,
           book_key: bookClubId,
@@ -80,8 +63,13 @@ export default function CreatePost(props) {
           body: body,
           ...indexOfTagSelected > -1 && {tag: tagsList[indexOfTagSelected].label}
         }
+
         console.log("creating post", JSON.stringify(jsonData));
-        fetchPostCreatePost(jsonData);
+
+        handlePostFetch("make_post", jsonData).then(() => {
+          props.setIsFetchPosts(!props.isFetchPosts);
+        })
+
       })
       clearFormValues();
     }
@@ -110,7 +98,7 @@ export default function CreatePost(props) {
               onClick={() => {
                 setBookClubId(props.isInBookClub ? props.bookClubs[0].book_id : bookClubId);
                 setShowPostModal(true);
-              }} 
+              }}
             />
           </Stack>
         </CardContent>

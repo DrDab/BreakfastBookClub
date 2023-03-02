@@ -12,11 +12,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Link as RouterLink } from "react-router-dom";
 import { tagsList, avatarColorMap } from './Constants';
 import { auth } from "../../FirebaseConfig";
-import { handleGetFetch } from '../components/Utils'
+import { handleGetFetch, handlePostFetch } from './Utils'
 
 export default function Post(props) {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
-  
+
   const [isPostLikedData, setIsPostLikedData] = React.useState(false);
   const [numberOfLikes, setNumberOfLikes] = React.useState(props.post.likes);
   const [deleteDisplay, setDeleteDisplay] = React.useState(false);
@@ -27,61 +27,25 @@ export default function Post(props) {
     });
   },[loggedinUser.uid, props.post.post_id]);
 
-
-  const handleFetchPostLikeStatus = (token, postId, status) => {
-    console.log(status)
-    let url = "http://localhost:4567/api/"+ status + "?token=" + token + "&post_id=" + postId;
-    fetch(url, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((data) => {
-      console.log('Success:', data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
-
   const handleLikeUnlikePost = (postId) => {
     auth.currentUser?.getIdToken(true).then(function(idToken){
       if (isPostLikedData){
-        handleFetchPostLikeStatus(idToken, postId, "unlike_post");
+        handlePostFetch("unlike_post?token=" + idToken + "&post_id=" + postId, "");
         setNumberOfLikes(numberOfLikes - 1);
       } else {
-        handleFetchPostLikeStatus(idToken, postId, "like_post"); 
+        handlePostFetch("like_post?token=" + idToken + "&post_id=" + postId, "");
         setNumberOfLikes(numberOfLikes + 1);
       }
       setIsPostLikedData(!isPostLikedData);
     })
   }
 
-
-  const handleFetchPostDeletePost = (token, postId) => {
-    let url = "http://localhost:4567/api/delete_post?token=" + token + "&postId=" + postId;
-    fetch(url, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((data) => {
-      console.log('Success:', data);
-      setDeleteDisplay(true);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
-
   const handleDeletePost = () => {
-    console.log("delete post", props.post.post_id)
-    auth.currentUser?.getIdToken(true).then(function(idToken){
-      handleFetchPostDeletePost(idToken, props.post.post_id);
+    auth.currentUser?.getIdToken(true).then(function(idToken) {
+      let route = "delete_post?token=" + idToken + "&postId=" + props.post.post_id;
+      handlePostFetch(route, "").then(() => {
+        setDeleteDisplay(true);
+      })
     })
   }
 

@@ -11,6 +11,7 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { auth } from "../../../FirebaseConfig";
+import { handlePostFetch } from '../Utils';
 
 export default function BookClubBanner(props) {
   const [showRecomendModal, setShowRecomendModal] = React.useState(false);
@@ -32,24 +33,6 @@ export default function BookClubBanner(props) {
     clearFormValues();
   };
 
-  const fetchPostRecommendation = (jsonData) => {
-    let url = "http://localhost:4567/api/recommend_book"
-    fetch(url, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(jsonData)
-    })
-    .then((data) => {
-      console.log('Success:', data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
-
   const handleSendRecommendation = () => {
     if (!isMissingFields) {
       setShowRecomendModal(false);
@@ -61,40 +44,20 @@ export default function BookClubBanner(props) {
           recipient_userId: selectFriendUserId
         }
         console.log("post rec", jsonData)
-        fetchPostRecommendation(jsonData);
+        handlePostFetch("recommend_book", jsonData);
       })
-
       clearFormValues();
     }
   };
 
 
   // Save UnSave
-  const handleFetchPostSaveStatus = (status, token) => {
-    console.log(status)
-    let url = "http://localhost:4567/api/" + status + "?token=" + token + "&book_key=" + props.bookData.book_id;
-    console.log(url)
-    fetch(url, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    .then((data) => {
-      console.log('Success:', data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
-
   const handleSaveUnSaveBook = () => {
     auth.currentUser?.getIdToken(true).then(function(idToken) {
       if (props.isBookSavedData) {
-        handleFetchPostSaveStatus("unsave_book", idToken);
+        handlePostFetch("unsave_book?token=" + idToken + "&book_key=" + props.bookData.book_id, "");
       } else {
-        handleFetchPostSaveStatus("save_book", idToken);
+        handlePostFetch("save_book?token=" + idToken + "&book_key=" + props.bookData.book_id, "");
       }
     })
     props.setIsBookSavedData(!props.isBookSavedData);
@@ -168,7 +131,7 @@ export default function BookClubBanner(props) {
               </Select>
             </FormControl>
             <Stack justifyContent="end" direction="row" spacing={1}>
-              <Button 
+              <Button
                 disableElevation
                 size="small"
                 variant={isMissingFields ? 'disabled': 'contained'}
