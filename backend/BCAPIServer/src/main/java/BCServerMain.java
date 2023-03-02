@@ -24,6 +24,8 @@ import routes.friends.AddFriend;
 import routes.friends.ListFriends;
 import routes.friends.RemoveFriend;
 
+import routes.usersearch.UserSearch;
+
 import routes.bookmgmt.GetSaveBooks;
 import routes.bookmgmt.SaveBook;
 import routes.bookmgmt.UnsaveBook;
@@ -117,6 +119,8 @@ public class BCServerMain {
     Spark.post("/api/delete_post", new DeletePost(fbApp, sqlConn));
 
     Spark.post("/api/delete_recommendation", new DeleteRecommendation(fbApp, sqlConn));
+
+    Spark.get("/api/search_users", new UserSearch(fbApp, sqlConn));
   }
 
   @SuppressWarnings("deprecation")
