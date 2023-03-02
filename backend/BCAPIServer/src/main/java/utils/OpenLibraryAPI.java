@@ -2,12 +2,14 @@ package utils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import daos.Books;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Map;
 import types.Book;
 
 public class OpenLibraryAPI {
@@ -123,5 +125,32 @@ public class OpenLibraryAPI {
     }
 
     return new Book(bookKey, title, author, coverUrl);
+  }
+
+  public static Book getBookByKeyWithCache(Books books, Map<String, Book> requestCache,
+      String bookKey) throws IOException, InterruptedException {
+    // STEP 1: Check if requestCache (the cached books for the request)
+    // has the requested book.
+    if (requestCache.containsKey(bookKey)) {
+      return requestCache.get(bookKey);
+    }
+
+    // STEP 2: Check if the local books database has the requested book.
+    Book dbBook = books.getCachedBookByKey(bookKey);
+    if (dbBook != null) {
+      requestCache.put(bookKey, dbBook);
+      return dbBook;
+    }
+
+    // STEP 3: Local database doesn't have the requested book.
+    // Add to local DB from OpenLibrary API call and add to cache.
+    dbBook = getBookByKey(bookKey);
+    if (dbBook != null) {
+      books.insertBook(dbBook);
+      requestCache.put(bookKey, dbBook);
+      return dbBook;
+    }
+
+    return null;
   }
 }

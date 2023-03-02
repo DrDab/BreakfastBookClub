@@ -76,13 +76,13 @@ public class TestOpenLibraryAPI {
       assertNotNull(book1);
       assertEquals("The terminal list", book1.title);
       assertEquals("Carr, Jack", book1.author);
-      assertEquals("OL19732624W", book1.book_id);
+      assertEquals("OL19732624W", book1.book_key);
 
       Book book2 = OpenLibraryAPI.getBookByKey("OL731735W");
       assertNotNull(book2);
       assertEquals("Atlas Shrugged", book2.title);
       assertEquals("Ayn Rand", book2.author);
-      assertEquals("OL731735W", book2.book_id);
+      assertEquals("OL731735W", book2.book_key);
     } catch (IOException | InterruptedException e) {
       e.printStackTrace();
       fail("Test threw exception. Failed!");

@@ -22,6 +22,7 @@ import types.BookPost;
 
 import java.util.List;
 import utils.BCGsonUtils;
+import utils.ResultSetParsers;
 
 public class ListFeed implements Route {
 
@@ -37,6 +38,7 @@ public class ListFeed implements Route {
   public Object handle(Request request, Response response) throws Exception {
     JsonObject respJson = new JsonObject();
 
+    /*
     String token = request.queryParams("token");
     if (token == null) {
       respJson.addProperty("status", "failure");
@@ -54,36 +56,19 @@ public class ListFeed implements Route {
       respJson.addProperty("failure_reason", String.valueOf(e.getAuthErrorCode()));
       return respJson.toString() + "\n";
     }
+     */
 
-    String uid = decodedToken.getUid();
+    String uid = request.queryParams("user_id"); //decodedToken.getUid();
+    if (uid == null) {
+      respJson.addProperty("status", "failure");
+      respJson.addProperty("failure_reason", "Expected fields are missing!");
+      return respJson.toString() + "\n";
+    }
+
     User user = new User(uid, sqlConn);
+    Books books = new Books(sqlConn);
 
-    List<BookPost> masterList = new ArrayList<>();
-    Set<String> knownIds = new HashSet<>();
-    JsonArray postsArr = new JsonArray();
-
-    for (BookPost post : user.getClubPosts()) {
-      if (!knownIds.contains(post.postId)) {
-        masterList.add(post);
-        knownIds.add(post.postId);
-      }
-    }
-
-    List<String> friendUIDs = user.allFriends();
-
-    for (String friendUID : friendUIDs) {
-      User friend = new User(friendUID, sqlConn);
-
-      for (BookPost post : friend.getUserPosts()) {
-        if (!knownIds.contains(post.postId)) {
-          masterList.add(post);
-          knownIds.add(post.postId);
-        }
-      }
-    }
-
-    Collections.sort(masterList, Comparator.comparingLong(p -> p.date));
-    BCGsonUtils.ingestBookPostsListIntoJson(fbApp, masterList, postsArr);
+    JsonArray postsArr = BCGsonUtils.getPostsJsonArrFromList(books, fbApp, user.getUserFeedPosts());
     respJson.add("posts", postsArr);
     respJson.addProperty("status", "success");
     return respJson;
