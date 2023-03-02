@@ -51,7 +51,6 @@ export default function UserProfile() {
 
 
   React.useEffect(() => {
-
     handleGetFetch("get_user?userId=" + uid).then((json) => {      
       setUserProfileData(json.user);
     });
@@ -71,7 +70,6 @@ export default function UserProfile() {
     handleGetFetch("list_friends?user_id=" + loggedinUser.uid).then((json) => {
       setIsFriendData(json.friends.some(friend => friend.uid === uid));
     });
-
   }, [loggedinUser.uid, uid]);
 
   return (

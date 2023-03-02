@@ -8,7 +8,6 @@ import { Link as RouterLink } from "react-router-dom";
 import { avatarColorMap } from '../Constants';
 
 export default function PeopleList(props) {
-
 	return (
     props.peopleData === "" ?
       <></> :

@@ -8,7 +8,6 @@ import BookListSkeleton from '../Skeletons/BookListSkeleton';
 import { Link as RouterLink } from "react-router-dom";
 
 export default function BookList(props) {
-
 	return (
     props.bookData === "" ?
       <BookListSkeleton/> :

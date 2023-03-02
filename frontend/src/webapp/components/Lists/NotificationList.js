@@ -3,7 +3,6 @@ import Typography from '@mui/material/Typography';
 import Notification from '../Notification';
 
 export default function NotificationList(props) {
-
 	return (
     props.notificationData === "" ?
       <></> :

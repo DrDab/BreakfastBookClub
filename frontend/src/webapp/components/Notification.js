@@ -12,7 +12,6 @@ import { avatarColorMap } from './Constants'
 import { auth } from "../../FirebaseConfig";
 import { handlePostFetch } from './Utils'
 
-
 export default function Notification(props) {
   let userProfileUrl = "/user-profile/" + props.notif.recommender.uid;
   let bookProfileUrl ="/book-club/" + props.notif.book.book_id;

@@ -7,7 +7,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 export default function BookListSkeleton(props) {
   const posts = [...Array(5).keys()]
   return (
-    posts.map((post, index) => {
+    posts.map((index) => {
       return (
         <ListItem
           className="list-item"

@@ -12,7 +12,7 @@ import CreatePost from "../components/CreatePost";
 import PostList from '../components/Lists/PostList';
 import { useParams } from "react-router-dom";
 import TabPanel from "../components/TabPanel";
-import { a11yProps, handleGetFetch } from '../components/Utils';
+import { a11yProps, handleGetFetch, handlePostFetch } from '../components/Utils';
 import { auth } from "../../FirebaseConfig"
 
 export default function BookClub() {
@@ -59,36 +59,23 @@ export default function BookClub() {
     handleGetFetch("get_subscribed_clubs?userId=" + loggedinUser.uid).then((json) => {
       setIsBookClubJoinedData(json.books.some(bookClub => bookClub.book_id === bid));
     });
-
   }, [loggedinUser.uid, bid]);
 
-
-  const handleFetchPostJoinStatus = (status, token) => {
-    let url = "http://localhost:4567/api/" + status + "?token=" + token + "&book_key=" + bid;
-    fetch(url, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    .then((data) => {
-      console.log('Success:', data);
-      handleGetFetch("get_members?book_key=" + bid).then((json) => {
-        setBookClubMembersData(json.members);
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    }); 
-  }
 
   const handleJoinUnJoinBookClub = () => {
     auth.currentUser?.getIdToken(true).then(function(idToken){
       if (isBookClubJoinedData) {
-        handleFetchPostJoinStatus("unjoin_club", idToken);
+        handlePostFetch("unjoin_club?token=" + idToken + "&book_key=" + bid, "").then(() => {
+          handleGetFetch("get_members?book_key=" + bid).then((json) => {
+            setBookClubMembersData(json.members);
+          });
+        })
       } else {
-        handleFetchPostJoinStatus("join_club", idToken);
+        handlePostFetch("join_club?token=" + idToken + "&book_key=" + bid, "").then(() => {
+          handleGetFetch("get_members?book_key=" + bid).then((json) => {
+            setBookClubMembersData(json.members);
+          });
+        })
       }
     })
     setIsBookClubJoinedData(!isBookClubJoinedData);
