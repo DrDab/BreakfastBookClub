@@ -17,11 +17,11 @@ public class Books {
   private PreparedStatement usersInBookClubStatement;
 
   private static final String POSTS_IN_BOOK_CLUB_SQL =
-      "SELECT * FROM book_posts WHERE book_key = ?";
+      "SELECT * FROM book_posts WHERE book_key = ? ORDER BY post_date DESC";
   private PreparedStatement postsInBookClubStatement;
 
   private static final String ALL_POSTS_SQL =
-      "SELECT * FROM book_posts";
+      "SELECT * FROM book_posts ORDER BY post_date DESC";
   private PreparedStatement allPostsStatement;
 
   private static final String GET_RECOMMENDATIONS_SQL =

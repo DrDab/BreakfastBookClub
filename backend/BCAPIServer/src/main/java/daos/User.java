@@ -101,6 +101,11 @@ public class User {
       "SELECT * FROM liked_posts WHERE user_id = ?";
   private PreparedStatement getLikedPostsStatement;
 
+  private static final String GET_RESOLVED_LIKED_POSTS =
+      "SELECT * FROM book_posts WHERE post_id IN "
+          + "(SELECT post_id FROM liked_posts WHERE user_id = ?) ORDER BY post_date DESC";
+  private PreparedStatement getResolvedLikedPostsStatement;
+
   private static final String COUNT_LIKED_POSTS_BY_PID =
       "SELECT COUNT(*) AS count FROM liked_posts WHERE post_id = ? AND user_id = ?";
   private PreparedStatement countLikedPostsByPidStatement;
@@ -747,18 +752,11 @@ public class User {
   }
 
   public List<BookPost> getLikedPosts() throws SQLException {
-    getLikedPostsStatement.clearParameters();
-    getLikedPostsStatement.setString(1, user);
+    getResolvedLikedPostsStatement.clearParameters();
+    getResolvedLikedPostsStatement.setString(1, user);
 
-    ResultSet rs = getLikedPostsStatement.executeQuery();
-    List<String> postIds = new ArrayList<>();
-    while (rs.next()) {
-      postIds.add(rs.getString("post_id"));
-    }
-    rs.close();
-
-    List<BookPost> result = getBatchPostIdPost(postIds);
-    return result;
+    ResultSet rs = getResolvedLikedPostsStatement.executeQuery();
+    return ResultSetParsers.getBookPostsFromResultSet(rs);
   }
 
   public List<BookPost> getUserFeedPosts() throws SQLException {
@@ -807,6 +805,8 @@ public class User {
     unlikePostStatement = conn.prepareStatement(UNLIKE_POST);
 
     getLikedPostsStatement = conn.prepareStatement(GET_LIKED_POSTS);
+
+    getResolvedLikedPostsStatement = conn.prepareStatement(GET_RESOLVED_LIKED_POSTS);
 
     countLikedPostsByPidStatement = conn.prepareStatement(COUNT_LIKED_POSTS_BY_PID);
 

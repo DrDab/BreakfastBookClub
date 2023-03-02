@@ -14,7 +14,7 @@ public class Posts {
   private Connection conn;
 
   private static final String ALL_POSTS_SQL =
-      "SELECT * FROM book_posts";
+      "SELECT * FROM book_posts ORDER BY post_date DESC";
   private final PreparedStatement allPostsStatement;
 
   private static final String GET_POST_BY_ID_SQL =
