@@ -37,7 +37,7 @@ public class AddFriend implements Route {
 
         if (friendUID == null) {
             respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "friend_userID is missing");
+            respJson.addProperty("failure_reason", "friend_userId is missing");
             return respJson.toString() + "\n";
         }
 
