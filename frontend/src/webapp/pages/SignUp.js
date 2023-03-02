@@ -22,18 +22,20 @@ export default function SignUp() {
 
   const handleSignUp = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        addDoc(collection(db, "users"), {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      const user = res.user;
+      try {
+        await addDoc(collection(db, "users"), {
           uid: user.uid,
           name,
           email,
-        })
-        sessionStorage.setItem('yourUser', JSON.stringify(user.uid));
-        navigate("/");
-        window.location.reload();
-      })
+        });
+      } catch (err) {
+        setIsError(true);
+      }
+      sessionStorage.setItem('yourUser', JSON.stringify(user.uid));
+      navigate("/");
+      window.location.reload();
     } catch (err) {
       setIsError(true);
     }
