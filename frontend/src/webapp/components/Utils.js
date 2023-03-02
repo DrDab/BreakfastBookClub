@@ -18,14 +18,34 @@ export const formatOpenLibraryData = (openlibraryJson) => {
   return formattedData;
 }
 
-export const handleFetch = async (route, id) => {
-  // console.log("fetch " + route + id)
-  let query = "http://localhost:4567/api/" + route + id ;
+export const handleGetFetch = async (route) => {
+  let url = "http://localhost:4567/api/" + route;
+   // console.log("get " + url)
   try {
-    const response = await fetch(query);
+    const response = await fetch(url);
     const json = await response.json();
     return json;
   } catch (error) {
     return error;
   }
+}
+
+
+export const handlePostFetch = (route) => {
+  let url = "http://localhost:4567/api/" + route;
+  // console.log("post " + url)
+  fetch(url, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((data) => {
+    console.log('Success:', data);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
 }

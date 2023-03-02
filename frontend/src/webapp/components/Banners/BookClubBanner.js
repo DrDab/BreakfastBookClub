@@ -10,19 +10,13 @@ import Modal from '@mui/material/Modal';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import { auth } from "../../../FirebaseConfig"
-import { useParams } from "react-router-dom";
-import { handleFetch } from '../Utils'
+import { auth } from "../../../FirebaseConfig";
 
 export default function BookClubBanner(props) {
-  let { bid } = useParams(); // clicked book
-  let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
-
   const [showRecomendModal, setShowRecomendModal] = React.useState(false);
   const [selectFriendUserId, setSelectFriendUserId] = React.useState('');
   const [isMissingFields, setIsMissingFields] = React.useState(true);
 
-  
   // Recommendations
   React.useEffect(() => {
     setIsMissingFields(selectFriendUserId === "");
@@ -89,9 +83,6 @@ export default function BookClubBanner(props) {
     })
     .then((data) => {
       console.log('Success:', data);
-      handleFetch("get_saved_books?userID=", loggedinUser.uid).then((json) => {
-        props.setIsBookSavedData(json.books.some(book => book.book_id === bid));
-      });
     })
     .catch((error) => {
       console.log(error);
@@ -106,6 +97,7 @@ export default function BookClubBanner(props) {
         handleFetchPostSaveStatus("save_book", idToken);
       }
     })
+    props.setIsBookSavedData(!props.isBookSavedData);
   };
 
   return (

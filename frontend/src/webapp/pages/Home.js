@@ -7,7 +7,7 @@ import PeopleList from '../components/Lists/PeopleList';
 import BookList from '../components/Lists/BookList';
 import CreatePost from '../components/CreatePost';
 import PostList from '../components/Lists/PostList';
-import { handleFetch } from '../components/Utils';
+import { handleGetFetch } from '../components/Utils';
 
 export default function Home() {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
@@ -18,7 +18,7 @@ export default function Home() {
   const [isFetchPosts, setIsFetchPosts] = React.useState(false);
 
   React.useEffect(() => {
-    handleFetch("list_feed", "").then((json) => {
+    handleGetFetch("list_feed").then((json) => {
       let posts = json.posts;
       posts.sort(function (a, b) {
           return b.date - a.date;
@@ -28,11 +28,11 @@ export default function Home() {
   }, [isFetchPosts]);
 
   React.useEffect(() => {
-    handleFetch("list_friends?user_id=", loggedinUser.uid).then((json) => {
+    handleGetFetch("list_friends?user_id=" + loggedinUser.uid).then((json) => {
       setFriendsData(json.friends);
     });
 
-    handleFetch("get_subscribed_clubs?userId=", loggedinUser.uid).then((json) => {
+    handleGetFetch("get_subscribed_clubs?userId=" + loggedinUser.uid).then((json) => {
       setBookClubsJoinedData(json.books);
     });
   }, [loggedinUser.uid]);

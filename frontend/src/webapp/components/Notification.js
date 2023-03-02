@@ -27,7 +27,6 @@ export default function Notification(props) {
     })
     .then((data) => {
       console.log('Success:', data);
-      setDeleteDisplay(true);
     })
     .catch((error) => {
       console.log(error);
@@ -39,6 +38,7 @@ export default function Notification(props) {
     auth.currentUser?.getIdToken(true).then(function(idToken){
       handleFetchPostDeleteRecommendation(idToken, props.notif.recommender.uid, props.notif.book.book_id);
     })
+    setDeleteDisplay(true);
   }
 
   return (

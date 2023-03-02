@@ -10,7 +10,7 @@ import BookList from '../components/Lists/BookList';
 import CreatePost from "../components/CreatePost";
 import PostList from '../components/Lists/PostList'
 import TabPanel from "../components/TabPanel";
-import { a11yProps, handleFetch} from '../components/Utils';
+import { a11yProps, handleGetFetch } from '../components/Utils';
 import { useParams } from "react-router-dom";
 
 export default function UserProfile() {
@@ -29,7 +29,7 @@ export default function UserProfile() {
   const [isFetchLikedPosts, setIsFetchLikedPosts] = React.useState(false);
 
   React.useEffect(() => {
-    handleFetch("get_posts?userId=", uid).then((json) => {
+    handleGetFetch("get_posts?userId=" + uid).then((json) => {
       let posts = json.posts;
       posts.sort(function (a, b) {
           return b.date - a.date;
@@ -40,7 +40,7 @@ export default function UserProfile() {
 
 
   React.useEffect(() => {
-    handleFetch("get_liked_posts?user_id=", uid).then((json) => {    
+    handleGetFetch("get_liked_posts?user_id=" + uid).then((json) => {    
       let posts = json.posts;
       posts.sort(function (a, b) {
           return b.date - a.date;
@@ -52,23 +52,23 @@ export default function UserProfile() {
 
   React.useEffect(() => {
 
-    handleFetch("get_user?userId=", uid).then((json) => {      
+    handleGetFetch("get_user?userId=" + uid).then((json) => {      
       setUserProfileData(json.user);
     });
 
-    handleFetch("get_saved_books?userID=", uid).then((json) => {      
+    handleGetFetch("get_saved_books?userID=" + uid).then((json) => {      
       setBooksSavedData(json.books)
     });
 
-    handleFetch("get_subscribed_clubs?userId=", uid).then((json) => {
+    handleGetFetch("get_subscribed_clubs?userId=" + uid).then((json) => {
       setBookClubsJoinedData(json.books);
     });
 
-    handleFetch("list_friends?user_id=", uid).then((json) => {
+    handleGetFetch("list_friends?user_id=" + uid).then((json) => {
       setFriendsData(json.friends);
     });
 
-    handleFetch("list_friends?user_id=", loggedinUser.uid).then((json) => {
+    handleGetFetch("list_friends?user_id=" + loggedinUser.uid).then((json) => {
       setIsFriendData(json.friends.some(friend => friend.uid === uid));
     });
 
