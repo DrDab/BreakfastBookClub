@@ -13,3 +13,4 @@ export const avatarColorMap = new Map();
 avatarColorMap.set('Amanda', "#32746D");
 avatarColorMap.set('VictorD', "#E29578");
 avatarColorMap.set('zaynab', "#C2095A");
+avatarColorMap.set('AndreaH', "#260494");

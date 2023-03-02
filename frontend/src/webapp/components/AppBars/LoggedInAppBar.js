@@ -22,35 +22,13 @@ import Badge from '@mui/material/Badge';
 import { signOut } from "firebase/auth";
 import { auth } from "../../../FirebaseConfig"
 import { avatarColorMap } from '../Constants';
+import { handleFetch } from '../Utils';
 
 export default function LoggedInAppBar() {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
 
-  let notificationData = [
-    {recommender: {
-        "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-        "username": "VictorD"
-      }, 
-      time: "2h",
-      book: {
-        "book_id": "OL18417W",
-        "title": "The Wonderful Wizard of Oz",
-        "author": "Baum, L. Frank",
-        "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
-    }},
-    {recommender: {
-      "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
-      "username": "zaynab"
-    }, 
-    time: "1h",
-    book: {
-      "book_id": "OL27479W",
-      "title": "The Two Towers",
-      "author": "J.R.R. Tolkien",
-      "thumbnail": "https://covers.openlibrary.org/b/id/8167231-M.jpg"
-    }}
-  ]
-
+  const [recommendationData, setRecommendationData] = React.useState('');
+  const [isFetchRecommendations, setIsFetchRecommendations] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState(null);
   const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
   const openNotifications = Boolean(anchorElNotifications);
@@ -58,12 +36,37 @@ export default function LoggedInAppBar() {
   const openAccount = Boolean(anchorElAccount);
 
   const navigate = useNavigate();
+  
+  // recommendations
+  
+  React.useEffect(() => {
+    let recommendations = [];
 
+    handleFetch("get_recommendations?recipient_userId=", loggedinUser.uid).then((json) => {
+      for (let i = 0; i < json.recommendations.length; i++ ) {
+        let rec = json.recommendations[i];
+        handleFetch("get_user?userId=", rec.userID).then((json) => {
+          let recommender = json.user;
+          handleFetch("get_book?book_key=", rec.bookKey).then((json) => {
+            let book = json.book;
+            let recommendation = {recommender, book};
+            recommendations.push(recommendation);
+          })
+        })
+      }
+    }).then(() => {
+      setRecommendationData(recommendations);
+    });
+}, [loggedinUser.uid, isFetchRecommendations]);
+
+
+  // search
   const handleSearchSubmission = () => {
     sessionStorage.setItem('searchValue', searchValue);
     navigate("/search-results");
   };
 
+  // log out
   const handleLogOut = () => {
     signOut(auth);
     sessionStorage.setItem('loggedinUser', JSON.stringify("loggedout"));
@@ -108,7 +111,7 @@ export default function LoggedInAppBar() {
               onClick={(e) => setAnchorElNotifications(e.currentTarget)}
               sx={{width: 60, height: 60 }}
             >
-              <Badge badgeContent={notificationData.length} color="error">
+              <Badge badgeContent={recommendationData.length} color="error">
                 <NotificationsNoneOutlinedIcon />
               </Badge>
             </IconButton>
@@ -155,7 +158,10 @@ export default function LoggedInAppBar() {
       <Menu
         anchorEl={anchorElNotifications}
         open={openNotifications}
-        onClose={() => setAnchorElNotifications(null)}
+        onClose={() => {
+          setAnchorElNotifications(null);
+          setIsFetchRecommendations(!isFetchRecommendations);
+        }}
         PaperProps={{
           style: {
             maxHeight: 250,
@@ -163,15 +169,10 @@ export default function LoggedInAppBar() {
           },
         }}
       >
-        <Stack direction="row" justifyContent="space-between" m={1.5}>
-          <Typography>
-            Notifications
-          </Typography>
-          <Typography variant="caption" onClick={()=> console.log("clear notifs")}>
-            Clear
-          </Typography>
-        </Stack>
-        <NotificationList notificationData={notificationData}/>
+        <Typography m={1} ml={2}>
+          Notifications
+        </Typography>
+        <NotificationList notificationData={recommendationData} />
       </Menu>
     </Box>
   );

@@ -12,7 +12,7 @@ import CreatePost from "../components/CreatePost";
 import PostList from '../components/Lists/PostList';
 import { useParams } from "react-router-dom";
 import TabPanel from "../components/TabPanel";
-import { a11yProps, formatOpenLibraryData } from '../components/Utils';
+import { a11yProps, handleFetch } from '../components/Utils';
 
 export default function BookClub() {
   let { bid } = useParams(); // clicked book
@@ -20,137 +20,106 @@ export default function BookClub() {
 
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
   const [bookClubPostsData, setBookClubPostsData] = React.useState('');
-  const [loggedinUserLikedPostsData, setLoggedinUserLikedPostsData] = React.useState('');
   const [bookProfileData, setBookProfileData] = React.useState('');
-  const [isBookClubsJoinedData, setIsBookClubsJoinedData] = React.useState(false);
+  const [isBookSavedData, setIsBookSavedData] = React.useState('');
+  const [isBookClubJoinedData, setIsBookClubJoinedData] = React.useState(false);
   const [bookClubMembersData, setBookClubMembersData] = React.useState('');
+  const [loggedinUserFriendsData, setLoggedinUserFriendsData] = React.useState('');
   const [isFetchPosts, setIsFetchPosts] = React.useState(false);
 
-
   React.useEffect(() => {
-    const handleFetchBookProfile = async () => {
-      let query = "http://localhost:4567/api/get_book?book_key=" + bid;
-      try {
-        const response = await fetch(query);
-        const json = await response.json();
-        setBookProfileData(json.book);
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-
-    // const handleFetchIsBookClubsJoined = async () => {
-    //   let query = "http://localhost:4567/api/get_subscribed_clubs?userId=" + uid;
-    //   try {
-    //     const response = await fetch(query);
-    //     const json = await response.json();
-    //     const bookClubs = json.bookClubs;
-    //     setIsBookClubsJoinedData(bookClubs.some(bookClub => bookClub.book_id === bid));
-    //   } catch (error) {
-    //     console.log("error", error);
-    //   }
-    // }
-
-
-    const handleFetchIsBookClubsJoined = async () => {
-      let query = "http://openlibrary.org/search.json?q=george+orwell&limit=4";
-      try {
-        const response = await fetch(query);
-        const json = await response.json();
-        let bookClubs = formatOpenLibraryData(json);
-        setIsBookClubsJoinedData(bookClubs.some(bookClub => bookClub.key === ('/works/' + bid)));
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-
-    const handleFetchBookClubsMembers = async () => {
-      let query = "http://localhost:4567/api/get_members?book_key=" + bid ;
-      try {
-        const response = await fetch(query);
-        const json = await response.json();
-        const members = json.members;
-        setBookClubMembersData(members);
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-
-    const handleFetchLoggedinUserLikedPosts = async () => {
-      let query = "http://localhost:4567/api/get_liked_posts?user_id=" + loggedinUser.uid;
-      try {
-        const response = await fetch(query);
-        const json = await response.json();
-        const posts = json.posts;
-        setLoggedinUserLikedPostsData(posts);
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-
-    handleFetchBookProfile();
-    handleFetchIsBookClubsJoined();
-    handleFetchBookClubsMembers();  
-    handleFetchLoggedinUserLikedPosts();
-  },[bid, loggedinUser.uid]);
-
-
-  React.useEffect(() => {
-    const handleFetchBookClubPosts = async () => {
-      let query = "http://localhost:4567/api/get_posts?book_key=" + bid;
-      try {
-        const response = await fetch(query);
-        const json = await response.json();
-        const posts = json.posts;
-        posts.sort(function (a, b) {
+    handleFetch("get_posts?book_key=", bid).then((json) => {
+      let posts = json.posts;
+      posts.sort(function (a, b) {
           return b.date - a.date;
-        });
-        setBookClubPostsData(posts);
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-
-    handleFetchBookClubPosts();
+      });
+      setBookClubPostsData(posts);
+    });
   }, [bid, isFetchPosts]);
 
 
-  const handleFetchPostJoinStatus = (status) => {
-    let url = "http://localhost:4567/api/" + status + "?userId=" + loggedinUser.uid + "&book_key=" + bid;
-    console.log(url)
-    // fetch(url, {
-    //   method: 'POST',
-    //   mode: 'no-cors',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    // })
-    // .then((data) => {
-    //   console.log('Success:', data);
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
+  React.useEffect(() => {
+    handleFetch("get_book?book_key=", bid).then((json) => {      
+      setBookProfileData(json.book);
+    });
 
+    handleFetch("get_members?book_key=", bid).then((json) => {
+      setBookClubMembersData(json.members);
+    });
+
+    handleFetch("get_saved_books?userID=", loggedinUser.uid).then((json) => {
+      setIsBookSavedData(json.books.some(book => book.book_id === bid));
+    });
+
+    // for sending reccomendations
+    // handleFetch("list_friends?userID=", loggedinUser.uid).then((json) => {
+    //   setLoggedinUserFriendsData(json.friends);
+    // });
+    setLoggedinUserFriendsData([
+      {
+        "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+        "username": "VictorD",
+        "bio": "bio"
+      },
+      {
+        "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
+        "username": "zaynab",
+        "bio": "bio"
+      }
+    ])
+
+    // handleFetch("get_subscribed_clubs?userId=", loggedinUser.uid).then((json) => {
+    //     const bookClubs = json.bookClubs;
+    //     setIsBookClubJoinedData(bookClubs.some(bookClub => bookClub.book_id === bid));
+    // });
+    setIsBookClubJoinedData(false);
+
+  }, [loggedinUser.uid, bid]);
+
+
+
+  const handleFetchPostJoinStatus = (status) => {
+    // let url = "http://localhost:4567/api/" + status + "?userId=" + loggedinUser.uid + "&book_key=" + bid;
+    let url = "https://example.com/"
     console.log(status);
+
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then((data) => {
+      console.log('Success:', data);
+      handleFetch("get_members?book_key=", bid).then((json) => {
+        setBookClubMembersData(json.members);
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    }); 
   }
 
-
   const handleJoinUnJoinBookClub = () => {
-    if (isBookClubsJoinedData){
+    if (isBookClubJoinedData){
       handleFetchPostJoinStatus("unjoin_club");
     } else {
       handleFetchPostJoinStatus("join_club");
     }
-    setIsBookClubsJoinedData(!isBookClubsJoinedData);
-
+    setIsBookClubJoinedData(!isBookClubJoinedData);
   }
 
   return (
     <Box sx={{ width: '70%', margin: '0 auto' }}>
     <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={12}>
-        <BookClubBanner bookData={bookProfileData}/>
+        <BookClubBanner
+          bookData={bookProfileData}
+          loggedinUserFriendsData={loggedinUserFriendsData}
+          setIsBookSavedData={setIsBookSavedData}
+          isBookSavedData={isBookSavedData}
+        />
       </Grid>
       <Grid item xs={8}>
         <CreatePost setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
@@ -162,7 +131,7 @@ export default function BookClub() {
               </Tabs>
             </Box>
             <TabPanel value={tabIndexValue} index={0}>
-              <PostList postsData={bookClubPostsData} loggedinUserLikedPostsData={loggedinUserLikedPostsData} />
+              <PostList postsData={bookClubPostsData} />
             </TabPanel>
           </Box>
         </Stack>
@@ -171,10 +140,10 @@ export default function BookClub() {
         <Button
           disableElevation
           sx={{ width: '100%', marginBottom: '1rem' }}
-          variant={isBookClubsJoinedData ? "outlined" : "contained"}
+          variant={isBookClubJoinedData ? "outlined" : "contained"}
           onClick={handleJoinUnJoinBookClub}
         >
-          {isBookClubsJoinedData ? "Leave the club" : "Join the club"}
+          {isBookClubJoinedData ? "Leave the club" : "Join the club"}
         </Button>
         <Typography variant="overline">
           Members
