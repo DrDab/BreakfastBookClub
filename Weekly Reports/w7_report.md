@@ -49,6 +49,8 @@
 
   
   Andrea Ha:
+  - Wrote all frontend tests
+  - Includes all main pages: home, bookclub, user profile, login/sign up
 
 
   Sanjana Janakiraman:
@@ -67,6 +69,10 @@
   Sanjana Janakiraman:
   - Add user search backend functionality and API route
   - Complete user sign up functionality
+
+  Andrea Ha:
+  - Research caching methods
+  - Speeding up fetch posts and notifications on frontend
 
 
 
