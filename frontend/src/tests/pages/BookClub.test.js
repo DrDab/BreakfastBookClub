@@ -68,6 +68,16 @@ const mockGetBooksSaved = {
   ]
 }
 
+const mockGetFriends = {
+  "friends": [
+    {
+      "userId": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD",
+      "bio": "Victor's bio"
+    }
+  ]
+};
+
 const mockGetIsPostLiked = {
   "isUserLikedPost": "1"
 }
@@ -85,6 +95,8 @@ describe("Renders Book club page", () => {
       .mockReturnValueOnce(makeFetchResponse(mockGetBook))
       .mockReturnValueOnce(makeFetchResponse(mockGetMembers))
       .mockReturnValueOnce(makeFetchResponse(mockGetBooksSaved))
+      .mockReturnValueOnce(makeFetchResponse(mockGetFriends))
+      .mockReturnValueOnce(makeFetchResponse(mockGetFriends))
       .mockReturnValueOnce(makeFetchResponse(mockGetIsPostLiked))
       
     global.fetch = mockFetch
@@ -100,7 +112,7 @@ describe("Renders Book club page", () => {
       );
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(5);
+    expect(mockFetch).toHaveBeenCalledTimes(6);
 
     const bookTitle = screen.getAllByText(mockGetBook.book.title)[0];
     const bookAuthor = screen.queryByText(mockGetBook.book.author);

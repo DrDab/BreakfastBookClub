@@ -34,6 +34,16 @@ const mockGetPosts = {
   ]
 }
 
+const mockGetFriends = {
+  "friends": [
+    {
+      "userId": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD",
+      "bio": "Victor's bio"
+    }
+  ]
+};
+
 const mockGetIsPostLiked = {
   "isUserLikedPost": "1"
 }
@@ -47,6 +57,7 @@ describe("Renders Home page", () => {
     const makeFetchResponse = value => ({ json: async() => value })
     const mockFetch = jest.fn()
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
+      .mockReturnValueOnce(makeFetchResponse(mockGetFriends))
       .mockReturnValueOnce(makeFetchResponse(mockGetIsPostLiked))
     global.fetch = mockFetch
 
@@ -58,7 +69,7 @@ describe("Renders Home page", () => {
       )
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(2);
+    expect(mockFetch).toHaveBeenCalledTimes(3);
 
     const postTitle = screen.queryByText(mockGetPosts.posts[0].title);
     const postBody = screen.queryByText(mockGetPosts.posts[0].post);

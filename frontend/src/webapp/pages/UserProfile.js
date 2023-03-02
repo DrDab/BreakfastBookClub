@@ -72,26 +72,13 @@ export default function UserProfile() {
       }
     ])
 
-    // handleFetch("list_friends?userID=", uid).then((json) => {
-    //   setFriendsData(json.friends);
-    // });
-    setFriendsData([
-      {
-        "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-        "username": "VictorD",
-        "bio": "bio"
-      },
-      {
-        "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
-        "username": "zaynab",
-        "bio": "bio"
-      }
-    ])
+    handleFetch("list_friends?user_id=", uid).then((json) => {
+      setFriendsData(json.friends);
+    });
 
-    // handleFetch("list_friends?userID=", loggedinUser.uid).then((json) => {
-    //   setIsFriendData(json.friends.some(friend => friend.uid === uid));
-    // });
-    setIsFriendData(false);
+    handleFetch("list_friends?user_id=", loggedinUser.uid).then((json) => {
+      setIsFriendData(json.friends.some(friend => friend.uid === uid));
+    });
 
   }, [loggedinUser.uid, uid]);
 
