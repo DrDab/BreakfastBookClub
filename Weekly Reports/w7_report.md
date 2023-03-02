@@ -52,6 +52,8 @@
 
 
   Sanjana Janakiraman:
+  - Implemented and tested list friends, add friend, and remove friend API routes
+  - Continued working on sign up functionality
 
 - Goals:
 
@@ -61,6 +63,11 @@
 
   Zaynab Khan:
   - Finish testing my API routes
+  
+  Sanjana Janakiraman:
+  - Add user search backend functionality and API route
+  - Complete user sign up functionality
+
 
 
 
