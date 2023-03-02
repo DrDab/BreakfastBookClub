@@ -16,16 +16,18 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 
-import routes.bookclubs.GetLikedPosts;
-import routes.bookclubs.GetMembers;
-import routes.bookclubs.GetPosts;
-import routes.bookclubs.LikePost;
-import routes.bookclubs.MakePost;
-import routes.bookclubs.UnlikePost;
-import routes.bookclubs.JoinClub;
-import routes.bookclubs.UnjoinClub;
-import routes.bookclubs.GetSubscribedClubs;
+import routes.bookclubs.*;
+
 import routes.bookmgmt.GetBook;
+
+import routes.friends.AddFriend;
+import routes.friends.ListFriends;
+import routes.friends.RemoveFriend;
+
+import routes.bookmgmt.GetSaveBooks;
+import routes.bookmgmt.SaveBook;
+import routes.bookmgmt.UnsaveBook;
+
 import routes.profile.GetUserProfile;
 import routes.profile.SetUserProfile;
 import spark.Spark;
@@ -77,19 +79,44 @@ public class BCServerMain {
 
     GetPosts getPosts = new GetPosts(fbApp, sqlConn);
     Spark.get("/api/get_posts", getPosts);
-    Spark.get("/api/list_feed", getPosts);
+    Spark.get("/api/list_feed", new ListFeed(fbApp, sqlConn));
+
+    // getting user's recommendations
+    Spark.get("/api/get_recommendations", new GetRecommendations(sqlConn));
+    // user1 sends book recommendation to user2
+    Spark.post("/api/recommend_book", new RecommendBook(fbApp, sqlConn));
+    // user saves book
+    Spark.post("/api/save_book", new SaveBook(fbApp, sqlConn));
+
 
     Spark.post("/api/like_post", new LikePost(fbApp, sqlConn));
     Spark.post("/api/unlike_post", new UnlikePost(fbApp, sqlConn));
     Spark.get("/api/get_liked_posts", new GetLikedPosts(fbApp, sqlConn));
+    Spark.get("/api/get_is_user_liked_posts", new GetIsUserLikedPost(fbApp, sqlConn));
 
     Spark.get("/api/get_user", new GetUserProfile(fbApp, sqlConn));
     Spark.post("/api/update_user", new SetUserProfile(fbApp, sqlConn));
 
     Spark.get("/api/get_members", new GetMembers(fbApp, sqlConn));
+    
     Spark.post("/api/join_club", new JoinClub(fbApp, sqlConn));
     Spark.post("/api/unjoin_club", new UnjoinClub(fbApp, sqlConn));
     Spark.get("/api/get_subscribed_clubs", new GetSubscribedClubs(fbApp, sqlConn));
+
+    Spark.get("/api/list_friends", new ListFriends(fbApp, sqlConn));
+    Spark.post("/api/add_friend", new AddFriend(fbApp, sqlConn));
+    Spark.post("/api/remove_friend", new RemoveFriend(fbApp, sqlConn));
+
+    // get saved books
+    Spark.get("/api/get_saved_books", new GetSaveBooks(sqlConn));
+
+    // delete saved book
+    Spark.post("/api/unsave_book", new UnsaveBook(fbApp, sqlConn));
+
+    // delete post
+    Spark.post("/api/delete_post", new DeletePost(fbApp, sqlConn));
+
+    Spark.post("/api/delete_recommendation", new DeleteRecommendation(fbApp, sqlConn));
   }
 
   @SuppressWarnings("deprecation")

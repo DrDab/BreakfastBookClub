@@ -10,7 +10,7 @@ const mockLoggedInUser = {
   "bio": "bio"
 }
 
-// book club posts, logged in user liked posts
+// book club posts
 const mockGetPosts = {
   "posts" : [
     {
@@ -36,7 +36,7 @@ const mockGetPosts = {
   ]
 }
 
-// current book club, user's joined book club
+// current book club
 const mockGetBook = {
   "book": {
     "book_id": "OL18417W",
@@ -56,6 +56,34 @@ const mockGetMembers = {
   ]
 };
 
+// is book club saved
+const mockGetBooksSaved = {
+  "books": [
+      {
+        "book_id": "OL1168007W",
+        "title": "Animal Farm",
+        "author": "George Orwell",
+        "thumbnail": "https://covers.openlibrary.org/b/id/11261770-M.jpg"
+      }
+  ]
+}
+
+const mockGetFriends = {
+  "friends": [
+    {
+      "userId": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD",
+      "bio": "Victor's bio"
+    }
+  ]
+};
+
+const mockGetIsPostLiked = {
+  "isUserLikedPost": "1"
+}
+
+
+
 describe("Renders Book club page", () => { 
 
   test("Renders posts and book profile ", async () => {
@@ -63,11 +91,14 @@ describe("Renders Book club page", () => {
 
     const makeFetchResponse = value => ({ json: async() => value })
     const mockFetch = jest.fn()
-      .mockReturnValueOnce(makeFetchResponse(mockGetBook))
+      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
       .mockReturnValueOnce(makeFetchResponse(mockGetBook))
       .mockReturnValueOnce(makeFetchResponse(mockGetMembers))
-      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
-      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
+      .mockReturnValueOnce(makeFetchResponse(mockGetBooksSaved))
+      .mockReturnValueOnce(makeFetchResponse(mockGetFriends))
+      .mockReturnValueOnce(makeFetchResponse(mockGetFriends))
+      .mockReturnValueOnce(makeFetchResponse(mockGetIsPostLiked))
+      
     global.fetch = mockFetch
 
     await act(async () => {
@@ -81,7 +112,7 @@ describe("Renders Book club page", () => {
       );
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(5);
+    expect(mockFetch).toHaveBeenCalledTimes(6);
 
     const bookTitle = screen.getAllByText(mockGetBook.book.title)[0];
     const bookAuthor = screen.queryByText(mockGetBook.book.author);

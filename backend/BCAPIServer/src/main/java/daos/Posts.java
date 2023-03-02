@@ -29,13 +29,36 @@ public class Posts {
       "UPDATE book_posts SET likes = likes - 1 WHERE post_id = ? AND likes > 0";
   private final PreparedStatement unlikePostByIdStatement;
 
+  private static final String DELETE_POST_SQL =
+          "DELETE FROM book_posts WHERE user_id = ? AND post_id = ?";
+  private final PreparedStatement deletePostStatement;
+
   public Posts(Connection conn) throws SQLException {
     this.conn = conn;
     allPostsStatement = conn.prepareStatement(ALL_POSTS_SQL);
     getPostByIdStatement = conn.prepareStatement(GET_POST_BY_ID_SQL);
     likePostByIdStatement = conn.prepareStatement(LIKE_POST_BY_ID_SQL);
     unlikePostByIdStatement = conn.prepareStatement(UNLIKE_POST_BY_ID_SQL);
+    deletePostStatement = conn.prepareStatement(DELETE_POST_SQL);
   }
+
+  public UserResult deletePost(String userID, String postID) {
+    if (postID.equals("")) {
+      return UserResult.INVALID;
+    }
+    try {
+      deletePostStatement.clearParameters();
+      deletePostStatement.setString(1, userID);
+      deletePostStatement.setString(2, postID);
+      deletePostStatement.execute();
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return UserResult.FAIL;
+    }
+    return UserResult.SUCCESS;
+  }
+
 
   public boolean increaseLikedPostByID(String postID) {
     if (postID == null) {

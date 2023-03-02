@@ -34,18 +34,20 @@ const mockGetPosts = {
   ]
 }
 
-const mockGetPopularBooks = {
-  "docs": [
+const mockGetFriends = {
+  "friends": [
     {
-      "key": "/works/OL27448W",
-      "title": "The Lord of the Rings",
-      "author_name": [
-          "J.R.R. Tolkien"
-      ],
-      "cover_i": "https://covers.openlibrary.org/b/id/9255566-M.jpg"
+      "userId": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "username": "VictorD",
+      "bio": "Victor's bio"
     }
   ]
+};
+
+const mockGetIsPostLiked = {
+  "isUserLikedPost": "1"
 }
+
 
 describe("Renders Home page", () => {
 
@@ -54,9 +56,9 @@ describe("Renders Home page", () => {
 
     const makeFetchResponse = value => ({ json: async() => value })
     const mockFetch = jest.fn()
-      .mockReturnValueOnce(makeFetchResponse(mockGetPopularBooks))
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
-      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
+      .mockReturnValueOnce(makeFetchResponse(mockGetFriends))
+      .mockReturnValueOnce(makeFetchResponse(mockGetIsPostLiked))
     global.fetch = mockFetch
 
     await act(async () => {
@@ -73,11 +75,6 @@ describe("Renders Home page", () => {
     const postBody = screen.queryByText(mockGetPosts.posts[0].post);
     expect(postTitle).toBeInTheDocument();
     expect(postBody).toBeInTheDocument();
-
-    const bookTitle = screen.queryByText(mockGetPopularBooks.docs[0].title);
-    const bookAuthor = screen.queryByText(mockGetPopularBooks.docs[0].author_name);
-    expect(bookTitle).toBeInTheDocument();
-    expect(bookAuthor).toBeInTheDocument();
 
     global.fetch.mockRestore();
   })

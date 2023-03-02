@@ -40,6 +40,10 @@ public class User {
           "DELETE FROM friends WHERE user_id_1 = ? AND user_id_2 = ?";
   private PreparedStatement unfriendStatement;
 
+  private static final String GET_SUBSCRIBED_CLUBS =
+      "SELECT * FROM user_clubs WHERE user_id = ?";
+  private PreparedStatement getSubscribedClubsStatement;
+
   private static final String IS_CLUB_MEMBER =
           "SELECT COUNT(*) FROM user_clubs WHERE user_id = ? AND book_key = ?";
   private PreparedStatement isClubMemberStatement;
@@ -90,7 +94,7 @@ public class User {
   private PreparedStatement likePostStatement;
 
   private static final String UNLIKE_POST =
-      "DELETE FROM liked_posts WHERE post_id = ?";
+      "DELETE FROM liked_posts WHERE user_id = ? AND post_id = ?";
   private PreparedStatement unlikePostStatement;
 
   private static final String GET_LIKED_POSTS =
@@ -103,6 +107,10 @@ public class User {
 
   private static final String GET_POSTS_BY_ID_STUB =
       "SELECT * FROM book_posts WHERE ";
+
+  private static final String DELETE_RECOMMENDATION_SQL =
+          "DELETE FROM sent_recommendations WHERE sender_username = ? AND recipient_username = ? AND book_key = ?";
+  private PreparedStatement deleteRecommendationStatement;
 
   /**
    * Creates a User class which allows user-specific interaction with the database. This class
@@ -145,6 +153,23 @@ public class User {
     rs.close();
 
     return userProfile;
+  }
+
+  public UserResult deleteRecommendation(String senderID, String bookKey) {
+    if (senderID.equals("") || bookKey.equals("")) {
+      return UserResult.INVALID;
+    }
+    try {
+      deleteRecommendationStatement.clearParameters();
+      deleteRecommendationStatement.setString(1, senderID);
+      deleteRecommendationStatement.setString(2, this.user);
+      deleteRecommendationStatement.setString(3, bookKey);
+      deleteRecommendationStatement.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return UserResult.FAIL;
+    }
+    return UserResult.SUCCESS;
   }
 
   public UserResult updateUserProfile(String username, String bio, String thumbnail)
@@ -592,6 +617,22 @@ public class User {
     return count == 1;
   }
 
+  public List<String> getSubscribedClubs() throws SQLException {
+    getSubscribedClubsStatement.clearParameters();
+    getSubscribedClubsStatement.setString(1, user);
+
+    List<String> res = new ArrayList<>();
+    ResultSet rs = getSubscribedClubsStatement.executeQuery();
+
+    while (rs.next()) {
+      String bookKey = rs.getString("book_key");
+      res.add(bookKey);
+    }
+
+    rs.close();
+    return res;
+  }
+
   // Returns true if this user is a member of the club for the book.
   private boolean isClubMember(String bookKey) throws SQLException {
     isClubMemberStatement.clearParameters();
@@ -620,7 +661,7 @@ public class User {
     return count == 1;
   }
 
-  private int getNumLikesFromUser(String post_id) throws SQLException {
+  public int getNumLikesFromUser(String post_id) throws SQLException {
     countLikedPostsByPidStatement.clearParameters();
     countLikedPostsByPidStatement.setString(1, post_id);
     countLikedPostsByPidStatement.setString(2, user);
@@ -667,7 +708,8 @@ public class User {
     }
 
     unlikePostStatement.clearParameters();
-    unlikePostStatement.setString(1, post_id);
+    unlikePostStatement.setString(1, user);
+    unlikePostStatement.setString(2, post_id);
     int num_rows = unlikePostStatement.executeUpdate();
     return num_rows == 1 && posts.decreaseLikedPostByID(post_id) ? UserResult.SUCCESS : UserResult.FAIL;
   }
@@ -722,6 +764,7 @@ public class User {
 
     unfriendStatement = conn.prepareStatement(UNFRIEND);
 
+    getSubscribedClubsStatement = conn.prepareStatement(GET_SUBSCRIBED_CLUBS);
     isClubMemberStatement = conn.prepareStatement(IS_CLUB_MEMBER);
     addUserClubStatement = conn.prepareStatement(ADD_USER_CLUB);
 
@@ -749,5 +792,7 @@ public class User {
     getLikedPostsStatement = conn.prepareStatement(GET_LIKED_POSTS);
 
     countLikedPostsByPidStatement = conn.prepareStatement(COUNT_LIKED_POSTS_BY_PID);
+
+    deleteRecommendationStatement = conn.prepareStatement(DELETE_RECOMMENDATION_SQL);
   }
 }

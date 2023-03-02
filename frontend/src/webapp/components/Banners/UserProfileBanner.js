@@ -9,10 +9,14 @@ import PeopleList from '../Lists/PeopleList';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import { avatarColorMap } from '../Constants';
+import { handleFetch } from '../Utils';
 import { auth } from "../../../FirebaseConfig"
+import { useParams } from "react-router-dom";
 
 export default function UserProfileBanner(props) {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
+  let { uid } = useParams(); // clicked user
+
   const [showFriendsModal, setShowFriendsModal] = React.useState(false);
   const [showEditBioModal, setShowEditBioModal] = React.useState(false);
   const [bio, setBio] = React.useState(props.clickedUserData.bio? props.clickedUserData.bio : "");
@@ -43,7 +47,9 @@ export default function UserProfileBanner(props) {
     })
     .then((data) => {
       console.log('Success:', data);
-      props.setIsFetchUserProfile(!props.isFetchUserProfile)
+      handleFetch("get_user?userId=", uid).then((json) => {      
+        props.setUserProfileData(json.user);
+      });
     })
     .catch((error) => {
       console.log(error);
@@ -54,7 +60,7 @@ export default function UserProfileBanner(props) {
     if (!isOverBioLength) {
       setShowEditBioModal(false);
       auth.currentUser?.getIdToken(true).then(function(idToken){
-        sessionStorage.setItem("postNewBio", "token="+ idToken +",bio="+bio);
+        console.log("postNewBio", "token="+ idToken +", bio="+bio);
         handleFetchPostBio(idToken, bio);
       })
       clearFormValues();
@@ -62,32 +68,33 @@ export default function UserProfileBanner(props) {
   };
 
 
-  const handleFetchPostFriendStatus = (status) => {
-    let url = "http://localhost:4567/api/" + status + "?userId=" + loggedinUser.uid + "&friendUserId=" + props.clickedUserData.uid;
-    console.log(url)
-    // fetch(url, {
-    //   method: 'POST',
-    //   mode: 'no-cors',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    // })
-    // .then((data) => {
-    //   console.log('Success:', data);
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
+  const handleFetchPostFriendStatus = (status, token) => {
+    let url = "http://localhost:4567/api/" + status + "?token=" + token + "&friend_userId=" + props.clickedUserData.uid;
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then((data) => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
     console.log(status);
   }
 
   const handleAddRemoveFriend = () => {
-    if (props.isFriendData){
-      handleFetchPostFriendStatus("remove_friend");
-    } else {
-      handleFetchPostFriendStatus("add_friend");
-    }
+    auth.currentUser?.getIdToken(true).then(function(idToken){
+      if (props.isFriendData){
+        handleFetchPostFriendStatus("remove_friend", idToken);
+      } else {
+        handleFetchPostFriendStatus("add_friend", idToken);
+      }
+    })
     props.setIsFriendData(!props.isFriendData);
   };
 
