@@ -8,7 +8,7 @@ const mockLoggedInUser = {
   "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
   "username": "Amanda",
   "bio": "bio"
-}
+};
 
 // user posts, liked posts
 const mockGetPosts = {
@@ -34,7 +34,7 @@ const mockGetPosts = {
       "likes": 2
     }
   ]
-}
+};
 
 const mockGetUser = {
   "user": {
@@ -44,17 +44,17 @@ const mockGetUser = {
   }
 };
 
-// book clubs saved
-const mockGetBooksSaved = { 
+// book clubs saved, book clubs joined
+const mockGetBooks = {
   "books": [
-    {
-      "book_id": "OL18417W",
-      "title": "The Wonderful Wizard of Oz",
-      "author": "L. Frank Baum",
-      "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
-    }
+      {
+        "book_id": "OL1168007W",
+        "title": "Animal Farm",
+        "author": "George Orwell",
+        "thumbnail": "https://covers.openlibrary.org/b/id/11261770-M.jpg"
+      }
   ]
-}
+};
 
 const mockGetFriends = {
   "friends": [
@@ -68,7 +68,7 @@ const mockGetFriends = {
 
 const mockGetIsPostLiked = {
   "isUserLikedPost": "1"
-}
+};
 
 
 describe("Renders User Profile page", () => { 
@@ -81,7 +81,8 @@ describe("Renders User Profile page", () => {
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
       .mockReturnValueOnce(makeFetchResponse(mockGetUser))
-      .mockReturnValueOnce(makeFetchResponse(mockGetBooksSaved))
+      .mockReturnValueOnce(makeFetchResponse(mockGetBooks))
+      .mockReturnValueOnce(makeFetchResponse(mockGetBooks))
       .mockReturnValueOnce(makeFetchResponse(mockGetFriends))
       .mockReturnValueOnce(makeFetchResponse(mockGetFriends))
       .mockReturnValueOnce(makeFetchResponse(mockGetIsPostLiked)) 
@@ -98,7 +99,7 @@ describe("Renders User Profile page", () => {
       );
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(7);
+    expect(mockFetch).toHaveBeenCalledTimes(8);
 
     const userName = screen.getAllByText(mockGetUser.user.username)[0];
     const userBio = screen.queryByText(mockGetUser.user.bio);

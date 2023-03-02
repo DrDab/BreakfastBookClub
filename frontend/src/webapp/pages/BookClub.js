@@ -32,7 +32,7 @@ export default function BookClub() {
     handleFetch("get_posts?book_key=", bid).then((json) => {
       let posts = json.posts;
       posts.sort(function (a, b) {
-          return b.date - a.date;
+        return b.date - a.date;
       });
       setBookClubPostsData(posts);
     });
@@ -48,13 +48,12 @@ export default function BookClub() {
       setBookClubMembersData(json.members);
     });
 
-    handleFetch("get_saved_books?userID=", loggedinUser.uid).then((json) => {
-      setIsBookSavedData(json.books.some(book => book.book_id === bid));
-    });
-
-    // for sending reccomendations
     handleFetch("list_friends?user_id=", loggedinUser.uid).then((json) => {
       setLoggedinUserFriendsData(json.friends);
+    });
+
+    handleFetch("get_saved_books?userID=", loggedinUser.uid).then((json) => {
+      setIsBookSavedData(json.books.some(book => book.book_id === bid));
     });
 
     handleFetch("get_subscribed_clubs?userId=", loggedinUser.uid).then((json) => {
