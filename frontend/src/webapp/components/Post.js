@@ -12,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Link as RouterLink } from "react-router-dom";
 import { tagsList, avatarColorMap } from './Constants';
 import { auth } from "../../FirebaseConfig";
+import { handleGetFetch } from '../components/Utils'
 
 export default function Post(props) {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
@@ -20,20 +21,10 @@ export default function Post(props) {
   const [numberOfLikes, setNumberOfLikes] = React.useState(props.post.likes);
   const [deleteDisplay, setDeleteDisplay] = React.useState(false);
 
-
   React.useEffect(() => {
-    const handleFetchIsPostLiked = async () => {
-      let query = "http://localhost:4567/api/get_is_user_liked_posts?user_id="+ loggedinUser.uid + "&post_id=" + props.post.post_id;
-      try {
-        const response = await fetch(query);
-        const json = await response.json();
-        const isLiked = json.isUserLikedPost;
-        setIsPostLikedData(isLiked === "1");
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-    handleFetchIsPostLiked();
+    handleGetFetch("get_is_user_liked_posts?user_id=" + loggedinUser.uid + "&post_id=" + props.post.post_id).then((json) => {
+      setIsPostLikedData(json.isUserLikedPost === "1");
+    });
   },[loggedinUser.uid, props.post.post_id]);
 
 
@@ -47,8 +38,8 @@ export default function Post(props) {
         'Content-Type': 'application/json',
       },
     })
-    .then(() => {
-      setNumberOfLikes(status === "like_post" ? numberOfLikes + 1 : numberOfLikes - 1);
+    .then((data) => {
+      console.log('Success:', data);
     })
     .catch((error) => {
       console.log(error);
@@ -59,8 +50,10 @@ export default function Post(props) {
     auth.currentUser?.getIdToken(true).then(function(idToken){
       if (isPostLikedData){
         handleFetchPostLikeStatus(idToken, postId, "unlike_post");
+        setNumberOfLikes(numberOfLikes - 1);
       } else {
         handleFetchPostLikeStatus(idToken, postId, "like_post"); 
+        setNumberOfLikes(numberOfLikes + 1);
       }
       setIsPostLikedData(!isPostLikedData);
     })

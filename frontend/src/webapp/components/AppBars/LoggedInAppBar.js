@@ -22,7 +22,7 @@ import Badge from '@mui/material/Badge';
 import { signOut } from "firebase/auth";
 import { auth } from "../../../FirebaseConfig"
 import { avatarColorMap } from '../Constants';
-import { handleFetch } from '../Utils';
+import { handleGetFetch } from '../Utils';
 
 export default function LoggedInAppBar() {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
@@ -42,12 +42,12 @@ export default function LoggedInAppBar() {
   React.useEffect(() => {
     let recommendations = [];
 
-    handleFetch("get_recommendations?recipient_userId=", loggedinUser.uid).then((json) => {
+    handleGetFetch("get_recommendations?recipient_userId=" + loggedinUser.uid).then((json) => {
       for (let i = 0; i < json.recommendations.length; i++ ) {
         let rec = json.recommendations[i];
-        handleFetch("get_user?userId=", rec.userID).then((json) => {
+        handleGetFetch("get_user?userId=" + rec.userID).then((json) => {
           let recommender = json.user;
-          handleFetch("get_book?book_key=", rec.bookKey).then((json) => {
+          handleGetFetch("get_book?book_key=" + rec.bookKey).then((json) => {
             let book = json.book;
             let recommendation = {recommender, book};
             recommendations.push(recommendation);

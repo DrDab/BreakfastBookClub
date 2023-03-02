@@ -10,26 +10,13 @@ import EggAltIcon from '@mui/icons-material/EggAlt';
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../FirebaseConfig";
+import { handleGetFetch } from '../components/Utils';
 
 export default function LogIn() {
   let navigate = useNavigate();
-
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isError, setIsError] = React.useState(false);
-
-
-  const handleFetchUser = async (uid) => {
-    let query = "http://localhost:4567/api/get_user?userId=" + uid;
-    try {
-      const response = await fetch(query);
-      const json = await response.json();   
-      return json.user;
-    } catch (error) {
-      return error
-    }
-  }
-
 
   const handleLogin = async () => {
     try {
@@ -37,9 +24,9 @@ export default function LogIn() {
       .then((userCredential) => {
         const user = userCredential.user;
 
-        handleFetchUser(user.uid).then((user) => {
-          if (JSON.stringify(user) !== '{}') {
-            sessionStorage.setItem('loggedinUser', JSON.stringify(user));
+        handleGetFetch("get_user?userId=" + user.uid).then((json) => {
+          if (JSON.stringify(json.user) !== '{}') {
+            sessionStorage.setItem('loggedinUser', JSON.stringify(json.user));
             navigate("/");
             window.location.reload();
           }

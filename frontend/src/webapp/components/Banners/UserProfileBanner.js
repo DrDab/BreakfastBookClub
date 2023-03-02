@@ -9,7 +9,7 @@ import PeopleList from '../Lists/PeopleList';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import { avatarColorMap } from '../Constants';
-import { handleFetch } from '../Utils';
+import { handleGetFetch } from '../Utils';
 import { auth } from "../../../FirebaseConfig"
 import { useParams } from "react-router-dom";
 
@@ -47,7 +47,7 @@ export default function UserProfileBanner(props) {
     })
     .then((data) => {
       console.log('Success:', data);
-      handleFetch("get_user?userId=", uid).then((json) => {      
+      handleGetFetch("get_user?userId=" + uid).then((json) => {      
         props.setUserProfileData(json.user);
       });
     })

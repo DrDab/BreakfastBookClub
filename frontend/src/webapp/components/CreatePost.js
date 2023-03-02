@@ -61,7 +61,7 @@ export default function CreatePost(props) {
     })
     .then((data) => {
       console.log('Success:', data);
-      props.setIsFetchPosts(!props.isFetchPosts)
+      props.setIsFetchPosts(!props.isFetchPosts);
     })
     .catch((error) => {
       console.log(error);

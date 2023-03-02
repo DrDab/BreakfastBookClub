@@ -12,7 +12,7 @@ import CreatePost from "../components/CreatePost";
 import PostList from '../components/Lists/PostList';
 import { useParams } from "react-router-dom";
 import TabPanel from "../components/TabPanel";
-import { a11yProps, handleFetch } from '../components/Utils';
+import { a11yProps, handleGetFetch } from '../components/Utils';
 import { auth } from "../../FirebaseConfig"
 
 export default function BookClub() {
@@ -29,7 +29,7 @@ export default function BookClub() {
   const [isFetchPosts, setIsFetchPosts] = React.useState(false);
 
   React.useEffect(() => {
-    handleFetch("get_posts?book_key=", bid).then((json) => {
+    handleGetFetch("get_posts?book_key=" + bid).then((json) => {
       let posts = json.posts;
       posts.sort(function (a, b) {
         return b.date - a.date;
@@ -40,28 +40,27 @@ export default function BookClub() {
 
 
   React.useEffect(() => {
-    handleFetch("get_book?book_key=", bid).then((json) => {      
+    handleGetFetch("get_book?book_key=" + bid).then((json) => {      
       setBookProfileData(json.book);
     });
 
-    handleFetch("get_members?book_key=", bid).then((json) => {
+    handleGetFetch("get_members?book_key=" + bid).then((json) => {
       setBookClubMembersData(json.members);
     });
 
-    handleFetch("list_friends?user_id=", loggedinUser.uid).then((json) => {
+    handleGetFetch("list_friends?user_id=" + loggedinUser.uid).then((json) => {
       setLoggedinUserFriendsData(json.friends);
     });
 
-    handleFetch("get_saved_books?userID=", loggedinUser.uid).then((json) => {
+    handleGetFetch("get_saved_books?userID=" + loggedinUser.uid).then((json) => {
       setIsBookSavedData(json.books.some(book => book.book_id === bid));
     });
 
-    handleFetch("get_subscribed_clubs?userId=", loggedinUser.uid).then((json) => {
+    handleGetFetch("get_subscribed_clubs?userId=" + loggedinUser.uid).then((json) => {
       setIsBookClubJoinedData(json.books.some(bookClub => bookClub.book_id === bid));
     });
 
   }, [loggedinUser.uid, bid]);
-
 
 
   const handleFetchPostJoinStatus = (status, token) => {
@@ -75,7 +74,7 @@ export default function BookClub() {
     })
     .then((data) => {
       console.log('Success:', data);
-      handleFetch("get_members?book_key=", bid).then((json) => {
+      handleGetFetch("get_members?book_key=" + bid).then((json) => {
         setBookClubMembersData(json.members);
       });
     })
