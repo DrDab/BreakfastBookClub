@@ -31,21 +31,22 @@ export const handleGetFetch = async (route) => {
 }
 
 
-export const handlePostFetch = (route) => {
+export const handlePostFetch = async (route, jsonData) => {
   let url = "http://localhost:4567/api/" + route;
-  // console.log("post " + url)
-  fetch(url, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-  .then((data) => {
-    console.log('Success:', data);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+  console.log("POST " + url);
 
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(jsonData)
+    });
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    return error;
+  }
 }

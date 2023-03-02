@@ -10,35 +10,24 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Link as RouterLink } from "react-router-dom";
 import { avatarColorMap } from './Constants'
 import { auth } from "../../FirebaseConfig";
+import { handlePostFetch } from './Utils'
+
 
 export default function Notification(props) {
   let userProfileUrl = "/user-profile/" + props.notif.recommender.uid;
   let bookProfileUrl ="/book-club/" + props.notif.book.book_id;
   const [deleteDisplay, setDeleteDisplay] = React.useState(false);
 
-  const handleFetchPostDeleteRecommendation = (token, recommenderUid, bookKey) => {
-    let url = "http://localhost:4567/api/delete_recommendation?token=" + token + "&sender_userId=" + recommenderUid + "&book_key=" + bookKey;
-    fetch(url, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((data) => {
-      console.log('Success:', data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
-
   const handleDeleteNotif = () => {
-    console.log("delete Notif")
-    auth.currentUser?.getIdToken(true).then(function(idToken){
-      handleFetchPostDeleteRecommendation(idToken, props.notif.recommender.uid, props.notif.book.book_id);
+    auth.currentUser?.getIdToken(true).then(function(idToken) {
+      let route = "delete_recommendation?token=" + idToken +
+                  "&sender_userId=" + props.notif.recommender.uid +
+                  "&book_key=" + props.notif.book.book_id;
+
+      handlePostFetch(route, "").then(() => {
+        setDeleteDisplay(true);
+      })
     })
-    setDeleteDisplay(true);
   }
 
   return (
