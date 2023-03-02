@@ -58,8 +58,9 @@ public class ListFeed implements Route {
 
     String uid = decodedToken.getUid();
     User user = new User(uid, sqlConn);
+    Books books = new Books(sqlConn);
 
-    JsonArray postsArr = BCGsonUtils.getPostsJsonArrFromList(fbApp, user.getUserFeedPosts());
+    JsonArray postsArr = BCGsonUtils.getPostsJsonArrFromList(books, fbApp, user.getUserFeedPosts());
     respJson.add("posts", postsArr);
     respJson.addProperty("status", "success");
     return respJson;

@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import daos.Books;
 import daos.User;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -42,7 +43,8 @@ public class GetLikedPosts implements Route {
       List<BookPost> posts = new User(userId, sqlConn).getLikedPosts();
       respJson.addProperty("status", posts == null ? "failure" : "success");
       if (posts != null) {
-        respJson.add("posts", BCGsonUtils.getPostsJsonArrFromList(fbApp, posts));
+        respJson.add("posts",
+            BCGsonUtils.getPostsJsonArrFromList(new Books(sqlConn), fbApp, posts));
       }
     } catch (SQLException e) {
       e.printStackTrace();
