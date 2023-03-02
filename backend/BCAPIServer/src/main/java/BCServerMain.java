@@ -79,9 +79,8 @@ public class BCServerMain {
 
     Spark.get("/api/get_book", new GetBook());
 
-    GetPosts getPosts = new GetPosts(fbApp, sqlConn);
-    Spark.get("/api/get_posts", getPosts);
-    Spark.get("/api/list_feed", getPosts);
+    Spark.get("/api/get_posts", new GetPosts(fbApp, sqlConn));
+    Spark.get("/api/list_feed", new ListFeed(fbApp, sqlConn));
 
     // getting user's recommendations
     Spark.get("/api/get_recommendations", new GetRecommendations(sqlConn));
