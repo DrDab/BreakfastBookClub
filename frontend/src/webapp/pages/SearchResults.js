@@ -33,7 +33,7 @@ export default function SearchResults() {
       </Typography>
       <Box sx={{ width: '70%', margin: '0 auto' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="basic tabs example">
+          <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="tabs">
             <Tab label="Books" {...a11yProps(0)} />
             <Tab label="People" {...a11yProps(1)} />
           </Tabs>

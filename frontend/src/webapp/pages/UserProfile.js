@@ -86,16 +86,16 @@ export default function UserProfile() {
           <Stack sx={{ marginBottom: '5rem' }} spacing={2}>
             <Box>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="basic tabs example">
-                  <Tab onClick={() => setIsFetchPosts(!isFetchPosts)} label="Posts" {...a11yProps(0)} />
-                  <Tab onClick={() => setIsFetchPosts(!isFetchPosts)} label="Liked Posts" {...a11yProps(1)} />
+                <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="tabs">
+                  <Tab label="Posts" {...a11yProps(0)} />
+                  <Tab label="Liked Posts" {...a11yProps(1)} />
                 </Tabs>
               </Box>
               <TabPanel value={tabIndexValue} index={0}>
-                <PostList postsData={userPostsData} />
+                <PostList postsData={userPostsData} setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
               </TabPanel>
               <TabPanel value={tabIndexValue} index={1}>
-                <PostList postsData={userLikedPostsData} />
+                <PostList postsData={userLikedPostsData} setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
               </TabPanel>
             </Box>
           </Stack>

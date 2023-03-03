@@ -34,12 +34,17 @@ export default function Post(props) {
 
   const handleLikeUnlikePost = (postId) => {
     auth.currentUser?.getIdToken(true).then(function(idToken){
-      if (isPostLikedData){
-        handlePostFetch("unlike_post?token=" + idToken + "&post_id=" + postId, "");
-        setNumberOfLikes(numberOfLikes - 1);
+      if (isPostLikedData) {
+        handlePostFetch("unlike_post?token=" + idToken + "&post_id=" + postId, "").then(() => {
+          setNumberOfLikes(numberOfLikes - 1);
+          props.setIsFetchPosts(!props.isFetchPosts);
+        });
+        
       } else {
-        handlePostFetch("like_post?token=" + idToken + "&post_id=" + postId, "");
-        setNumberOfLikes(numberOfLikes + 1);
+        handlePostFetch("like_post?token=" + idToken + "&post_id=" + postId, "").then(() => {;
+          setNumberOfLikes(numberOfLikes + 1);
+          props.setIsFetchPosts(!props.isFetchPosts);
+        });
       }
       setIsPostLikedData(!isPostLikedData);
     })

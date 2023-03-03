@@ -12,14 +12,13 @@ import CreatePost from "../components/CreatePost";
 import PostList from '../components/Lists/PostList';
 import { useParams } from 'react-router-dom';
 import TabPanel from '../components/TabPanel';
-import { a11yProps, handleGetFetch, handlePostFetch } from '../components/Utils';
+import { handleGetFetch, handlePostFetch } from '../components/Utils';
 import { auth } from '../../FirebaseConfig';
 
 export default function BookClub() {
   let { bid } = useParams(); // clicked book
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
 
-  const [tabIndexValue, setTabIndexValue] = React.useState(0);
   const [bookClubPostsData, setBookClubPostsData] = React.useState('');
   const [bookProfileData, setBookProfileData] = React.useState('');
   const [isBookSavedData, setIsBookSavedData] = React.useState('');
@@ -96,12 +95,12 @@ export default function BookClub() {
         <Stack sx={{ marginBottom: '5rem' }} spacing={2}>
           <Box>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="basic tabs example">
-                <Tab label="Posts" {...a11yProps(0)} />
+              <Tabs value={0} aria-label="tabs">
+                <Tab label="Posts" />
               </Tabs>
             </Box>
-            <TabPanel value={tabIndexValue} index={0}>
-              <PostList postsData={bookClubPostsData} />
+            <TabPanel value={0} index={0}>
+              <PostList postsData={bookClubPostsData} setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
             </TabPanel>
           </Box>
         </Stack>
