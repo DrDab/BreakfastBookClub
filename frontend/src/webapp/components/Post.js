@@ -70,7 +70,7 @@ export default function Post(props) {
             sx={{ bgcolor: hashUserIdToColor(props.post.user.userId), width: 50, height: 50, textDecoration: "none" }}
             aria-label={props.post.user.username + " avatar"}
           >
-            {props.post.user.username.charAt(0)}
+            {props.post.user.username.charAt(0).toUpperCase()}
           </Avatar>
         }
         action={

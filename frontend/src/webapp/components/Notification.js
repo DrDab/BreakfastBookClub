@@ -45,7 +45,7 @@ export default function Notification(props) {
               }}
           aria-label={props.notif.recommender.username + " avatar"}
         >
-        {props.notif.recommender.username.charAt(0)}
+        {props.notif.recommender.username.charAt(0).toUpperCase()}
         </Avatar>
       </ListItemAvatar>
       <ListItemText>

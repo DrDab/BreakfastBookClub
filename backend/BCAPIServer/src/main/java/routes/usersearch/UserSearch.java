@@ -35,17 +35,19 @@ public class UserSearch implements Route {
     public Object handle(Request request, Response response) throws Exception {
         JsonObject respJson = new JsonObject();
 
-        String username = request.queryParams("username");
-        if (username == null) {
+        String userSearchTerm = request.queryParams("user_searchterm");
+        if (userSearchTerm == null) {
             respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "username is missing");
+            respJson.addProperty("failure_reason", "user_searchterm is missing");
             return respJson.toString() + "\n";
         }
 
         Firestore db = FirestoreClient.getFirestore(fbApp);
 
         CollectionReference users = db.collection("users");
-        Query query = users.whereEqualTo("name", username);
+        Query query = users.whereGreaterThanOrEqualTo("name", userSearchTerm)
+                           .whereLessThanOrEqualTo("name", userSearchTerm + "\uF7FF");
+
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
         List<QueryDocumentSnapshot> l = querySnapshot.get().getDocuments();
@@ -57,11 +59,19 @@ public class UserSearch implements Route {
 
         JsonArray foundUsers = new JsonArray();
 
-        for (String userUID : userUIDs) {
-            UserProfile profile = new User(userUID, sqlConn).getUserProfile(username);
+        for (String uid : userUIDs) {
+            String username = FirebaseUtils.resolveBCUsername(fbApp, uid);
+
+            if (username == null) {
+              respJson.addProperty("status", "failure");
+              respJson.addProperty("failure_reason", "Failed to resolve username");
+              return respJson.toString() + "\n";
+            }
+            
+            UserProfile profile = new User(uid, sqlConn).getUserProfile(username);
             foundUsers.add(profile == null ? new Gson().toJsonTree(
-                    new UserProfile(userUID, username, null, null)) :
-                    new Gson().toJsonTree(profile));
+                new UserProfile(uid, username, null, null)) :
+                new Gson().toJsonTree(profile));
         }
 
         respJson.add("users", foundUsers);

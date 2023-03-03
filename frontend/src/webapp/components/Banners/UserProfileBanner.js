@@ -44,7 +44,6 @@ export default function UserProfileBanner(props) {
             props.setUserProfileData(json.user);
           });
         })
-
       })
       clearFormValues();
     }
@@ -53,9 +52,17 @@ export default function UserProfileBanner(props) {
   const handleAddRemoveFriend = () => {
     auth.currentUser?.getIdToken(true).then(function(idToken){
       if (props.isFriendData) {
-        handlePostFetch("remove_friend?token=" + idToken + "&friend_userId=" + props.clickedUserData.uid, "");
+        handlePostFetch("remove_friend?token=" + idToken + "&friend_userId=" + props.clickedUserData.uid, "").then(() => {
+          handleGetFetch("list_friends?user_id=" + props.clickedUserData.uid).then((json) => {
+            props.setFriendsData(json.friends);
+          });
+        })
       } else {
-        handlePostFetch("add_friend?token=" + idToken + "&friend_userId=" + props.clickedUserData.uid, "");
+        handlePostFetch("add_friend?token=" + idToken + "&friend_userId=" + props.clickedUserData.uid, "").then(() => {
+          handleGetFetch("list_friends?user_id=" + props.clickedUserData.uid).then((json) => {
+            props.setFriendsData(json.friends);
+          });
+        })
       }
       props.setIsFriendData(!props.isFriendData);
     })

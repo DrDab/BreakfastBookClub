@@ -87,7 +87,7 @@ export default function CreatePost(props) {
               sx={{ bgcolor: hashUserIdToColor(loggedinUser.uid), width: 50, height: 50, textDecoration: "none" }}
               aria-label={loggedinUser.username + " avatar"}
             >
-             {loggedinUser.username.charAt(0)}
+             {loggedinUser.username.charAt(0).toUpperCase()}
             </Avatar>
             <TextField
               InputProps={{ disableUnderline: true }}
