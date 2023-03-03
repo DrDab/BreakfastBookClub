@@ -28,26 +28,9 @@ export default function SearchResults() {
     }
     handleFetchSearchBooks();
 
-    // handleGetFetch("search_users?username=" + sessionStorage.searchValue).then((json) => {
-    //   setSearchResultUsersData(json.users);
-    // });
-    setSearchResultUsersData([
-      {
-        "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
-        "username": "Amanda",
-        "bio": "bio"
-      },
-      {
-        "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
-        "username": "VictorD",
-        "bio": "bio"
-      },
-      {
-        "uid": "DzS5RTEdqCTCafUtiw3YGMWKJUw1",
-        "username": "zaynab",
-        "bio": "bio"
-      }
-    ])
+    handleGetFetch("search_users?user_searchterm=" + sessionStorage.searchValue).then((json) => {
+      setSearchResultUsersData(json.users);
+    });
   }, []);
 
   return (

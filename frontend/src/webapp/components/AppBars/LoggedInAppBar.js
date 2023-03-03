@@ -122,7 +122,7 @@ export default function LoggedInAppBar() {
               color="secondary"
               onClick={(e) => setAnchorElAccount(e.currentTarget)}
             >
-              <Avatar sx={{bgcolor: hashUserIdToColor(loggedinUser.uid)}}>{loggedinUser.username.charAt(0)}</Avatar>
+              <Avatar sx={{bgcolor: hashUserIdToColor(loggedinUser.uid)}}>{loggedinUser.username.charAt(0).toUpperCase()}</Avatar>
             </IconButton>
           </Stack>
         </Toolbar>

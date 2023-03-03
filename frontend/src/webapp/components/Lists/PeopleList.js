@@ -31,7 +31,7 @@ export default function PeopleList(props) {
                   alt={person.username + " avatar"}
                   sx={{ bgcolor: hashUserIdToColor(person.uid), width: 40, height: 40 }}
                 >
-                {person.username.charAt(0)}
+                {person.username.charAt(0).toUpperCase()}
                 </Avatar>
               </ListItemAvatar>
               <ListItemText

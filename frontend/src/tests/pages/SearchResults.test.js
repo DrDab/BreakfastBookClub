@@ -44,7 +44,7 @@ describe("Renders Search page", () => {
       )
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(1);
+    expect(mockFetch).toHaveBeenCalledTimes(2);
 
     const bookTitle = screen.queryByText(mockGetSearchResultsBooks.docs[0].title);
     const bookAuthor = screen.queryByText(mockGetSearchResultsBooks.docs[0].author_name);

@@ -22,7 +22,7 @@ export default function Home() {
       let posts = json.posts;
       setHomePostsData(posts);
     });
-  }, [isFetchPosts]);
+  }, [isFetchPosts, loggedinUser.uid]);
 
   React.useEffect(() => {
     handleGetFetch("list_friends?user_id=" + loggedinUser.uid).then((json) => {

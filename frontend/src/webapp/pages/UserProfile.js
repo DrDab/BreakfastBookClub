@@ -74,6 +74,7 @@ export default function UserProfile() {
           clickedUserData={userProfileData}
           setIsFriendData={setIsFriendData}
           isFriendData={isFriendData}
+          setFriendsData={setFriendsData}
           clickedUserFriends={friendsData}
           setUserProfileData={setUserProfileData}
           userProfileData={userProfileData}
@@ -115,7 +116,7 @@ export default function UserProfile() {
             </div>
             <div>
               <Typography variant="overline">
-                Saved Book Clubs
+                Saved Books
               </Typography>
               <BookList bookData={booksSavedData} />
             </div>
