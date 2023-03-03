@@ -11,7 +11,7 @@ import CreatePost from "../components/CreatePost";
 import PostList from '../components/Lists/PostList'
 import TabPanel from "../components/TabPanel";
 import { a11yProps, handleGetFetch } from '../components/Utils';
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 export default function UserProfile() {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);

@@ -7,9 +7,9 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 import EggAltIcon from '@mui/icons-material/EggAlt';
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../FirebaseConfig";
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../FirebaseConfig';
 import { handleGetFetch } from '../components/Utils';
 
 export default function LogIn() {

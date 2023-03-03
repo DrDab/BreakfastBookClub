@@ -9,10 +9,10 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Link as RouterLink } from "react-router-dom";
-import { tagsList } from './Constants';
-import { auth } from "../../FirebaseConfig";
-import { handleGetFetch, handlePostFetch, hashUserIdToColor } from './Utils'
+import { Link as RouterLink } from 'react-router-dom';
+import { tagsList } from '../../Constants';
+import { auth } from '../../../../FirebaseConfig';
+import { handleGetFetch, handlePostFetch, hashUserIdToColor } from '../../Utils';
 
 export default function Post(props) {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);

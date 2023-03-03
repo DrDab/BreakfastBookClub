@@ -7,9 +7,9 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Link as RouterLink } from "react-router-dom";
-import { auth } from "../../FirebaseConfig";
-import { handlePostFetch, hashUserIdToColor } from './Utils'
+import { Link as RouterLink } from 'react-router-dom';
+import { auth } from '../../../../FirebaseConfig';
+import { handlePostFetch, hashUserIdToColor } from '../../Utils';
 
 export default function Notification(props) {
   let userProfileUrl = "/user-profile/" + props.notif.recommender.uid;

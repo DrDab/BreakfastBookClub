@@ -10,7 +10,7 @@ import Modal from '@mui/material/Modal';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import { auth } from "../../../FirebaseConfig";
+import { auth } from '../../../FirebaseConfig';
 import { handlePostFetch } from '../Utils';
 
 export default function BookClubBanner(props) {

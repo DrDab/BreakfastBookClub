@@ -9,7 +9,7 @@ import PeopleList from '../Lists/PeopleList';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import { handleGetFetch, handlePostFetch, hashUserIdToColor } from '../Utils';
-import { auth } from "../../../FirebaseConfig"
+import { auth } from '../../../FirebaseConfig';
 import { useParams } from "react-router-dom";
 
 export default function UserProfileBanner(props) {

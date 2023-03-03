@@ -10,10 +10,10 @@ import PeopleList from '../components/Lists/PeopleList';
 import BookClubBanner from '../components/Banners/BookClubBanner';
 import CreatePost from "../components/CreatePost";
 import PostList from '../components/Lists/PostList';
-import { useParams } from "react-router-dom";
-import TabPanel from "../components/TabPanel";
+import { useParams } from 'react-router-dom';
+import TabPanel from '../components/TabPanel';
 import { a11yProps, handleGetFetch, handlePostFetch } from '../components/Utils';
-import { auth } from "../../FirebaseConfig"
+import { auth } from '../../FirebaseConfig';
 
 export default function BookClub() {
   let { bid } = useParams(); // clicked book

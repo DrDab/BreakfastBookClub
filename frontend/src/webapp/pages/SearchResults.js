@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import BookList from '../components/Lists/BookList';
 import PeopleList from '../components/Lists/PeopleList';
 import Stack from '@mui/material/Stack';
-import TabPanel from "../components/TabPanel";
+import TabPanel from '../components/TabPanel';
 import { a11yProps, formatOpenLibraryData, handleGetFetchBase, handleGetFetch } from '../components/Utils';
 
 export default function SearchResults() {

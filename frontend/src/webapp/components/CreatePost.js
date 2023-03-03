@@ -14,9 +14,9 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { auth } from "../../FirebaseConfig"
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from 'react-router-dom';
 import { tagsList } from './Constants';
-import { handlePostFetch, hashUserIdToColor } from './Utils'
+import { handlePostFetch, hashUserIdToColor } from './Utils';
 
 export default function CreatePost(props) {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
