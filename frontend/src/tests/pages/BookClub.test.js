@@ -16,7 +16,7 @@ const mockGetPosts = {
     {
       "post_id": "05c59ca8-eb13-348a-9ea8-d44c07069884",
       "book": {
-        "book_id": "OL18417W",
+        "book_key": "OL18417W",
         "title": "The Wonderful Wizard of Oz",
         "author": "L. Frank Baum",
         "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
@@ -39,7 +39,7 @@ const mockGetPosts = {
 // current book club
 const mockGetBook = {
   "book": {
-    "book_id": "OL18417W",
+    "book_key": "OL18417W",
     "title": "The Wonderful Wizard of Oz",
     "author": "L. Frank Baum",
     "thumbnail": "https://covers.openlibrary.org/b/id/12648655-M.jpg"
@@ -49,7 +49,7 @@ const mockGetBook = {
 const mockGetMembers = {
   "members": [
     {
-      "userId": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
       "username": "VictorD",
       "bio": "Victor's bio"
     }
@@ -59,7 +59,7 @@ const mockGetMembers = {
 const mockGetFriends = {
   "friends": [
     {
-      "userId": "sjzbuujj2hNljqVFpfJAplzXxjH3",
+      "uid": "sjzbuujj2hNljqVFpfJAplzXxjH3",
       "username": "VictorD",
       "bio": "Victor's bio"
     }
