@@ -68,6 +68,7 @@ describe("Renders Home page", () => {
     const makeFetchResponse = value => ({ json: async() => value })
     const mockFetch = jest.fn()
       .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
+      .mockReturnValueOnce(makeFetchResponse(mockGetPosts))
       .mockReturnValueOnce(makeFetchResponse(mockGetFriends))
       .mockReturnValueOnce(makeFetchResponse(mockGetJoinedBookClubs))
       .mockReturnValueOnce(makeFetchResponse(mockGetIsPostLiked))
@@ -81,7 +82,7 @@ describe("Renders Home page", () => {
       )
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(4);
+    expect(mockFetch).toHaveBeenCalledTimes(5);
 
     const postTitle = screen.queryByText(mockGetPosts.posts[0].title);
     const postBody = screen.queryByText(mockGetPosts.posts[0].post);
