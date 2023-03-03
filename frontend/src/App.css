@@ -64,7 +64,7 @@ body {
   color: #1876d1;
 }
 
-/* recommend, create-post, friends-list modals */
+/* recommend, create-post, delete-post, friends-list modals */
 .basic-modal {
   position: absolute;
   top: 50%;
@@ -87,6 +87,10 @@ body {
 
 .create-post-modal {
   width: 40%;
+}
+
+.delete-post-modal {
+  width: 20%;
 }
 
 .edit-bio-modal {

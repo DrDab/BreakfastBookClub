@@ -34,7 +34,6 @@ export default function BookClub() {
     });
   }, [bid, isFetchPosts]);
 
-
   React.useEffect(() => {
     handleGetFetch("get_book?book_key=" + bid).then((json) => {      
       setBookProfileData(json.book);
@@ -56,7 +55,6 @@ export default function BookClub() {
       setIsBookClubJoinedData(json.books.some(bookClub => bookClub.book_key === bid));
     });
   }, [loggedinUser.uid, bid]);
-
 
   const handleJoinUnJoinBookClub = () => {
     auth.currentUser?.getIdToken(true).then(function(idToken){

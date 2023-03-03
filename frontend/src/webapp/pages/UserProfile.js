@@ -26,20 +26,16 @@ export default function UserProfile() {
   const [friendsData, setFriendsData] = React.useState('');
   const [isFriendData, setIsFriendData] = React.useState('');
   const [isFetchPosts, setIsFetchPosts] = React.useState(false);
-  const [isFetchLikedPosts, setIsFetchLikedPosts] = React.useState(false);
 
   React.useEffect(() => {
     handleGetFetch("get_posts?userId=" + uid).then((json) => {
       setUserPostsData(json.posts);
     });
-  }, [uid, isFetchPosts]);
 
-
-  React.useEffect(() => {
     handleGetFetch("get_liked_posts?user_id=" + uid).then((json) => {    
       setUserLikedPostsData(json.posts);
     });
-  }, [uid, isFetchLikedPosts]);
+  }, [uid, isFetchPosts]);
 
   React.useEffect(() => {
     handleGetFetch("get_user?userId=" + uid).then((json) => {      
@@ -92,7 +88,7 @@ export default function UserProfile() {
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="basic tabs example">
                   <Tab onClick={() => setIsFetchPosts(!isFetchPosts)} label="Posts" {...a11yProps(0)} />
-                  <Tab onClick={() => setIsFetchLikedPosts(!isFetchLikedPosts)} label="Liked Posts" {...a11yProps(1)} />
+                  <Tab onClick={() => setIsFetchPosts(!isFetchPosts)} label="Liked Posts" {...a11yProps(1)} />
                 </Tabs>
               </Box>
               <TabPanel value={tabIndexValue} index={0}>

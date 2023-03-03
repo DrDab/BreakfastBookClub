@@ -28,7 +28,9 @@ export default function SearchResults() {
 
   return (
     <Stack sx={{ width: '70%', margin: '0 auto', marginBottom: '5rem' }} spacing={2}>
-      <Typography>{"Showing search results for '" + sessionStorage.searchValue + "'"}</Typography>
+      <Typography variant="body2">
+        {"Showing search results for '" + sessionStorage.searchValue + "'"}
+      </Typography>
       <Box sx={{ width: '70%', margin: '0 auto' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="basic tabs example">

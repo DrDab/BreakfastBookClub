@@ -46,6 +46,7 @@ export default function SignUp() {
       setIsError(true);
     }
   };
+
   return (
     <Box className="login-signup">
       <Stack spacing={2}>
