@@ -30,8 +30,7 @@ export default function BookClub() {
 
   React.useEffect(() => {
     handleGetFetch("get_posts?book_key=" + bid).then((json) => {
-      let posts = json.posts;
-      setBookClubPostsData(posts);
+      setBookClubPostsData(json.posts);
     });
   }, [bid, isFetchPosts]);
 

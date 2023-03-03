@@ -79,7 +79,7 @@ export default function UserProfileBanner(props) {
               alt={props.clickedUserData.username + " avatar"}
               sx={{ bgcolor: hashUserIdToColor(props.clickedUserData.uid), width: 150, height: 150 }}
             >
-              {props.clickedUserData.username.charAt(0)}
+              {props.clickedUserData.username.charAt(0).toUpperCase()}
             </Avatar>
           </Grid>
           <Grid item xs={8}>
@@ -110,7 +110,7 @@ export default function UserProfileBanner(props) {
                   size="small"
                   onClick={() => setShowFriendsModal(true)}
                 >
-                  {888 + " Friends"}
+                  {props.clickedUserFriendsData.length + " Friends"}
                 </Button>
               </Stack>
               <Typography>
@@ -130,7 +130,7 @@ export default function UserProfileBanner(props) {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Friends
           </Typography>
-          <PeopleList peopleData={props.clickedUserFriends}/>
+          <PeopleList peopleData={props.clickedUserFriendsData}/>
         </Box>
       </Modal>
 

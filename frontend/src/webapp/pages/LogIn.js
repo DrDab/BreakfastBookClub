@@ -23,7 +23,6 @@ export default function LogIn() {
       await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-
         handleGetFetch("get_user?userId=" + user.uid).then((json) => {
           if (json !== undefined && JSON.stringify(json.user) !== '{}') { 
             sessionStorage.setItem('loggedinUser', JSON.stringify(json.user));

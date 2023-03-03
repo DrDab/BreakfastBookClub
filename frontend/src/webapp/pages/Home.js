@@ -19,8 +19,7 @@ export default function Home() {
 
   React.useEffect(() => {
     handleGetFetch("list_feed?user_id=" + loggedinUser.uid).then((json) => {
-      let posts = json.posts;
-      setHomePostsData(posts);
+      setHomePostsData(json.posts);
     });
   }, [isFetchPosts, loggedinUser.uid]);
 
