@@ -12,19 +12,23 @@ import Tab from '@mui/material/Tab';
 import TabPanel from '../components/TabPanel';
 import { a11yProps, handleGetFetch } from '../components/Utils';
 
-
 export default function Home() {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
 
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
-  const [homePostsData, setHomePostsData] = React.useState("");
+  const [feedPostsData, setFeedPostsData] = React.useState("");
+  const [newPostsData, setNewPostsData] = React.useState("");
   const [bookClubsJoinedData, setBookClubsJoinedData] = React.useState("");
   const [friendsData, setFriendsData] = React.useState("");
   const [isFetchPosts, setIsFetchPosts] = React.useState(false);
 
   React.useEffect(() => {
     handleGetFetch("list_feed?user_id=" + loggedinUser.uid).then((json) => {
-      setHomePostsData(json.posts);
+      setFeedPostsData(json.posts);
+    });
+
+    handleGetFetch("get_posts").then((json) => {
+      setNewPostsData(json.posts);
     });
   }, [isFetchPosts, loggedinUser.uid]);
 
@@ -50,12 +54,16 @@ export default function Home() {
         <Stack sx={{ marginBottom: '5rem' }} spacing={2}>
           <Box>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="basic tabs example">
+              <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="tabs">
                 <Tab label="Your Feed" {...a11yProps(0)} />
+                <Tab label="Discover New" {...a11yProps(1)} />
               </Tabs>
             </Box>
             <TabPanel value={tabIndexValue} index={0}>
-            <PostList postsData={homePostsData} />
+              <PostList postsData={feedPostsData} setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
+            </TabPanel>
+            <TabPanel value={tabIndexValue} index={1}>
+              <PostList postsData={newPostsData} setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
             </TabPanel>
           </Box>
         </Stack>

@@ -5,6 +5,10 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -19,6 +23,7 @@ export default function Post(props) {
 
   const [isPostLikedData, setIsPostLikedData] = React.useState(false);
   const [numberOfLikes, setNumberOfLikes] = React.useState(props.post.likes);
+  const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const [deleteDisplay, setDeleteDisplay] = React.useState(false);
 
   React.useEffect(() => {
@@ -29,18 +34,24 @@ export default function Post(props) {
 
   const handleLikeUnlikePost = (postId) => {
     auth.currentUser?.getIdToken(true).then(function(idToken){
-      if (isPostLikedData){
-        handlePostFetch("unlike_post?token=" + idToken + "&post_id=" + postId, "");
-        setNumberOfLikes(numberOfLikes - 1);
+      if (isPostLikedData) {
+        handlePostFetch("unlike_post?token=" + idToken + "&post_id=" + postId, "").then(() => {
+          setNumberOfLikes(numberOfLikes - 1);
+          props.setIsFetchPosts(!props.isFetchPosts);
+        });
+        
       } else {
-        handlePostFetch("like_post?token=" + idToken + "&post_id=" + postId, "");
-        setNumberOfLikes(numberOfLikes + 1);
+        handlePostFetch("like_post?token=" + idToken + "&post_id=" + postId, "").then(() => {;
+          setNumberOfLikes(numberOfLikes + 1);
+          props.setIsFetchPosts(!props.isFetchPosts);
+        });
       }
       setIsPostLikedData(!isPostLikedData);
     })
   }
 
   const handleDeletePost = () => {
+    setShowDeleteModal(false);
     auth.currentUser?.getIdToken(true).then(function(idToken) {
       let route = "delete_post?token=" + idToken + "&postId=" + props.post.post_id;
       handlePostFetch(route, "").then(() => {
@@ -60,6 +71,7 @@ export default function Post(props) {
   let bookProfileUrl ="/book-club/" + props.post.book.book_key;
 
   return (
+    <>
     <Card elevation={0} className="post" sx={{display: deleteDisplay? 'none': ""}}>
       <CardHeader
         avatar={
@@ -75,7 +87,7 @@ export default function Post(props) {
         }
         action={
           props.post.user.userId === loggedinUser.uid ? 
-            <IconButton aria-label="delete-post" onClick={handleDeletePost}>
+            <IconButton aria-label="delete-post" onClick={()=> setShowDeleteModal(true)}>
               <DeleteIcon fontSize="small"/>
             </IconButton> :
             <></>
@@ -119,5 +131,39 @@ export default function Post(props) {
         </Typography>
       </CardActions>
     </Card>
+    <Modal
+      open={showDeleteModal}
+      onClose={() => setShowDeleteModal(false)}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box className="basic-modal delete-post-modal">
+        <Stack spacing={2}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Delete post
+          </Typography>
+          <Typography id="modal-modal-body" variant="body1" component="h2">
+            Are you sure you want to delete your post?
+          </Typography>
+          <Stack justifyContent="end" direction="row" spacing={1}>
+            <Button
+              disableElevation
+              size="small"
+              variant="contained"
+              onClick={handleDeletePost}>
+              Delete
+            </Button>
+            <Button 
+              disableElevation size="small"
+              variant='outlined'
+              onClick={()=> setShowDeleteModal(false)}
+            >
+              Cancel
+            </Button>
+          </Stack>
+        </Stack>
+      </Box>
+    </Modal>
+    </>
   )
 }

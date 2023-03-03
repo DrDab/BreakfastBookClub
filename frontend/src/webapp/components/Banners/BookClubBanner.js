@@ -133,10 +133,16 @@ export default function BookClubBanner(props) {
                 disableElevation
                 size="small"
                 variant={isMissingFields ? 'disabled': 'contained'}
-                onClick={handleSendRecommendation}>
+                onClick={handleSendRecommendation}
+              >
                 Send
               </Button>
-              <Button disableElevation size="small" variant='outlined' onClick={handleCancelRecommendation}>
+              <Button
+                disableElevation
+                size="small"
+                variant='outlined'
+                onClick={handleCancelRecommendation}
+              >
                 Cancel
               </Button>
             </Stack>

@@ -30,7 +30,6 @@ export default function LogIn() {
             window.location.reload();
           }
         });
-
       })
     } catch (err) {
       setIsError(true);
