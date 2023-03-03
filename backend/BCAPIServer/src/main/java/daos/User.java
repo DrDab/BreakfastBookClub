@@ -110,9 +110,6 @@ public class User {
       "SELECT COUNT(*) AS count FROM liked_posts WHERE post_id = ? AND user_id = ?";
   private PreparedStatement countLikedPostsByPidStatement;
 
-  private static final String GET_POSTS_BY_ID_STUB =
-      "SELECT * FROM book_posts WHERE ";
-
   private static final String DELETE_RECOMMENDATION_SQL =
       "DELETE FROM sent_recommendations WHERE sender_username = ? AND recipient_username = ? AND book_key = ?";
   private PreparedStatement deleteRecommendationStatement;
@@ -728,30 +725,6 @@ public class User {
     int num_rows = unlikePostStatement.executeUpdate();
     return num_rows == 1 && posts.decreaseLikedPostByID(post_id) ? UserResult.SUCCESS
         : UserResult.FAIL;
-  }
-
-  private List<BookPost> getBatchPostIdPost(List<String> postIds) throws SQLException {
-    if (postIds.isEmpty()) {
-      return new ArrayList<>();
-    }
-
-    StringBuilder sqlQuery = new StringBuilder(GET_POSTS_BY_ID_STUB);
-
-    for (int i = 0; i < postIds.size(); i++) {
-      if (i > 0) {
-        sqlQuery.append(" OR ");
-      }
-
-      sqlQuery.append("post_id = ?");
-    }
-
-    PreparedStatement stmt = conn.prepareStatement(sqlQuery.toString());
-    for (int i = 0; i < postIds.size(); i++) {
-      stmt.setString(i + 1, postIds.get(i));
-    }
-
-    ResultSet rs = stmt.executeQuery();
-    return ResultSetParsers.getBookPostsFromResultSet(rs);
   }
 
   public List<BookPost> getLikedPosts() throws SQLException {
