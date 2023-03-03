@@ -2,6 +2,9 @@ package routes.bookmgmt;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import daos.Books;
+import java.sql.Connection;
+import java.util.HashMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -9,6 +12,12 @@ import types.Book;
 import utils.OpenLibraryAPI;
 
 public class GetBook implements Route {
+
+  private Connection sqlConn;
+
+  public GetBook(Connection sqlConn) {
+    this.sqlConn = sqlConn;
+  }
 
   @Override
   public Object handle(Request request, Response response) throws Exception {
@@ -21,7 +30,8 @@ public class GetBook implements Route {
       return respJson.toString() + "\n";
     }
 
-    Book bookObj = OpenLibraryAPI.getBookByKey(searchBookKey);
+    Book bookObj = OpenLibraryAPI.getBookByKeyWithCache(new Books(sqlConn), new HashMap<>(),
+        searchBookKey);
     if (bookObj == null) {
       respJson.addProperty("status", "failure");
       respJson.addProperty("failure_reason", "Failed to find book.");
