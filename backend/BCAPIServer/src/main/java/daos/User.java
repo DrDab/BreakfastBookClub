@@ -565,19 +565,22 @@ public class User {
   /**
    * List all the book clubs that this user is subscribed to.
    *
+   * @param books, the books DAO to get cached book data from.
    * @return list of this user's book clubs
    * @throws SQLException if something goes wrong with the database
    */
-  public List<Book> allClubs() throws Exception {
+  public List<Book> allClubs(Books books) throws Exception {
     List<Book> clubs = new ArrayList<>();
 
     getClubsStatement.clearParameters();
     getClubsStatement.setString(1, this.user);
 
+    Map<String, Book> requestCache = new HashMap<>();
+
     ResultSet rs = getClubsStatement.executeQuery();
     while (rs.next()) {
       String searchbook_key = rs.getString("book_key");
-      Book bookObj = OpenLibraryAPI.getBookByKey(searchbook_key);
+      Book bookObj = OpenLibraryAPI.getBookByKeyWithCache(books, requestCache, searchbook_key);
       if (bookObj != null) {
         clubs.add(bookObj);
       }

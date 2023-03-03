@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import com.google.gson.JsonObject;
 import com.google.gson.Gson;
+import daos.Books;
 import daos.User;
 import java.sql.Connection;
 import java.util.List;
@@ -37,7 +38,7 @@ public class GetSubscribedClubs implements Route {
             return respJson.toString() + "\n";
         }
 
-        List<Book> clubs = new User(searchUID, sqlConn).allClubs();
+        List<Book> clubs = new User(searchUID, sqlConn).allClubs(new Books(sqlConn));
 
         respJson.add("books", new Gson().toJsonTree(clubs));
         respJson.addProperty("status", "success");
