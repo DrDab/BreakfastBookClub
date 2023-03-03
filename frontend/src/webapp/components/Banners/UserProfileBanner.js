@@ -8,8 +8,7 @@ import Button from '@mui/material/Button';
 import PeopleList from '../Lists/PeopleList';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
-import { avatarColorMap } from '../Constants';
-import { handleGetFetch, handlePostFetch } from '../Utils';
+import { handleGetFetch, handlePostFetch, hashUserIdToColor } from '../Utils';
 import { auth } from "../../../FirebaseConfig"
 import { useParams } from "react-router-dom";
 
@@ -71,8 +70,7 @@ export default function UserProfileBanner(props) {
           <Grid item xs={2}>
             <Avatar
               alt={props.clickedUserData.username + " avatar"}
-              sx={{ bgcolor: avatarColorMap.get(props.clickedUserData.username), width: 150, height: 150 }}
-              // src={props.clickedUserData.thumbnail}
+              sx={{ bgcolor: hashUserIdToColor(props.clickedUserData.uid), width: 150, height: 150 }}
             >
               {props.clickedUserData.username.charAt(0)}
             </Avatar>

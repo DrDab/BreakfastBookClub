@@ -18,6 +18,24 @@ export const formatOpenLibraryData = (openlibraryJson) => {
   return formattedData;
 }
 
+
+export const hashUserIdToColor =  (userId) => {
+  let r = userId.charCodeAt(1); // if amount of  red = x, set blue 
+  let g = userId.charCodeAt(2);
+  let b = userId.charCodeAt(3);
+  return rgbToHex(r, g, b);
+}
+
+const componentToHex = (c) => {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+const rgbToHex = (r, g, b) => {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+
 export const handleGetFetch = async (route) => {
   let url = "http://localhost:4567/api/" + route;
    // console.log("get " + url)

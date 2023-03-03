@@ -21,8 +21,7 @@ import NotificationList from '../Lists/NotificationList';
 import Badge from '@mui/material/Badge';
 import { signOut } from "firebase/auth";
 import { auth } from "../../../FirebaseConfig"
-import { avatarColorMap } from '../Constants';
-import { handleGetFetch } from '../Utils';
+import { handleGetFetch, hashUserIdToColor } from '../Utils';
 
 export default function LoggedInAppBar() {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
@@ -44,7 +43,7 @@ export default function LoggedInAppBar() {
         let rec = json.recommendations[i];
         handleGetFetch("get_user?userId=" + rec.userID).then((json) => {
           let recommender = json.user;
-          handleGetFetch("get_book?book_key=" + rec.bookKey).then((json) => {
+          handleGetFetch("get_book?book_key=" + rec.book_key).then((json) => {
             let book = json.book;
             let recommendation = {recommender, book};
             recommendations.push(recommendation);
@@ -55,6 +54,8 @@ export default function LoggedInAppBar() {
       setRecommendationData(recommendations);
     });
 }, [loggedinUser.uid, isFetchRecommendations]);
+
+
 
 
   // search
@@ -121,7 +122,7 @@ export default function LoggedInAppBar() {
               color="secondary"
               onClick={(e) => setAnchorElAccount(e.currentTarget)}
             >
-              <Avatar sx={{bgcolor: avatarColorMap.get(loggedinUser.username)}}>{loggedinUser.username.charAt(0)}</Avatar>
+              <Avatar sx={{bgcolor: hashUserIdToColor(loggedinUser.uid)}}>{loggedinUser.username.charAt(0)}</Avatar>
             </IconButton>
           </Stack>
         </Toolbar>

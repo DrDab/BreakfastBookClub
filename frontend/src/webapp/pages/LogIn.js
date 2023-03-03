@@ -25,7 +25,7 @@ export default function LogIn() {
         const user = userCredential.user;
 
         handleGetFetch("get_user?userId=" + user.uid).then((json) => {
-          if (JSON.stringify(json.user) !== '{}') {
+          if (json !== undefined && JSON.stringify(json.user) !== '{}') { 
             sessionStorage.setItem('loggedinUser', JSON.stringify(json.user));
             navigate("/");
             window.location.reload();

@@ -18,11 +18,8 @@ export default function Home() {
   const [isFetchPosts, setIsFetchPosts] = React.useState(false);
 
   React.useEffect(() => {
-    handleGetFetch("list_feed").then((json) => {
+    handleGetFetch("list_feed?user_id=" + loggedinUser.uid).then((json) => {
       let posts = json.posts;
-      posts.sort(function (a, b) {
-          return b.date - a.date;
-      });
       setHomePostsData(posts);
     });
   }, [isFetchPosts]);

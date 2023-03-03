@@ -4,8 +4,9 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { Link as RouterLink } from "react-router-dom";
-import { avatarColorMap } from '../Constants';
+import { Link as RouterLink } from 'react-router-dom';
+import { hashUserIdToColor } from '../Utils';
+
 
 export default function PeopleList(props) {
 	return (
@@ -28,7 +29,7 @@ export default function PeopleList(props) {
               <ListItemAvatar>
                 <Avatar
                   alt={person.username + " avatar"}
-                  sx={{ bgcolor: avatarColorMap.get(person.username), width: 40, height: 40 }}
+                  sx={{ bgcolor: hashUserIdToColor(person.uid), width: 40, height: 40 }}
                 >
                 {person.username.charAt(0)}
                 </Avatar>

@@ -8,20 +8,19 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link as RouterLink } from "react-router-dom";
-import { avatarColorMap } from './Constants'
 import { auth } from "../../FirebaseConfig";
-import { handlePostFetch } from './Utils'
+import { handlePostFetch, hashUserIdToColor } from './Utils'
 
 export default function Notification(props) {
   let userProfileUrl = "/user-profile/" + props.notif.recommender.uid;
-  let bookProfileUrl ="/book-club/" + props.notif.book.book_id;
+  let bookProfileUrl ="/book-club/" + props.notif.book.book_key;
   const [deleteDisplay, setDeleteDisplay] = React.useState(false);
 
   const handleDeleteNotif = () => {
     auth.currentUser?.getIdToken(true).then(function(idToken) {
       let route = "delete_recommendation?token=" + idToken +
                   "&sender_userId=" + props.notif.recommender.uid +
-                  "&book_key=" + props.notif.book.book_id;
+                  "&book_key=" + props.notif.book.book_key;
 
       handlePostFetch(route, "").then(() => {
         setDeleteDisplay(true);
@@ -39,7 +38,7 @@ export default function Notification(props) {
           reloadDocument
           component={RouterLink}
           to={userProfileUrl}
-          sx={{ bgcolor: avatarColorMap.get(props.notif.recommender.username),
+          sx={{ bgcolor: hashUserIdToColor(props.notif.recommender.uid),
                 width: 32,
                 height: 32,
                 textDecoration: "none"

@@ -20,7 +20,7 @@ export default function BookList(props) {
             <ListItem
               reloadDocument
               component={RouterLink}
-              to={"/book-club/" + (props.isFromOpenLibrary? book.key.split("/")[2] :  book.book_id)} 
+              to={"/book-club/" + (props.isFromOpenLibrary? book.key.split("/")[2] : book.book_key)} 
               className="list-item"
               alignItems="flex-start"
               key={index}

@@ -8,9 +8,3 @@ export const tagsList = [
   {icon: <NewReleasesIcon/>, label:"Spoiler", color:"warning"},
   {icon: <LightbulbCircleRoundedIcon/>, label:"Theory", color:"success"}
 ]
-
-export const avatarColorMap = new Map();
-avatarColorMap.set('Amanda', "#32746D");
-avatarColorMap.set('VictorD', "#E29578");
-avatarColorMap.set('zaynab', "#C2095A");
-avatarColorMap.set('AndreaH', "#260494");
