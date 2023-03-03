@@ -30,16 +30,14 @@ export default function UserProfile() {
 
   React.useEffect(() => {
     handleGetFetch("get_posts?userId=" + uid).then((json) => {
-      let posts = json.posts;
-      setUserPostsData(posts);
+      setUserPostsData(json.posts);
     });
   }, [uid, isFetchPosts]);
 
 
   React.useEffect(() => {
     handleGetFetch("get_liked_posts?user_id=" + uid).then((json) => {    
-      let posts = json.posts;
-      setUserLikedPostsData(posts);
+      setUserLikedPostsData(json.posts);
     });
   }, [uid, isFetchLikedPosts]);
 
@@ -75,7 +73,7 @@ export default function UserProfile() {
           setIsFriendData={setIsFriendData}
           isFriendData={isFriendData}
           setFriendsData={setFriendsData}
-          clickedUserFriends={friendsData}
+          clickedUserFriendsData={friendsData}
           setUserProfileData={setUserProfileData}
           userProfileData={userProfileData}
         />

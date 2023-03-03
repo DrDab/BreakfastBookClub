@@ -10,7 +10,7 @@ import EggAltIcon from '@mui/icons-material/EggAlt';
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore"
-import { auth, db} from "../../FirebaseConfig";
+import { auth, db } from "../../FirebaseConfig";
 import { handleGetFetch } from '../components/Utils';
 
 export default function SignUp() {
@@ -31,7 +31,6 @@ export default function SignUp() {
           name,
           email,
         }).then(() => {
-          // get user with bcapi
           handleGetFetch("get_user?userId=" + user.uid).then((json) => {
             if (json !== undefined && JSON.stringify(json.user) !== '{}') {
               sessionStorage.setItem('loggedinUser', JSON.stringify(json.user));
