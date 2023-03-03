@@ -15,8 +15,8 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { auth } from "../../FirebaseConfig"
 import { Link as RouterLink } from "react-router-dom";
-import { tagsList, avatarColorMap } from './Constants';
-import { handlePostFetch } from './Utils'
+import { tagsList } from './Constants';
+import { handlePostFetch, hashUserIdToColor } from './Utils'
 
 export default function CreatePost(props) {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
@@ -37,7 +37,7 @@ export default function CreatePost(props) {
   }, [bookClubId, title, body]);
 
   const clearFormValues = () => {
-    setBookClubId(props.isInBookClub ? props.bookClubs[0].book_id : "");
+    setBookClubId(props.isInBookClub ? props.bookClubs[0].book_key : "");
     setTitle("");
     setBody("");
     setIndexOfTagSelected(-1);
@@ -84,7 +84,7 @@ export default function CreatePost(props) {
               reloadDocument
               component={RouterLink}
               to={"/user-profile/" + loggedinUser.uid}
-              sx={{ bgcolor: avatarColorMap.get(loggedinUser.username), width: 50, height: 50, textDecoration: "none" }}
+              sx={{ bgcolor: hashUserIdToColor(loggedinUser.uid), width: 50, height: 50, textDecoration: "none" }}
               aria-label={loggedinUser.username + " avatar"}
             >
              {loggedinUser.username.charAt(0)}
@@ -96,7 +96,7 @@ export default function CreatePost(props) {
               label="Write a post"
               variant="filled"
               onClick={() => {
-                setBookClubId(props.isInBookClub ? props.bookClubs[0].book_id : bookClubId);
+                setBookClubId(props.isInBookClub ? props.bookClubs[0].book_key : bookClubId);
                 setShowPostModal(true);
               }}
             />
@@ -141,7 +141,7 @@ export default function CreatePost(props) {
                       </MenuItem> :
                       props.bookClubs.map((bookClub, index) => {
                         return (
-                          <MenuItem key={index} value={bookClub.book_id}>
+                          <MenuItem key={index} value={bookClub.book_key}>
                             {bookClub.title}
                           </MenuItem>
                         )

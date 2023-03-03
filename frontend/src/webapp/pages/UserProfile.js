@@ -31,9 +31,6 @@ export default function UserProfile() {
   React.useEffect(() => {
     handleGetFetch("get_posts?userId=" + uid).then((json) => {
       let posts = json.posts;
-      posts.sort(function (a, b) {
-          return b.date - a.date;
-      });
       setUserPostsData(posts);
     });
   }, [uid, isFetchPosts]);
@@ -42,13 +39,9 @@ export default function UserProfile() {
   React.useEffect(() => {
     handleGetFetch("get_liked_posts?user_id=" + uid).then((json) => {    
       let posts = json.posts;
-      posts.sort(function (a, b) {
-          return b.date - a.date;
-      });  
       setUserLikedPostsData(posts);
     });
   }, [uid, isFetchLikedPosts]);
-
 
   React.useEffect(() => {
     handleGetFetch("get_user?userId=" + uid).then((json) => {      

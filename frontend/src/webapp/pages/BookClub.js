@@ -31,9 +31,6 @@ export default function BookClub() {
   React.useEffect(() => {
     handleGetFetch("get_posts?book_key=" + bid).then((json) => {
       let posts = json.posts;
-      posts.sort(function (a, b) {
-        return b.date - a.date;
-      });
       setBookClubPostsData(posts);
     });
   }, [bid, isFetchPosts]);
@@ -53,11 +50,11 @@ export default function BookClub() {
     });
 
     handleGetFetch("get_saved_books?userID=" + loggedinUser.uid).then((json) => {
-      setIsBookSavedData(json.books.some(book => book.book_id === bid));
+      setIsBookSavedData(json.books.some(book => book.book_key === bid));
     });
 
     handleGetFetch("get_subscribed_clubs?userId=" + loggedinUser.uid).then((json) => {
-      setIsBookClubJoinedData(json.books.some(bookClub => bookClub.book_id === bid));
+      setIsBookClubJoinedData(json.books.some(bookClub => bookClub.book_key === bid));
     });
   }, [loggedinUser.uid, bid]);
 

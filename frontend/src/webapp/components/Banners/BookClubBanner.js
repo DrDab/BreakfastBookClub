@@ -18,6 +18,7 @@ export default function BookClubBanner(props) {
   const [selectFriendUserId, setSelectFriendUserId] = React.useState('');
   const [isMissingFields, setIsMissingFields] = React.useState(true);
 
+
   React.useEffect(() => {
     setIsMissingFields(selectFriendUserId === "");
   }, [selectFriendUserId]);
@@ -39,7 +40,7 @@ export default function BookClubBanner(props) {
       auth.currentUser?.getIdToken(true).then(function(idToken){
         let jsonData = {
           token: idToken,
-          book_key: props.bookData.book_id,
+          book_key: props.bookData.book_key,
           recipient_userId: selectFriendUserId
         }
         console.log("post rec", jsonData)
@@ -52,9 +53,9 @@ export default function BookClubBanner(props) {
   const handleSaveUnSaveBook = () => {
     auth.currentUser?.getIdToken(true).then(function(idToken) {
       if (props.isBookSavedData) {
-        handlePostFetch("unsave_book?token=" + idToken + "&book_key=" + props.bookData.book_id, "");
+        handlePostFetch("unsave_book?token=" + idToken + "&book_key=" + props.bookData.book_key, "");
       } else {
-        handlePostFetch("save_book?token=" + idToken + "&book_key=" + props.bookData.book_id, "");
+        handlePostFetch("save_book?token=" + idToken + "&book_key=" + props.bookData.book_key, "");
       }
     })
     props.setIsBookSavedData(!props.isBookSavedData);

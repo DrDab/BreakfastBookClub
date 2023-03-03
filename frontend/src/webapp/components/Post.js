@@ -10,9 +10,9 @@ import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link as RouterLink } from "react-router-dom";
-import { tagsList, avatarColorMap } from './Constants';
+import { tagsList } from './Constants';
 import { auth } from "../../FirebaseConfig";
-import { handleGetFetch, handlePostFetch } from './Utils'
+import { handleGetFetch, handlePostFetch, hashUserIdToColor } from './Utils'
 
 export default function Post(props) {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
@@ -57,7 +57,7 @@ export default function Post(props) {
   }
 
   let userProfileUrl = "/user-profile/" + props.post.user.userId;
-  let bookProfileUrl ="/book-club/" + props.post.book.book_id;
+  let bookProfileUrl ="/book-club/" + props.post.book.book_key;
 
   return (
     <Card elevation={0} className="post" sx={{display: deleteDisplay? 'none': ""}}>
@@ -67,7 +67,7 @@ export default function Post(props) {
             reloadDocument
             component={RouterLink}
             to={userProfileUrl}
-            sx={{ bgcolor: avatarColorMap.get(props.post.user.username), width: 50, height: 50, textDecoration: "none" }}
+            sx={{ bgcolor: hashUserIdToColor(props.post.user.userId), width: 50, height: 50, textDecoration: "none" }}
             aria-label={props.post.user.username + " avatar"}
           >
             {props.post.user.username.charAt(0)}
