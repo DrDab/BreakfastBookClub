@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import EggAltOutlinedIcon from '@mui/icons-material/EggAltOutlined';
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function LoggedOutAppBar() {
   return (

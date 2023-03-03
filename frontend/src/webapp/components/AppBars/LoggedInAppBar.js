@@ -16,11 +16,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import Logout from '@mui/icons-material/Logout';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import NotificationList from '../Lists/NotificationList';
 import Badge from '@mui/material/Badge';
-import { signOut } from "firebase/auth";
-import { auth } from "../../../FirebaseConfig"
+import { signOut } from 'firebase/auth';
+import { auth } from '../../../FirebaseConfig';
 import { handleGetFetch, hashUserIdToColor } from '../Utils';
 
 export default function LoggedInAppBar() {

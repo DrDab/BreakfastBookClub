@@ -7,11 +7,16 @@ import PeopleList from '../components/Lists/PeopleList';
 import BookList from '../components/Lists/BookList';
 import CreatePost from '../components/CreatePost';
 import PostList from '../components/Lists/PostList';
-import { handleGetFetch } from '../components/Utils';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import TabPanel from '../components/TabPanel';
+import { a11yProps, handleGetFetch } from '../components/Utils';
+
 
 export default function Home() {
   let loggedinUser = JSON.parse(sessionStorage.loggedinUser);
 
+  const [tabIndexValue, setTabIndexValue] = React.useState(0);
   const [homePostsData, setHomePostsData] = React.useState("");
   const [bookClubsJoinedData, setBookClubsJoinedData] = React.useState("");
   const [friendsData, setFriendsData] = React.useState("");
@@ -42,9 +47,18 @@ export default function Home() {
           isFetchPosts={isFetchPosts}
           bookClubs={bookClubsJoinedData}
         />
-      </Grid>
-      <Grid item xs={8}>
-        <PostList postsData={homePostsData} />
+        <Stack sx={{ marginBottom: '5rem' }} spacing={2}>
+          <Box>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="basic tabs example">
+                <Tab label="Your Feed" {...a11yProps(0)} />
+              </Tabs>
+            </Box>
+            <TabPanel value={tabIndexValue} index={0}>
+            <PostList postsData={homePostsData} />
+            </TabPanel>
+          </Box>
+        </Stack>
       </Grid>
       <Grid item xs={4}>
         <Stack spacing={2}>

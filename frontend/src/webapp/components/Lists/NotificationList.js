@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
-import Notification from '../Notification';
+import Notification from './ListItems/Notification';
 
 export default function NotificationList(props) {
 	return (
