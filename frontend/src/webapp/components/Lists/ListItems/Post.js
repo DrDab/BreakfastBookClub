@@ -24,7 +24,6 @@ export default function Post(props) {
   const [isPostLikedData, setIsPostLikedData] = React.useState(false);
   const [numberOfLikes, setNumberOfLikes] = React.useState(props.post.likes);
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
-  const [deleteDisplay, setDeleteDisplay] = React.useState(false);
 
   React.useEffect(() => {
     handleGetFetch("get_is_user_liked_posts?user_id=" + loggedinUser.uid + "&post_id=" + props.post.post_id).then((json) => {
@@ -36,14 +35,14 @@ export default function Post(props) {
     auth.currentUser?.getIdToken(true).then(function(idToken){
       if (isPostLikedData) {
         handlePostFetch("unlike_post?token=" + idToken + "&post_id=" + postId, "").then(() => {
-          setNumberOfLikes(numberOfLikes - 1);
           props.setIsFetchPosts(!props.isFetchPosts);
+          setNumberOfLikes(numberOfLikes - 1);
         });
         
       } else {
-        handlePostFetch("like_post?token=" + idToken + "&post_id=" + postId, "").then(() => {;
-          setNumberOfLikes(numberOfLikes + 1);
+        handlePostFetch("like_post?token=" + idToken + "&post_id=" + postId, "").then(() => {
           props.setIsFetchPosts(!props.isFetchPosts);
+          setNumberOfLikes(numberOfLikes + 1);
         });
       }
       setIsPostLikedData(!isPostLikedData);
@@ -55,7 +54,7 @@ export default function Post(props) {
     auth.currentUser?.getIdToken(true).then(function(idToken) {
       let route = "delete_post?token=" + idToken + "&postId=" + props.post.post_id;
       handlePostFetch(route, "").then(() => {
-        setDeleteDisplay(true);
+        props.setIsFetchPosts(!props.isFetchPosts);
       })
     })
   }
@@ -72,7 +71,7 @@ export default function Post(props) {
 
   return (
     <>
-    <Card elevation={0} className="post" sx={{display: deleteDisplay? 'none': ""}}>
+    <Card elevation={0} className="post">
       <CardHeader
         avatar={
           <Avatar
