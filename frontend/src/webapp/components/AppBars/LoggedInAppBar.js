@@ -29,6 +29,8 @@ export default function LoggedInAppBar() {
 
   const [recommendationData, setRecommendationData] = React.useState('');
   const [isFetchRecommendations, setIsFetchRecommendations] = React.useState(false);
+  const [recommendationDataLength, setRecommendationDataLength] = React.useState(0);
+  const [isFetchRecommendationsLength, setIsFetchRecommendationsLength] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState(null);
   const [anchorElNotifications, setAnchorElNotifications] = React.useState(null);
   const openNotifications = Boolean(anchorElNotifications);
@@ -54,6 +56,13 @@ export default function LoggedInAppBar() {
       setRecommendationData(recommendations);
     });
 }, [loggedinUser.uid, isFetchRecommendations]);
+
+
+React.useEffect(() => {
+  handleGetFetch("get_recommendations?recipient_userId=" + loggedinUser.uid).then((json) => {
+    setRecommendationDataLength(json.recommendations.length);
+  })
+}, [loggedinUser.uid, isFetchRecommendationsLength]);
 
   const handleLogOut = () => {
     signOut(auth);
@@ -99,7 +108,7 @@ export default function LoggedInAppBar() {
               onClick={(e) => setAnchorElNotifications(e.currentTarget)}
               sx={{width: 60, height: 60 }}
             >
-              <Badge badgeContent={recommendationData.length} color="error">
+              <Badge badgeContent={recommendationDataLength} color="error">
                 <NotificationsNoneOutlinedIcon />
               </Badge>
             </IconButton>
@@ -162,7 +171,11 @@ export default function LoggedInAppBar() {
         <Typography m={1} ml={2}>
           Notifications
         </Typography>
-        <NotificationList notificationData={recommendationData} />
+        <NotificationList 
+          notificationData={recommendationData}
+          setIsFetchRecommendationsLength={setIsFetchRecommendationsLength}
+          isFetchRecommendationsLength={isFetchRecommendationsLength}
+        />
       </Menu>
     </Box>
   );

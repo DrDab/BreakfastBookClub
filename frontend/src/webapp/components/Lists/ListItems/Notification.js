@@ -23,6 +23,7 @@ export default function Notification(props) {
                   "&book_key=" + props.notif.book.book_key;
 
       handlePostFetch(route, "").then(() => {
+        props.setIsFetchRecommendationsLength(!props.isFetchRecommendationsLength);
         setDeleteDisplay(true);
       })
     })
