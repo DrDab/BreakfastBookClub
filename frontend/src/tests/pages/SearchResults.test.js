@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import SearchResults from '../../webapp/pages/SearchResults';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
 const mockLoggedInUser =  {
   "uid": "EHDvyZymtRSbciB7uXHv1mN5O9r2",
@@ -29,7 +29,6 @@ describe("Renders Search page", () => {
 
   it("Renders search results", async () => {
     sessionStorage.setItem('loggedinUser', JSON.stringify(mockLoggedInUser));
-    sessionStorage.setItem('searchValue', JSON.stringify(mockSearchValue));
 
     const makeFetchResponse = value => ({ json: async() => value })
     const mockFetch = jest.fn()
@@ -37,9 +36,12 @@ describe("Renders Search page", () => {
     global.fetch = mockFetch
 
     await act(async () => {
+      const route = "/search-results/" + mockSearchValue;
       render(
-        <MemoryRouter>
-          <SearchResults />
+        <MemoryRouter initialEntries={[route]}>
+          <Routes>
+            <Route path="search-results/:searchTerm" element={<SearchResults />}/>
+          </Routes>
         </MemoryRouter>
       )
     });
