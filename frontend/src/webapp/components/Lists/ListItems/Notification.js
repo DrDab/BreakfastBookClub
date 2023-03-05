@@ -50,8 +50,8 @@ export default function Notification(props) {
       </ListItemAvatar>
       <ListItemText>
         <Stack sx={{display: 'flex', alignItems: 'center'}} direction="row" justifyContent="space-between" m={0.5}>
-          <Typography noWrap >
-            <a href={userProfileUrl}>{props.notif.recommender.username}</a> recommended <a href={bookProfileUrl}>{props.notif.book.title}</a>
+          <Typography noWrap>
+            <Typography component={RouterLink} to={userProfileUrl}>{props.notif.recommender.username}</Typography> recommended <Typography component={RouterLink} to={bookProfileUrl}>{props.notif.book.title}</Typography>
           </Typography>
           <IconButton aria-label="delete-notif" onClick={handleDeleteNotif}>
             <DeleteIcon fontSize="small"/>

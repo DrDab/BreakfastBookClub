@@ -92,7 +92,7 @@ export default function Post(props) {
           }
         title={
           <Typography gutterBottom variant="p4">
-            <a href={userProfileUrl}>{props.post.user.username}</a> in the <a href={bookProfileUrl}>{props.post.book.title}</a> Book Club
+            <Typography component={RouterLink} to={userProfileUrl}>{props.post.user.username}</Typography> in the <Typography component={RouterLink} to={bookProfileUrl}>{props.post.book.title}</Typography> Book Club
           </Typography>
         }
         subheader={
