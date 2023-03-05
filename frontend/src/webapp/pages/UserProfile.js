@@ -39,7 +39,6 @@ export default function UserProfile() {
 
   React.useEffect(() => {
     handleGetFetch("get_user?userId=" + uid).then((json) => {
-      console.log("get user")
       setUserProfileData(json.user);
     });
 
