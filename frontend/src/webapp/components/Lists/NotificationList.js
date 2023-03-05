@@ -11,7 +11,14 @@ export default function NotificationList(props) {
           No notifications
         </Typography> :
           props.notificationData.map((notif, index) => {
-            return (<Notification key={index} notif={notif} />)
+            return (
+              <Notification 
+                key={index}
+                notif={notif}
+                setIsFetchRecommendationsLength={props.setIsFetchRecommendationsLength}
+                isFetchRecommendationsLength={props.isFetchRecommendationsLength}
+              />
+            )
           })
   );
 }

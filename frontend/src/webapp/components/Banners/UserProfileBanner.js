@@ -18,7 +18,7 @@ export default function UserProfileBanner(props) {
 
   const [showFriendsModal, setShowFriendsModal] = React.useState(false);
   const [showEditBioModal, setShowEditBioModal] = React.useState(false);
-  const [bio, setBio] = React.useState(props.clickedUserData.bio? props.clickedUserData.bio : "");
+  const [bio, setBio] = React.useState("");
   const [isOverBioLength, setIsOverBioLength] = React.useState(false);
 
   React.useEffect(() => {
@@ -91,7 +91,10 @@ export default function UserProfileBanner(props) {
                     disableElevation
                     variant="contained"
                     size="small"
-                    onClick={() => setShowEditBioModal(true)}
+                    onClick={() => {
+                      setShowEditBioModal(true);
+                      setBio(props.clickedUserData.bio? props.clickedUserData.bio : "");
+                    }}
                   >
                     Edit Profile
                   </Button>:
