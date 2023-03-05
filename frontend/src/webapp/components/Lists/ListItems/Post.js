@@ -75,7 +75,6 @@ export default function Post(props) {
       <CardHeader
         avatar={
           <Avatar
-            reloadDocument
             component={RouterLink}
             to={userProfileUrl}
             sx={{ bgcolor: hashUserIdToColor(props.post.user.userId), width: 50, height: 50, textDecoration: "none" }}

@@ -18,7 +18,6 @@ export default function BookList(props) {
         props.bookData.map((book, index) => {
           return (
             <ListItem
-              reloadDocument
               component={RouterLink}
               to={"/book-club/" + (props.isFromOpenLibrary? book.key.split("/")[2] : book.book_key)} 
               className="list-item"

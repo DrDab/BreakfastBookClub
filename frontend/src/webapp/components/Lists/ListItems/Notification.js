@@ -35,7 +35,6 @@ export default function Notification(props) {
     >
       <ListItemAvatar>
         <Avatar
-          reloadDocument
           component={RouterLink}
           to={userProfileUrl}
           sx={{ bgcolor: hashUserIdToColor(props.notif.recommender.uid),
