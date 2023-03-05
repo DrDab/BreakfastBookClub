@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "homepage": "https:/DrDab.github.io/BreakfastBookClub",
+  "homepage": "https://DrDab.github.io/BreakfastBookClub",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.6",
