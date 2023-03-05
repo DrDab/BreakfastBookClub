@@ -8,28 +8,30 @@ import PeopleList from '../components/Lists/PeopleList';
 import Stack from '@mui/material/Stack';
 import TabPanel from '../components/TabPanel';
 import { a11yProps, formatOpenLibraryData, handleGetFetchBase, handleGetFetch } from '../components/Utils';
+import { useParams } from 'react-router-dom';
 
 export default function SearchResults() {
   const [tabIndexValue, setTabIndexValue] = React.useState(0);
   const [searchResultBookData, setSearchResultBookData] = useState("");
   const [searchResultUsersData, setSearchResultUsersData] = useState("");
+  let { searchTerm } = useParams();
   
   useEffect(() => {
-    let route = sessionStorage.searchValue.replace(/ /g, '+') + "&limit=20";
-    let url = "http://openlibrary.org/search.json?q=" + route;
+    let route = searchTerm.replace(/ /g, '+') + "&limit=20";
+    let url = "https://openlibrary.org/search.json?q=" + route;
     handleGetFetchBase(url).then((json) => {
       setSearchResultBookData(formatOpenLibraryData(json))
     })
 
-    handleGetFetch("search_users?user_searchterm=" + sessionStorage.searchValue).then((json) => {
+    handleGetFetch("search_users?user_searchterm=" + searchTerm).then((json) => {
       setSearchResultUsersData(json.users);
     });
-  }, []);
+  }, [searchTerm]);
 
   return (
     <Stack sx={{ width: '70%', margin: '0 auto', marginBottom: '5rem' }} spacing={2}>
       <Typography variant="body2">
-        {"Showing search results for '" + sessionStorage.searchValue + "'"}
+        {"Showing search results for '" + searchTerm + "'"}
       </Typography>
       <Box sx={{ width: '70%', margin: '0 auto' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

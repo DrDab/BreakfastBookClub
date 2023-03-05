@@ -19,7 +19,6 @@ export default function PeopleList(props) {
         props.peopleData.map((person, index) => {
           return (
             <ListItem
-              reloadDocument
               component={RouterLink}
               to={"/user-profile/" + person.uid}
               className="list-item"

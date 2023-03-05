@@ -81,7 +81,6 @@ export default function CreatePost(props) {
         <CardContent>
           <Stack direction="row" spacing={2}>
             <Avatar
-              reloadDocument
               component={RouterLink}
               to={"/user-profile/" + loggedinUser.uid}
               sx={{ bgcolor: hashUserIdToColor(loggedinUser.uid), width: 50, height: 50, textDecoration: "none" }}

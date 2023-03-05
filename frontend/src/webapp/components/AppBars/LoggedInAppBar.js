@@ -55,16 +55,6 @@ export default function LoggedInAppBar() {
     });
 }, [loggedinUser.uid, isFetchRecommendations]);
 
-
-
-
-  // search
-  const handleSearchSubmission = () => {
-    sessionStorage.setItem('searchValue', searchValue);
-    navigate("/search-results");
-  };
-
-  // log out
   const handleLogOut = () => {
     signOut(auth);
     sessionStorage.setItem('loggedinUser', JSON.stringify("loggedout"));
@@ -88,7 +78,7 @@ export default function LoggedInAppBar() {
             <div className='search-icon'>
               <SearchIcon />
             </div>
-            <form onSubmit={handleSearchSubmission}>
+            <form onSubmit={() => navigate("/search-results/" + searchValue)}>
               <InputBase
                 className='search-input'
                 placeholder="Search…"
@@ -141,7 +131,7 @@ export default function LoggedInAppBar() {
           },
         }}
       >
-        <MenuItem reloadDocument component={RouterLink} to={"/user-profile/" + loggedinUser.uid}>
+        <MenuItem component={RouterLink} to={"/user-profile/" + loggedinUser.uid}>
           <ListItemIcon>
             <AccountCircle fontSize="small" />
           </ListItemIcon>
