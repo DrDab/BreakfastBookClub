@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import net.sourceforge.argparse4j.ArgumentParsers;
+import net.sourceforge.argparse4j.impl.Arguments;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
@@ -52,6 +53,8 @@ public class BCServerMain {
     parser.addArgument("--mysql_password").setDefault("bcapiserver")
         .help("The password on the MySQL server to use.");
 
+    parser.addArgument("--secure").action(Arguments.storeTrue()).help("Whether to enable SSL");
+
     Namespace ns = null;
     try {
       ns = parser.parseArgs(args);
@@ -72,6 +75,11 @@ public class BCServerMain {
       System.exit(1);
     }
 
+    if (ns.getBoolean("secure")) {
+      System.out.printf("Running in secure mode! JKS file: \"%s\"\n", System.getProperty("bc.jks_file"));
+      Spark.secure(System.getProperty("bc.jks_file"), System.getProperty("bc.jks_password"), null, null);
+    }
+
     BCCORSFilter corsFilter = new BCCORSFilter();
     corsFilter.apply();
 
@@ -89,7 +97,6 @@ public class BCServerMain {
     // user saves book
     Spark.post("/api/save_book", new SaveBook(fbApp, sqlConn));
 
-
     Spark.post("/api/like_post", new LikePost(fbApp, sqlConn));
     Spark.post("/api/unlike_post", new UnlikePost(fbApp, sqlConn));
     Spark.get("/api/get_liked_posts", new GetLikedPosts(fbApp, sqlConn));
@@ -99,7 +106,7 @@ public class BCServerMain {
     Spark.post("/api/update_user", new SetUserProfile(fbApp, sqlConn));
 
     Spark.get("/api/get_members", new GetMembers(fbApp, sqlConn));
-    
+
     Spark.post("/api/join_club", new JoinClub(fbApp, sqlConn));
     Spark.post("/api/unjoin_club", new UnjoinClub(fbApp, sqlConn));
     Spark.get("/api/get_subscribed_clubs", new GetSubscribedClubs(fbApp, sqlConn));
