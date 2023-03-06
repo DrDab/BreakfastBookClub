@@ -31,12 +31,12 @@ export const handleGetFetchBase = async (url) => {
 }
 
 export const handleGetFetch = async (route) => {
-  let url = "http://34.145.15.228:4567/api/" + route;
+  let url = "https://34.145.15.228:4567/api/" + route;
   return handleGetFetchBase(url);
 }
 
 export const handlePostFetch = async (route, jsonData) => {
-  let url = "http://34.145.15.228:4567/api/" + route;
+  let url = "https://34.145.15.228:4567/api/" + route;
   console.log("POST " + url);
 
   try {
