@@ -53,6 +53,9 @@ public class BCServerMain {
     parser.addArgument("--mysql_password").setDefault("bcapiserver")
         .help("The password on the MySQL server to use.");
 
+    parser.addArgument("--jks_file").help("The JKS file to use for SSL");
+    parser.addArgument("--jks_password").help("The JKS password to use for SSL");
+
     parser.addArgument("--secure").action(Arguments.storeTrue()).help("Whether to enable SSL");
 
     Namespace ns = null;
@@ -76,8 +79,8 @@ public class BCServerMain {
     }
 
     if (ns.getBoolean("secure")) {
-      System.out.printf("Running in secure mode! JKS file: \"%s\"\n", System.getProperty("bc.jks_file"));
-      Spark.secure(System.getProperty("bc.jks_file"), System.getProperty("bc.jks_password"), null, null);
+      System.out.printf("Running in secure mode! JKS file: \"%s\"\n", ns.getString("jks_file"));
+      Spark.secure(ns.getString("jks_file"), ns.getString("jks_password"), null, null);
     }
 
     BCCORSFilter corsFilter = new BCCORSFilter();
