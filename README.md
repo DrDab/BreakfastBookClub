@@ -7,7 +7,7 @@ Breakfast Book Club is a social networking website for literature enthusiasts. U
 https://drdab.github.io/BreakfastBookClub/
 </blockquote>
 
+### Documentation:
 [User Documentation](https://github.com/DrDab/BreakfastBookClub/blob/main/documentation/User_Documentation.md) 
-
 
 [Developer Documentation](https://github.com/DrDab/BreakfastBookClub/blob/main/documentation/Developer_Documentation.md)
