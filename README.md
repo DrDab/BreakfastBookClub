@@ -4,18 +4,81 @@
 
 ### Description:
 
-Breakfast Book Club is a social networking website for literature enthusiasts. Users can customize their profiles, join book clubs for the books they enjoy to receive user-generated content that other users post to these book clubs, make friends with other users on Breakfast Book Club, and make posts to book clubs for the books they enjoy. A user would want to use it to share theories, reviews and ideas about their favorite books and books that they are reading with their friends who are also reading those books.
+Breakfast Book Club is a social networking website for literature enthusiasts. Users can customize their profiles, join book clubs, save books to their reading list, make posts within the book club, and add friends. A user would want to use it to share theories, spoilers and ideas about books with other readers.
+
+
+### How to install the software, How to run the software
+
+Go to:
+<blockquote>
+https://drdab.github.io/BreakfastBookClub/
+</blockquote>
+
+Create account or log in with:
+<blockquote>
+Email: akha1229@gmail.com
+
+Password: 123456
+</blockquote>
+
+### How to use the software
+
+#### Functionalities:
+
+- Create an account 
+- Login/logout of account
+
+
+- Search for book clubs and users in search bar
+- View book clubs matching the search term in search results page under the "Books" tab
+- View users matching the search term in search results page under the "People" tab
+
+
+- Make post about a book from home page, your user profile page, and book club profile page
+- Delete your own posts
+- Like/unlike posts
+- View your custom feed (Posts made by your friends or in books clubs that you have joined) on home page under the "Your Feed" tab
+- View new posts on home page under the "Discover New" tab
+
+
+- Edit bio in your user profile
+- View other user profiles 
+- View posts made by user in user profile under the "Posts" tab
+- View posts liked by user in user profile under the "Liked Posts" tab
+- View book clubs that the user has joined
+- View books that the user has saved
+- View friends of user
+- Add/remove user as friend 
 
 
 
-### How to install the software
+- View book club profiles
+- View posts made in a specific book club
+- View members of book club
+- Join/unjoin book club
+- Save/unsave book
+- Recommend book to a friend
+- View recommendations from friends in notifications 
+- Delete recommendations from notifications
 
-#### 1. Clone down repository
+
+
+### How to report a bug
+Go to the issues tab within the breakfast book club repository. Click “New issue” and “Get started” on the bug report. Fill out the bug report template. Click “Submit new issue". As of right now, we have no known bugs.
+
+
+## Developer Documentation
+
+### How to obtain the source code
+
+#### Clone down repository
 ```
 git clone https://github.com/DrDab/BreakfastBookClub.git
 ```
 
-#### 2. Set up backend
+### How to build the software
+
+#### 1. Set up backend
 
 Go to the backend folder
 ```
@@ -53,7 +116,7 @@ Run backend
 ./run-dev-server --mysql_addr 34.145.15.228 --svc_acct bc-adminsdk-svcacct.json
 ```
 
-#### 3. Set up frontend
+#### 2. Set up frontend
 
 In a seperate terminal, go to the frontend folder
 ```
@@ -84,76 +147,6 @@ npm start
 ```
 
 The backend must be running in order for frontend to log in or display data.
-
-### How to use the software
-
-Once the backend and frontend are up and running, from http://localhost:3000/, log in with either account: 
-
-<blockquote>
-Email: akha1229@gmail.com
-
-Password: 123456
-</blockquote>
-
-<blockquote>
-Email: duvictor514@gmail.com
-
-Password: F0xg0fl00f
-</blockquote>
-
-#### Functionalities complete: 
-
-- Log in using one of the logins provided 
-- Log out by clicking the profile icon in the upper right corner
-
-- Search for book clubs to join from the search input in the app bar (Every book is it's own book club)
-
-- Make post about a book by clicking "Write a post" from the home page, current user's profile page or book club profile page
-
-- View all posts from home page
-
-- View user profiles 
-- Edit bio in logged in user's profile
-- View posts made by user in user's profile
-- View posts liked by user in user's profile
-
-- View book club profiles
-- View posts made in a specific book club
-- View members of book club ("The terminal list" by "Carr, Jack" is the only one with a member)
-
-- like posts
-- unlike posts
-
-
-#### Functionalities in progress (Currently hard coded with temporary data): 
-
-Sign up page:
-- Creating an account
-
-From Home page:
-- View trending readers
-
-From Book club profile page:
-- Join a book club by clicking "Join the club"
-- Recommend book to a friend by clicking "Recommend"
-- Save a book by clicking "Save"
-
-From User profile page:
-- Add friend by clicking "Add friend" 
-- View friends of user by clicking "### Friends"
-- View book clubs that the user has joined
-- View books that the user has saved
-
-
-### How to report a bug
-Go to the issues tab within the breakfast book club repository. Click “New issue” and “Get started” on the bug report. Fill out the bug report template. Click “Submit new issue". As of right now, we have no known bugs.
-
-
-
-
-
-## Developer Documentation
-### [How to obtain the source code and How to build the software](#How-to-install-the-software)
 
 ### Layout and Structure
 API
@@ -214,13 +207,16 @@ Tests are separated based on the file being tested. Test files must follow the n
 
 Run backend and frontend tests locally before pushing code to a remote branch by following the instructions in the section [How to test the software](#How-to-test-the-software).
 
-Currently no version number needs to be updated in the backend.
+Currently no version number needs to be updated in the backend or frontend
 
-Build a release of the software
+Build a release of the backend. The release JAR file can be found in backend/BCAPIServer/build/libs.
 ```
  ./gradlew shadowJar
 ```
-The release JAR file can be found in backend/BCAPIServer/build/libs
- 
 
+Build a release of the frontend. This will build and deploy the frontend to https://drdab.github.io/BreakfastBookClub/
 
+```
+cd breakfastbookclub/frontend
+npm run deploy
+```
