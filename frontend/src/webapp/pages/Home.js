@@ -55,15 +55,15 @@ export default function Home() {
           <Box>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <Tabs value={tabIndexValue} onChange={(e, newIndexValue) => setTabIndexValue(newIndexValue)} aria-label="tabs">
-                <Tab label="Your Feed" {...a11yProps(0)} />
-                <Tab label="Discover New" {...a11yProps(1)} />
+                <Tab label="Discover New" {...a11yProps(0)} />
+                <Tab label="Your Feed" {...a11yProps(1)} />
               </Tabs>
             </Box>
             <TabPanel value={tabIndexValue} index={0}>
-              <PostList postsData={feedPostsData} setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
+              <PostList postsData={newPostsData} setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
             </TabPanel>
             <TabPanel value={tabIndexValue} index={1}>
-              <PostList postsData={newPostsData} setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
+              <PostList postsData={feedPostsData} setIsFetchPosts={setIsFetchPosts} isFetchPosts={isFetchPosts} />
             </TabPanel>
           </Box>
         </Stack>

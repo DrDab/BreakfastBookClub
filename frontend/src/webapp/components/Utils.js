@@ -37,8 +37,6 @@ export const handleGetFetch = async (route) => {
 
 export const handlePostFetch = async (route, jsonData) => {
   let url = "https://34.145.15.228:4567/api/" + route;
-  console.log("POST " + url);
-
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -77,9 +75,9 @@ export const hashUserIdToColor = (userId) => {
     g = (g + 30) % 255;
     b = (b + 20) % 255;
   } else {
-    r = (r + 10) % 255;
-    g = (g + 20) % 255;
-    b = (b + 50) % 255;
+    r = (r + 20) % 255;
+    g = (g + 30) % 255;
+    b = (b + 60) % 255;
   }
   return rgbToHex(r, g, b);
 }
