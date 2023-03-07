@@ -43,7 +43,6 @@ export default function BookClubBanner(props) {
           book_key: props.bookData.book_key,
           recipient_userId: selectFriendUserId
         }
-        console.log("post rec", jsonData)
         handlePostFetch("recommend_book", jsonData);
       })
       clearFormValues();

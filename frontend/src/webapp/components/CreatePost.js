@@ -55,17 +55,13 @@ export default function CreatePost(props) {
       setShowPostModal(false);
 
       auth.currentUser?.getIdToken(true).then(function(idToken) {
-
         let jsonData = {
           token: idToken,
           book_key: bookClubId,
           title: title,
           body: body,
           ...indexOfTagSelected > -1 && {tag: tagsList[indexOfTagSelected].label}
-        }
-
-        console.log("creating post", JSON.stringify(jsonData));
-
+        };
         handlePostFetch("make_post", jsonData).then(() => {
           props.setIsFetchPosts(!props.isFetchPosts);
         })
