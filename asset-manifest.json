@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/BreakfastBookClub/static/css/main.40c85894.css",
-    "main.js": "/BreakfastBookClub/static/js/main.e2647b5a.js",
+    "main.js": "/BreakfastBookClub/static/js/main.54f0f7a6.js",
     "static/js/787.cda612ba.chunk.js": "/BreakfastBookClub/static/js/787.cda612ba.chunk.js",
     "static/media/roboto-all-500-normal.woff": "/BreakfastBookClub/static/media/roboto-all-500-normal.0ab669b7a0d19b178f57.woff",
     "static/media/roboto-all-700-normal.woff": "/BreakfastBookClub/static/media/roboto-all-700-normal.a457fde362a540fcadff.woff",
@@ -37,11 +37,11 @@
     "static/media/roboto-greek-ext-700-normal.woff2": "/BreakfastBookClub/static/media/roboto-greek-ext-700-normal.bd9854c751441ccc1a70.woff2",
     "index.html": "/BreakfastBookClub/index.html",
     "main.40c85894.css.map": "/BreakfastBookClub/static/css/main.40c85894.css.map",
-    "main.e2647b5a.js.map": "/BreakfastBookClub/static/js/main.e2647b5a.js.map",
+    "main.54f0f7a6.js.map": "/BreakfastBookClub/static/js/main.54f0f7a6.js.map",
     "787.cda612ba.chunk.js.map": "/BreakfastBookClub/static/js/787.cda612ba.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.40c85894.css",
-    "static/js/main.e2647b5a.js"
+    "static/js/main.54f0f7a6.js"
   ]
 }
