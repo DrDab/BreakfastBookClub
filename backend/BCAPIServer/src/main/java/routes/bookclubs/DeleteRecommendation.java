@@ -56,7 +56,6 @@ public class DeleteRecommendation implements Route {
     Connection sqlConn = sqlInitUtil.getSQLConnection();
     UserResult result = new User(recipient_userId, sqlConn).deleteRecommendation(sender_id,
         bookKey);
-    sqlConn.close();
 
     if (result != UserResult.SUCCESS) {
       respJson.addProperty("status", "failure");

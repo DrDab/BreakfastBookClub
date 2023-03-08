@@ -41,7 +41,6 @@ public class GetSubscribedClubs implements Route {
 
         Connection sqlConn = sqlInitUtil.getSQLConnection();
         List<Book> clubs = new User(searchUID, sqlConn).allClubs(new Books(sqlConn));
-        sqlConn.close();
 
         respJson.add("books", new Gson().toJsonTree(clubs));
         respJson.addProperty("status", "success");

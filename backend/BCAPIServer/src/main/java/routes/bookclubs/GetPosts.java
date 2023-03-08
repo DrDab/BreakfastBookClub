@@ -49,7 +49,6 @@ public class GetPosts implements Route {
                 : new Books(sqlConn).listBookPosts(searchBookKey);
 
     JsonArray postsArr = BCGsonUtils.getPostsJsonArrFromList(new Books(sqlConn), fbApp, posts);
-    sqlConn.close();
 
     respJson.add("posts", postsArr);
     respJson.addProperty("status", "success");

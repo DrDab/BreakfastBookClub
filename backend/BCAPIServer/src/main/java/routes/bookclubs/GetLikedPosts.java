@@ -48,7 +48,6 @@ public class GetLikedPosts implements Route {
         respJson.add("posts",
             BCGsonUtils.getPostsJsonArrFromList(new Books(sqlConn), fbApp, posts));
       }
-      sqlConn.close();
     } catch (SQLException e) {
       e.printStackTrace();
       respJson.addProperty("status", "failure");

@@ -50,7 +50,6 @@ public class DeletePost implements Route {
     String userID = decodedTokenSender.getUid();
     Connection sqlConn = sqlInitUtil.getSQLConnection();
     UserResult result = new Posts(sqlConn).deletePost(userID, postID);
-    sqlConn.close();
     if (result != UserResult.SUCCESS) {
       respJson.addProperty("status", "failure");
       respJson.addProperty("failure_reason", result.name());

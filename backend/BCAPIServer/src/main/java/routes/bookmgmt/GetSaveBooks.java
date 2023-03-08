@@ -38,7 +38,6 @@ public class GetSaveBooks implements Route {
     Books booksDAO = new Books(sqlConn);
     Map<String, Book> requestBookMap = new HashMap<>();
     List<String> bookIDs = booksDAO.getSavedBooks(userID);
-    sqlConn.close();
 
     List<Book> books = new ArrayList<>();
     for (int i = 0; i < bookIDs.size(); i++) {

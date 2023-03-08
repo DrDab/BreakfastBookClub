@@ -85,7 +85,6 @@ public class MakePost implements Route {
     User user = new User(uid, sqlConn);
     UserResult result = user.bookPost(bookKey, postTitle, postBody,
         bodyJson.has("tag") ? bodyJson.get("tag").getAsString() : "", postId, date, 0);
-    sqlConn.close();
 
     if (result != UserResult.SUCCESS) {
       respJson.addProperty("status", "failure");

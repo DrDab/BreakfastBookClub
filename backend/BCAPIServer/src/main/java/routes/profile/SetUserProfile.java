@@ -50,7 +50,6 @@ public class SetUserProfile implements Route {
       if (createRes != UserResult.SUCCESS) {
         respJson.addProperty("status", "failure");
         respJson.addProperty("failure_reason", createRes.name());
-        sqlConn.close();
         return respJson.toString() + "\n";
       }
     }
@@ -61,12 +60,10 @@ public class SetUserProfile implements Route {
     if (result != UserResult.SUCCESS) {
       respJson.addProperty("status", "failure");
       respJson.addProperty("failure_reason", result.name());
-      sqlConn.close();
       return respJson.toString() + "\n";
     }
 
     respJson.addProperty("status", "success");
-    sqlConn.close();
     return respJson.toString() + "\n";
   }
 }

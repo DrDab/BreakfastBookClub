@@ -40,7 +40,6 @@ public class GetIsUserLikedPost implements Route {
     try {
       Connection sqlConn = sqlInitUtil.getSQLConnection();
       int isUserLikedPost = new User(userId, sqlConn).getNumLikesFromUser(postId);
-      sqlConn.close();
       respJson.addProperty("status", "success");
       respJson.addProperty("isUserLikedPost", String.valueOf(isUserLikedPost));
     } catch (SQLException e) {

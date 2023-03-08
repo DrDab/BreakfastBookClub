@@ -45,7 +45,6 @@ public class GetMembers implements Route {
       if (username == null) {
         respJson.addProperty("status", "failure");
         respJson.addProperty("failure_reason", "Failed to resolve username");
-        sqlConn.close();
         return respJson.toString() + "\n";
       }
 
@@ -57,7 +56,6 @@ public class GetMembers implements Route {
 
     respJson.add("members", members);
     respJson.addProperty("status", "success");
-    sqlConn.close();
     return respJson.toString() + "\n";
   }
 }

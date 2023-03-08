@@ -54,7 +54,6 @@ public class UnlikePost implements Route {
     try {
       Connection sqlConn = sqlInitUtil.getSQLConnection();
       UserResult res = new User(uid, sqlConn).unlikePost(postId);
-      sqlConn.close();
       respJson.addProperty("status", res == UserResult.SUCCESS ? "success" : "failure");
       if (res != UserResult.SUCCESS) {
         respJson.addProperty("failure_reason", String.valueOf(res));

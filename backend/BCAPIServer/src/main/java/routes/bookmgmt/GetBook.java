@@ -34,7 +34,6 @@ public class GetBook implements Route {
     Connection sqlConn = sqlInitUtil.getSQLConnection();
     Book bookObj = OpenLibraryAPI.getBookByKeyWithCache(new Books(sqlConn), new HashMap<>(),
         searchBookKey);
-    sqlConn.close();
     
     if (bookObj == null) {
       respJson.addProperty("status", "failure");

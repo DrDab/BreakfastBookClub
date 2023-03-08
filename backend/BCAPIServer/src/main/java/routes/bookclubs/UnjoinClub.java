@@ -51,7 +51,6 @@ public class UnjoinClub implements Route {
 
     Connection sqlConn = sqlInitUtil.getSQLConnection();
     UserResult result = new User(uid, sqlConn).leaveClub(bookKey);
-    sqlConn.close();
 
     if (result == UserResult.INVALID) {
       respJson.addProperty("status", "failure");

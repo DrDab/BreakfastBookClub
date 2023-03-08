@@ -46,7 +46,6 @@ public class GetUserProfile implements Route {
         new UserProfile(searchUserId, username, null, null)) :
         new Gson().toJsonTree(profile));
 
-    sqlConn.close();
     respJson.addProperty("status", "success");
     return respJson.toString() + "\n";
   }

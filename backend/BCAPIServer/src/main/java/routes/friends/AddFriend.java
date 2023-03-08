@@ -52,7 +52,6 @@ public class AddFriend implements Route {
     } catch (FirebaseAuthException e) {
       respJson.addProperty("status", "failure");
       respJson.addProperty("failure_reason", String.valueOf(e.getAuthErrorCode()));
-      sqlConn.close();;
       return respJson.toString() + "\n";
     }
 
@@ -62,11 +61,8 @@ public class AddFriend implements Route {
     if (result != UserResult.SUCCESS) {
       respJson.addProperty("status", "failure");
       respJson.addProperty("failure_reason", result.name());
-      sqlConn.close();
       return respJson.toString() + "\n";
     }
-
-    sqlConn.close();
 
     respJson.addProperty("status", "success");
     return respJson.toString() + "\n";

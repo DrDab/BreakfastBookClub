@@ -71,7 +71,6 @@ public class ListFeed implements Route {
     Books books = new Books(sqlConn);
 
     JsonArray postsArr = BCGsonUtils.getPostsJsonArrFromList(books, fbApp, user.getUserFeedPosts());
-    sqlConn.close();
     respJson.add("posts", postsArr);
     respJson.addProperty("status", "success");
     return respJson;

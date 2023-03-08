@@ -48,7 +48,6 @@ public class ListFriends implements Route {
       if (friendUsername == null) {
         respJson.addProperty("status", "failure");
         respJson.addProperty("failure_reason", "Failed to resolve username");
-        sqlConn.close();
         return respJson.toString() + "\n";
       }
 
@@ -58,7 +57,6 @@ public class ListFriends implements Route {
           new Gson().toJsonTree(profile));
     }
 
-    sqlConn.close();
     respJson.add("friends", friends);
     respJson.addProperty("status", "success");
     return respJson.toString() + "\n";

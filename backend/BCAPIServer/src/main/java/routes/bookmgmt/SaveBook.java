@@ -51,7 +51,6 @@ public class SaveBook implements Route {
     String user = decodedTokenSender.getUid();
     Connection sqlConn = sqlInitUtil.getSQLConnection();
     UserResult result = new Books(sqlConn).saveBook(user, bookKey);
-    sqlConn.close();
 
     if (result != UserResult.SUCCESS) {
       respJson.addProperty("status", "failure");

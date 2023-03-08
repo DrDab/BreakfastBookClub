@@ -67,7 +67,6 @@ public class RecommendBook implements Route {
     User sender = new User(senderUsername, sqlConn);
     User recipient = new User(recipientUsername, sqlConn);
     UserResult result = sender.recommend(recipient, bookKey);
-    sqlConn.close();
 
     if (result != UserResult.SUCCESS) {
       respJson.addProperty("status", "failure");

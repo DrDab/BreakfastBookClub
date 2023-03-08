@@ -51,7 +51,6 @@ public class JoinClub implements Route {
         String uid = decodedToken.getUid();
         Connection sqlConn = sqlInitUtil.getSQLConnection();
         UserResult result = new User(uid, sqlConn).joinClub(bookKey);
-        sqlConn.close();
 
         if (result == UserResult.INVALID) {
             respJson.addProperty("status", "failure");

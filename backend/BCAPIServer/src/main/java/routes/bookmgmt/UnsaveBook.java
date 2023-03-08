@@ -49,7 +49,6 @@ public class UnsaveBook implements Route {
     String user = decodedTokenSender.getUid();
     Connection sqlConn = sqlInitUtil.getSQLConnection();
     UserResult result = new Books(sqlConn).unsaveBook(user, book_key);
-    sqlConn.close();
     if (result != UserResult.SUCCESS) {
       respJson.addProperty("status", "failure");
       respJson.addProperty("failure_reason", result.name());
