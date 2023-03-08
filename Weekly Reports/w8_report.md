@@ -40,8 +40,11 @@
   Zaynab Khan:
   - Filmed final.
 
+  Victor Du:
+  - Hosted backend server on Google Cloud, made both frontend and backend live on the Internet, ironed out some less obvious bugs.
+
 - Goals:
 
-  Zaynab Khan:
+  Zaynab Khan, Victor Du, Andrea Ha, Amanda Ha, Josie Thompson:
   - Do the reflection and team survey.
 
