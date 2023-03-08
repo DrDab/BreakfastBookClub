@@ -16,15 +16,16 @@ import types.BookPost;
 import utils.BCGsonUtils;
 import utils.FirebaseUtils;
 import utils.OpenLibraryAPI;
+import utils.SqlInitUtil;
 
 public class GetPosts implements Route {
 
   private FirebaseApp fbApp;
-  private Connection sqlConn;
+  private SqlInitUtil sqlInitUtil;
 
-  public GetPosts(FirebaseApp fbApp, Connection sqlConn) {
+  public GetPosts(FirebaseApp fbApp, SqlInitUtil sqlInitUtil) {
     this.fbApp = fbApp;
-    this.sqlConn = sqlConn;
+    this.sqlInitUtil = sqlInitUtil;
   }
 
   @Override
@@ -40,12 +41,15 @@ public class GetPosts implements Route {
       return respJson.toString() + "\n";
     }
 
+    Connection sqlConn = sqlInitUtil.getSQLConnection();
+
     List<BookPost> posts =
         (searchUID == null && searchBookKey == null) ? new Posts(sqlConn).listAllPosts() :
             searchUID != null ? new User(searchUID, sqlConn).getUserPosts()
                 : new Books(sqlConn).listBookPosts(searchBookKey);
 
     JsonArray postsArr = BCGsonUtils.getPostsJsonArrFromList(new Books(sqlConn), fbApp, posts);
+    sqlConn.close();
 
     respJson.add("posts", postsArr);
     respJson.addProperty("status", "success");

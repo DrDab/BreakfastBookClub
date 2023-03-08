@@ -13,15 +13,16 @@ import java.sql.SQLException;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import utils.SqlInitUtil;
 
 public class UnlikePost implements Route {
 
   private FirebaseApp fbApp;
-  private Connection sqlConn;
+  private SqlInitUtil sqlInitUtil;
 
-  public UnlikePost(FirebaseApp fbApp, Connection sqlConn) {
+  public UnlikePost(FirebaseApp fbApp, SqlInitUtil sqlInitUtil) {
     this.fbApp = fbApp;
-    this.sqlConn = sqlConn;
+    this.sqlInitUtil = sqlInitUtil;
   }
 
   @Override
@@ -51,7 +52,9 @@ public class UnlikePost implements Route {
     String uid = decodedToken.getUid();
 
     try {
+      Connection sqlConn = sqlInitUtil.getSQLConnection();
       UserResult res = new User(uid, sqlConn).unlikePost(postId);
+      sqlConn.close();
       respJson.addProperty("status", res == UserResult.SUCCESS ? "success" : "failure");
       if (res != UserResult.SUCCESS) {
         respJson.addProperty("failure_reason", String.valueOf(res));

@@ -16,46 +16,51 @@ import utils.FirebaseUtils;
 
 import java.sql.Connection;
 import java.util.List;
+import utils.SqlInitUtil;
 
 public class ListFriends implements Route {
 
-    private FirebaseApp fbApp;
-    private Connection sqlConn;
+  private FirebaseApp fbApp;
+  private SqlInitUtil sqlInitUtil;
 
-    public ListFriends(FirebaseApp fbApp, Connection sqlConn) {
-        this.fbApp = fbApp;
-        this.sqlConn = sqlConn;
+  public ListFriends(FirebaseApp fbApp, SqlInitUtil sqlInitUtil) {
+    this.fbApp = fbApp;
+    this.sqlInitUtil = sqlInitUtil;
+  }
+
+  @Override
+  public Object handle(Request request, Response response) throws Exception {
+    JsonObject respJson = new JsonObject();
+
+    String uid = request.queryParams("user_id");
+    if (uid == null) {
+      respJson.addProperty("status", "failure");
+      respJson.addProperty("failure_reason", "user_id is missing");
+      return respJson.toString() + "\n";
     }
-    @Override
-    public Object handle(Request request, Response response) throws Exception {
-        JsonObject respJson = new JsonObject();
 
-        String uid = request.queryParams("user_id");
-        if (uid == null) {
-            respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "user_id is missing");
-            return respJson.toString() + "\n";
-        }
+    Connection sqlConn = sqlInitUtil.getSQLConnection();
+    List<String> friendsUIDs = new User(uid, sqlConn).allFriends();
+    JsonArray friends = new JsonArray();
 
-        List<String> friendsUIDs = new User(uid, sqlConn).allFriends();
-        JsonArray friends = new JsonArray();
-
-        for (String friendUID : friendsUIDs) {
-            String friendUsername = FirebaseUtils.resolveBCUsername(fbApp, friendUID);
-            if (friendUsername == null) {
-                respJson.addProperty("status", "failure");
-                respJson.addProperty("failure_reason", "Failed to resolve username");
-                return respJson.toString() + "\n";
-            }
-
-            UserProfile profile = new User(friendUID, sqlConn).getUserProfile(friendUsername);
-            friends.add(profile == null ? new Gson().toJsonTree(
-                    new UserProfile(friendUID, friendUsername, null, null)) :
-                    new Gson().toJsonTree(profile));
-        }
-
-        respJson.add("friends", friends);
-        respJson.addProperty("status", "success");
+    for (String friendUID : friendsUIDs) {
+      String friendUsername = FirebaseUtils.resolveBCUsername(fbApp, friendUID);
+      if (friendUsername == null) {
+        respJson.addProperty("status", "failure");
+        respJson.addProperty("failure_reason", "Failed to resolve username");
+        sqlConn.close();
         return respJson.toString() + "\n";
+      }
+
+      UserProfile profile = new User(friendUID, sqlConn).getUserProfile(friendUsername);
+      friends.add(profile == null ? new Gson().toJsonTree(
+          new UserProfile(friendUID, friendUsername, null, null)) :
+          new Gson().toJsonTree(profile));
     }
+
+    sqlConn.close();
+    respJson.add("friends", friends);
+    respJson.addProperty("status", "success");
+    return respJson.toString() + "\n";
+  }
 }

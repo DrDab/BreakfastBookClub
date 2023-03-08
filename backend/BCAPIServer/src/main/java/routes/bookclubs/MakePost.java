@@ -15,15 +15,16 @@ import spark.Response;
 import spark.Route;
 import utils.BCGsonUtils;
 import utils.OpenLibraryAPI;
+import utils.SqlInitUtil;
 
 public class MakePost implements Route {
 
   private FirebaseApp fbApp;
-  private Connection sqlConn;
+  private SqlInitUtil sqlInitUtil;
 
-  public MakePost(FirebaseApp fbApp, Connection sqlConn) {
+  public MakePost(FirebaseApp fbApp, SqlInitUtil sqlInitUtil) {
     this.fbApp = fbApp;
-    this.sqlConn = sqlConn;
+    this.sqlInitUtil = sqlInitUtil;
   }
 
   @Override
@@ -80,9 +81,11 @@ public class MakePost implements Route {
     String postId = UUID.nameUUIDFromBytes(seed.getBytes(StandardCharsets.UTF_8))
         .toString();
 
+    Connection sqlConn = sqlInitUtil.getSQLConnection();
     User user = new User(uid, sqlConn);
     UserResult result = user.bookPost(bookKey, postTitle, postBody,
         bodyJson.has("tag") ? bodyJson.get("tag").getAsString() : "", postId, date, 0);
+    sqlConn.close();
 
     if (result != UserResult.SUCCESS) {
       respJson.addProperty("status", "failure");

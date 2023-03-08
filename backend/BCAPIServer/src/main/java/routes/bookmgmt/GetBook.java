@@ -10,13 +10,14 @@ import spark.Response;
 import spark.Route;
 import types.Book;
 import utils.OpenLibraryAPI;
+import utils.SqlInitUtil;
 
 public class GetBook implements Route {
 
-  private Connection sqlConn;
+  private SqlInitUtil sqlInitUtil;
 
-  public GetBook(Connection sqlConn) {
-    this.sqlConn = sqlConn;
+  public GetBook(SqlInitUtil sqlInitUtil) {
+    this.sqlInitUtil = sqlInitUtil;
   }
 
   @Override
@@ -30,8 +31,11 @@ public class GetBook implements Route {
       return respJson.toString() + "\n";
     }
 
+    Connection sqlConn = sqlInitUtil.getSQLConnection();
     Book bookObj = OpenLibraryAPI.getBookByKeyWithCache(new Books(sqlConn), new HashMap<>(),
         searchBookKey);
+    sqlConn.close();
+    
     if (bookObj == null) {
       respJson.addProperty("status", "failure");
       respJson.addProperty("failure_reason", "Failed to find book.");

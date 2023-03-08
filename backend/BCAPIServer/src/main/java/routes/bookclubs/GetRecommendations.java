@@ -11,33 +11,37 @@ import types.Recommendation;
 
 import java.sql.Connection;
 import java.util.List;
+import utils.SqlInitUtil;
 
 public class GetRecommendations implements Route {
 
-    private Connection sqlConn;
+  private SqlInitUtil sqlInitUtil;
 
-    public GetRecommendations(Connection sqlConn) {
-        this.sqlConn = sqlConn;
+  public GetRecommendations(SqlInitUtil sqlInitUtil) {
+    this.sqlInitUtil = sqlInitUtil;
+  }
+
+  @Override
+  public Object handle(Request request, Response response) throws Exception {
+
+    JsonObject respJson = new JsonObject();
+
+    String searchRecepientID = request.queryParams("recipient_userId");
+
+    if (searchRecepientID == null) {
+      respJson.addProperty("status", "failure");
+      respJson.addProperty("failure_reason", "Need to provide recipient_userId for " +
+          "recipient of recommendations");
+      return respJson.toString() + "\n";
     }
-    @Override
-    public Object handle(Request request, Response response) throws Exception{
 
-        JsonObject respJson = new JsonObject();
+    // getting list of book ids that have been recommended to user
+    Connection sqlConn = sqlInitUtil.getSQLConnection();
+    List<Recommendation> bookRequests = new Books(sqlConn).bookRecommendations(searchRecepientID);
+    sqlConn.close();
+    respJson.add("recommendations", new Gson().toJsonTree(bookRequests));
+    respJson.addProperty("status", "success");
+    return respJson.toString() + "\n";
 
-        String searchRecepientID = request.queryParams("recipient_userId");
-
-        if (searchRecepientID == null) {
-            respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "Need to provide recipient_userId for " +
-                    "recipient of recommendations");
-            return respJson.toString() + "\n";
-        }
-
-        // getting list of book ids that have been recommended to user
-        List<Recommendation> bookRequests = new Books(sqlConn).bookRecommendations(searchRecepientID);
-        respJson.add("recommendations", new Gson().toJsonTree(bookRequests));
-        respJson.addProperty("status", "success");
-        return respJson.toString() + "\n";
-
-    }
+  }
 }

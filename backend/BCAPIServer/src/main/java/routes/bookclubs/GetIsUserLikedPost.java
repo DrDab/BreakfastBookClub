@@ -12,15 +12,16 @@ import java.sql.SQLException;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import utils.SqlInitUtil;
 
 public class GetIsUserLikedPost implements Route {
 
   private FirebaseApp fbApp;
-  private Connection sqlConn;
+  private SqlInitUtil sqlInitUtil;
 
-  public GetIsUserLikedPost(FirebaseApp fbApp, Connection sqlConn) {
+  public GetIsUserLikedPost(FirebaseApp fbApp, SqlInitUtil sqlInitUtil) {
     this.fbApp = fbApp;
-    this.sqlConn = sqlConn;
+    this.sqlInitUtil = sqlInitUtil;
   }
 
   @Override
@@ -37,10 +38,11 @@ public class GetIsUserLikedPost implements Route {
     }
 
     try {
+      Connection sqlConn = sqlInitUtil.getSQLConnection();
       int isUserLikedPost = new User(userId, sqlConn).getNumLikesFromUser(postId);
+      sqlConn.close();
       respJson.addProperty("status", "success");
       respJson.addProperty("isUserLikedPost", String.valueOf(isUserLikedPost));
-      
     } catch (SQLException e) {
       e.printStackTrace();
       respJson.addProperty("status", "failure");

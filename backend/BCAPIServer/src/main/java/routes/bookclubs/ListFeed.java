@@ -23,15 +23,16 @@ import types.BookPost;
 import java.util.List;
 import utils.BCGsonUtils;
 import utils.ResultSetParsers;
+import utils.SqlInitUtil;
 
 public class ListFeed implements Route {
 
   private FirebaseApp fbApp;
-  private Connection sqlConn;
+  private SqlInitUtil sqlInitUtil;
 
-  public ListFeed(FirebaseApp fbApp, Connection sqlConn) {
+  public ListFeed(FirebaseApp fbApp, SqlInitUtil sqlInitUtil) {
     this.fbApp = fbApp;
-    this.sqlConn = sqlConn;
+    this.sqlInitUtil = sqlInitUtil;
   }
 
   @Override
@@ -65,10 +66,12 @@ public class ListFeed implements Route {
       return respJson.toString() + "\n";
     }
 
+    Connection sqlConn = sqlInitUtil.getSQLConnection();
     User user = new User(uid, sqlConn);
     Books books = new Books(sqlConn);
 
     JsonArray postsArr = BCGsonUtils.getPostsJsonArrFromList(books, fbApp, user.getUserFeedPosts());
+    sqlConn.close();
     respJson.add("posts", postsArr);
     respJson.addProperty("status", "success");
     return respJson;

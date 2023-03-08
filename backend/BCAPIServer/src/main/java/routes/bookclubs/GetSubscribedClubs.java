@@ -15,15 +15,16 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import types.Book;
+import utils.SqlInitUtil;
 
 public class GetSubscribedClubs implements Route {
 
     private FirebaseApp fbApp;
-    private Connection sqlConn;
+    private SqlInitUtil sqlInitUtil;
 
-    public GetSubscribedClubs(FirebaseApp fbApp, Connection sqlConn) {
+    public GetSubscribedClubs(FirebaseApp fbApp, SqlInitUtil sqlInitUtil) {
         this.fbApp = fbApp;
-        this.sqlConn = sqlConn;
+        this.sqlInitUtil = sqlInitUtil;
     }
 
     @Override
@@ -38,7 +39,9 @@ public class GetSubscribedClubs implements Route {
             return respJson.toString() + "\n";
         }
 
+        Connection sqlConn = sqlInitUtil.getSQLConnection();
         List<Book> clubs = new User(searchUID, sqlConn).allClubs(new Books(sqlConn));
+        sqlConn.close();
 
         respJson.add("books", new Gson().toJsonTree(clubs));
         respJson.addProperty("status", "success");

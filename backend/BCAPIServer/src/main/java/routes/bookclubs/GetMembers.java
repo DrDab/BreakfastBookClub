@@ -13,15 +13,16 @@ import spark.Response;
 import spark.Route;
 import types.UserProfile;
 import utils.FirebaseUtils;
+import utils.SqlInitUtil;
 
 public class GetMembers implements Route {
 
   private FirebaseApp fbApp;
-  private Connection sqlConn;
+  private SqlInitUtil sqlInitUtil;
 
-  public GetMembers(FirebaseApp fbApp, Connection sqlConn) {
+  public GetMembers(FirebaseApp fbApp, SqlInitUtil sqlInitUtil) {
     this.fbApp = fbApp;
-    this.sqlConn = sqlConn;
+    this.sqlInitUtil = sqlInitUtil;
   }
 
   @Override
@@ -35,6 +36,7 @@ public class GetMembers implements Route {
       return respJson.toString() + "\n";
     }
 
+    Connection sqlConn = sqlInitUtil.getSQLConnection();
     List<String> clubUIDs = new Books(sqlConn).bookClubUsers(searchBookKey);
     JsonArray members = new JsonArray();
 
@@ -43,6 +45,7 @@ public class GetMembers implements Route {
       if (username == null) {
         respJson.addProperty("status", "failure");
         respJson.addProperty("failure_reason", "Failed to resolve username");
+        sqlConn.close();
         return respJson.toString() + "\n";
       }
 
@@ -54,6 +57,7 @@ public class GetMembers implements Route {
 
     respJson.add("members", members);
     respJson.addProperty("status", "success");
+    sqlConn.close();
     return respJson.toString() + "\n";
   }
 }

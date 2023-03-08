@@ -10,15 +10,16 @@ import spark.Response;
 import spark.Route;
 import types.UserProfile;
 import utils.FirebaseUtils;
+import utils.SqlInitUtil;
 
 public class GetUserProfile implements Route {
 
   private FirebaseApp fbApp;
-  private Connection sqlConn;
+  private SqlInitUtil sqlInitUtil;
 
-  public GetUserProfile(FirebaseApp fbApp, Connection sqlConn) {
+  public GetUserProfile(FirebaseApp fbApp, SqlInitUtil sqlInitUtil) {
     this.fbApp = fbApp;
-    this.sqlConn = sqlConn;
+    this.sqlInitUtil = sqlInitUtil;
   }
 
   @Override
@@ -39,11 +40,13 @@ public class GetUserProfile implements Route {
       return respJson.toString() + "\n";
     }
 
+    Connection sqlConn = sqlInitUtil.getSQLConnection();
     UserProfile profile = new User(searchUserId, sqlConn).getUserProfile(username);
     respJson.add("user", profile == null ? new Gson().toJsonTree(
         new UserProfile(searchUserId, username, null, null)) :
         new Gson().toJsonTree(profile));
 
+    sqlConn.close();
     respJson.addProperty("status", "success");
     return respJson.toString() + "\n";
   }

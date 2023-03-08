@@ -21,61 +21,64 @@ import utils.FirebaseUtils;
 import java.sql.Connection;
 import java.util.List;
 import java.util.ArrayList;
+import utils.SqlInitUtil;
 
 public class UserSearch implements Route {
 
-    private FirebaseApp fbApp;
-    private Connection sqlConn;
+  private FirebaseApp fbApp;
+  private SqlInitUtil sqlInitUtil;
 
-    public UserSearch(FirebaseApp fbApp, Connection sqlConn) {
-        this.fbApp = fbApp;
-        this.sqlConn = sqlConn;
+  public UserSearch(FirebaseApp fbApp, SqlInitUtil sqlInitUtil) {
+    this.fbApp = fbApp;
+    this.sqlInitUtil = sqlInitUtil;
+  }
+
+  @Override
+  public Object handle(Request request, Response response) throws Exception {
+    JsonObject respJson = new JsonObject();
+
+    String userSearchTerm = request.queryParams("user_searchterm");
+    if (userSearchTerm == null) {
+      respJson.addProperty("status", "failure");
+      respJson.addProperty("failure_reason", "user_searchterm is missing");
+      return respJson.toString() + "\n";
     }
-    @Override
-    public Object handle(Request request, Response response) throws Exception {
-        JsonObject respJson = new JsonObject();
 
-        String userSearchTerm = request.queryParams("user_searchterm");
-        if (userSearchTerm == null) {
-            respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "user_searchterm is missing");
-            return respJson.toString() + "\n";
-        }
+    Firestore db = FirestoreClient.getFirestore(fbApp);
 
-        Firestore db = FirestoreClient.getFirestore(fbApp);
+    CollectionReference users = db.collection("users");
+    Query query = users.whereGreaterThanOrEqualTo("name", userSearchTerm)
+        .whereLessThanOrEqualTo("name", userSearchTerm + "\uF7FF");
 
-        CollectionReference users = db.collection("users");
-        Query query = users.whereGreaterThanOrEqualTo("name", userSearchTerm)
-                           .whereLessThanOrEqualTo("name", userSearchTerm + "\uF7FF");
+    ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
-        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+    List<QueryDocumentSnapshot> l = querySnapshot.get().getDocuments();
 
-        List<QueryDocumentSnapshot> l = querySnapshot.get().getDocuments();
+    List<String> userUIDs = new ArrayList<>();
+    for (QueryDocumentSnapshot q : l) {
+      userUIDs.add(q.getString("uid"));
+    }
 
-        List<String> userUIDs = new ArrayList<>();
-        for (QueryDocumentSnapshot q : l) {
-            userUIDs.add(q.getString("uid"));
-        }
+    JsonArray foundUsers = new JsonArray();
 
-        JsonArray foundUsers = new JsonArray();
+    for (String uid : userUIDs) {
+      String username = FirebaseUtils.resolveBCUsername(fbApp, uid);
 
-        for (String uid : userUIDs) {
-            String username = FirebaseUtils.resolveBCUsername(fbApp, uid);
-
-            if (username == null) {
-              respJson.addProperty("status", "failure");
-              respJson.addProperty("failure_reason", "Failed to resolve username");
-              return respJson.toString() + "\n";
-            }
-            
-            UserProfile profile = new User(uid, sqlConn).getUserProfile(username);
-            foundUsers.add(profile == null ? new Gson().toJsonTree(
-                new UserProfile(uid, username, null, null)) :
-                new Gson().toJsonTree(profile));
-        }
-
-        respJson.add("users", foundUsers);
-        respJson.addProperty("status", "success");
+      if (username == null) {
+        respJson.addProperty("status", "failure");
+        respJson.addProperty("failure_reason", "Failed to resolve username");
         return respJson.toString() + "\n";
+      }
+
+      Connection sqlConn = sqlInitUtil.getSQLConnection();
+      UserProfile profile = new User(uid, sqlConn).getUserProfile(username);
+      foundUsers.add(profile == null ? new Gson().toJsonTree(
+          new UserProfile(uid, username, null, null)) :
+          new Gson().toJsonTree(profile));
     }
+
+    respJson.add("users", foundUsers);
+    respJson.addProperty("status", "success");
+    return respJson.toString() + "\n";
+  }
 }

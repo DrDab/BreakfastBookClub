@@ -13,52 +13,55 @@ import spark.Route;
 import utils.BCGsonUtils;
 
 import java.sql.Connection;
+import utils.SqlInitUtil;
 
 public class SaveBook implements Route {
 
-    FirebaseApp fbApp;
-    private Connection sqlConn;
-    public SaveBook(FirebaseApp fbApp, Connection sqlConn) {
-        this.fbApp = fbApp;
-        this.sqlConn = sqlConn;
+  FirebaseApp fbApp;
+  private SqlInitUtil sqlInitUtil;
+
+  public SaveBook(FirebaseApp fbApp, SqlInitUtil sqlInitUtil) {
+    this.fbApp = fbApp;
+    this.sqlInitUtil = sqlInitUtil;
+  }
+
+  @Override
+  public Object handle(Request request, Response response) throws Exception {
+    JsonObject respJson = new JsonObject();
+
+    String token = request.queryParams("token");
+    String bookKey = request.queryParams("book_key");
+
+    if (token == null || bookKey == null) {
+      respJson.addProperty("status", "failure");
+      respJson.addProperty("failure_reason", "Need to provide a token and / or book key");
+      return respJson.toString() + "\n";
     }
 
-    @Override
-    public Object handle(Request request, Response response) throws Exception {
-        JsonObject respJson = new JsonObject();
-
-        String token = request.queryParams("token");
-        String bookKey = request.queryParams("book_key");
-
-        if (token == null || bookKey == null) {
-            respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", "Need to provide a token and / or book key");
-            return respJson.toString() + "\n";
-        }
-
-
-        FirebaseToken decodedTokenSender;
-        // authenticating user
-        try {
-            decodedTokenSender = FirebaseAuth.getInstance()
-                    .verifyIdToken(token, true);
-        } catch (FirebaseAuthException e) {
-            respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", String.valueOf(e.getAuthErrorCode()));
-            return respJson.toString() + "\n";
-        }
-        String user = decodedTokenSender.getUid();
-        UserResult result = new Books(sqlConn).saveBook(user, bookKey);
-
-        if (result != UserResult.SUCCESS) {
-            respJson.addProperty("status", "failure");
-            respJson.addProperty("failure_reason", result.name());
-            return respJson.toString() + "\n";
-        }
-
-        respJson.addProperty("status", "success");
-
-        return respJson.toString() + "\n";
+    FirebaseToken decodedTokenSender;
+    // authenticating user
+    try {
+      decodedTokenSender = FirebaseAuth.getInstance()
+          .verifyIdToken(token, true);
+    } catch (FirebaseAuthException e) {
+      respJson.addProperty("status", "failure");
+      respJson.addProperty("failure_reason", String.valueOf(e.getAuthErrorCode()));
+      return respJson.toString() + "\n";
     }
+    String user = decodedTokenSender.getUid();
+    Connection sqlConn = sqlInitUtil.getSQLConnection();
+    UserResult result = new Books(sqlConn).saveBook(user, bookKey);
+    sqlConn.close();
+
+    if (result != UserResult.SUCCESS) {
+      respJson.addProperty("status", "failure");
+      respJson.addProperty("failure_reason", result.name());
+      return respJson.toString() + "\n";
+    }
+
+    respJson.addProperty("status", "success");
+
+    return respJson.toString() + "\n";
+  }
 
 }

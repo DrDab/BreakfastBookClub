@@ -4,7 +4,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import daos.User;
 import daos.UserResult;
@@ -12,17 +11,16 @@ import java.sql.Connection;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import types.UserProfile;
-import utils.FirebaseUtils;
+import utils.SqlInitUtil;
 
 public class SetUserProfile implements Route {
 
   private FirebaseApp fbApp;
-  private Connection sqlConn;
+  private SqlInitUtil sqlInitUtil;
 
-  public SetUserProfile(FirebaseApp fbApp, Connection sqlConn) {
+  public SetUserProfile(FirebaseApp fbApp, SqlInitUtil sqlInitUtil) {
     this.fbApp = fbApp;
-    this.sqlConn = sqlConn;
+    this.sqlInitUtil = sqlInitUtil;
   }
 
   @Override
@@ -44,6 +42,7 @@ public class SetUserProfile implements Route {
 
     String uid = decodedToken.getUid();
 
+    Connection sqlConn = sqlInitUtil.getSQLConnection();
     User user = new User(uid, sqlConn);
 
     if (!user.userProfileExists()) {
@@ -51,6 +50,7 @@ public class SetUserProfile implements Route {
       if (createRes != UserResult.SUCCESS) {
         respJson.addProperty("status", "failure");
         respJson.addProperty("failure_reason", createRes.name());
+        sqlConn.close();
         return respJson.toString() + "\n";
       }
     }
@@ -61,11 +61,12 @@ public class SetUserProfile implements Route {
     if (result != UserResult.SUCCESS) {
       respJson.addProperty("status", "failure");
       respJson.addProperty("failure_reason", result.name());
+      sqlConn.close();
       return respJson.toString() + "\n";
     }
 
     respJson.addProperty("status", "success");
-
+    sqlConn.close();
     return respJson.toString() + "\n";
   }
 }
