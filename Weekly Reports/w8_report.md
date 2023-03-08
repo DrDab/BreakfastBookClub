@@ -43,8 +43,12 @@
   Victor Du:
   - Hosted backend server on Google Cloud, made both frontend and backend live on the Internet, ironed out some less obvious bugs.
 
+  Jocelyn Thomson: 
+  - Filmed final project
+  - Finished some last routes for implementation
+
 - Goals:
 
-  Zaynab Khan, Victor Du, Andrea Ha, Amanda Ha, Josie Thompson:
+  Zaynab Khan, Victor Du, Andrea Ha, Amanda Ha, Jocie Thomson:
   - Do the reflection and team survey.
 
