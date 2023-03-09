@@ -43,10 +43,10 @@
   Victor Du:
   - Hosted backend server on Google Cloud, made both frontend and backend live on the Internet, ironed out some less obvious bugs.
 
-  Jocelyn Thomson: 
+  Jocelyn Thomson:
   - Filmed final project
   - Finished some last routes for implementation
-  
+
   Sanjana Janakiraman:
   - Completed implementation of API routes
   - Fixed firestore database issue
@@ -55,6 +55,9 @@
   - Integrated all API routes into frontend
   - Wrote outline for final demo script
   - Hosted frontend on github pages
+
+  Andrea Ha:
+  - Filmed final demo
 
 - Goals:
 
