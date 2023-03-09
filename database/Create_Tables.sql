@@ -8,8 +8,8 @@ CREATE TABLE user_info (
 -- DROP TABLE books;
 CREATE TABLE books (
 	book_key VARCHAR(20) PRIMARY KEY,
-	book_title VARCHAR(40),
-	book_author VARCHAR(40),
+	book_title VARCHAR(100),
+	book_author VARCHAR(100),
 	book_cover VARCHAR(100));
 
 -- DROP TABLE book_posts;
