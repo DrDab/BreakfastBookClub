@@ -57,7 +57,7 @@ In a seperate terminal, go to the frontend folder
 ```
 cd breakfastbookclub/frontend
 ```
-Then, change the `url` variable in the functions `handleGetFetch` and `handlePostFetch` of `webapp/components/Utils.js` to the address of the backend server.
+Then, change the `url` variable in the functions `handleGetFetch` and `handlePostFetch` of `src/webapp/components/Utils.js` to the address of the backend server.
 
 Install npm packages
 ```
