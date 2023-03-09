@@ -51,6 +51,11 @@
   - Completed implementation of API routes
   - Fixed firestore database issue
 
+  Amanda Ha:
+  - Integrated all API routes into frontend
+  - Wrote outline for final demo script
+  - Hosted frontend on github pages
+
 - Goals:
 
   Zaynab Khan, Victor Du, Andrea Ha, Amanda Ha, Jocie Thomson, Sanjana Janakiraman:
