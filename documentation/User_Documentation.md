@@ -8,12 +8,7 @@ Go to:
 https://drdab.github.io/BreakfastBookClub/
 </blockquote>
 
-Create account or log in with:
-<blockquote>
-Email: akha1229@gmail.com
-
-Password: 123456
-</blockquote>
+Create account or log in with your email and password.
 
 ### How to use the software
 

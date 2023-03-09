@@ -9,7 +9,11 @@ git clone https://github.com/DrDab/BreakfastBookClub.git
 
 ### How to build the software
 
-#### 1. Set up backend
+#### 1. Set up database
+
+On a MySQL server of your choice with address `MYSQL_ADDR`, create a schema called `breakfast_book_club` and run `database/Create_Tables.sql` in the `breakfast_book_club` schema to initialize the necessary database tables. Finally, create an account on the MySQL server with the username `MYSQL_USERNAME` and `MYSQL_PASSWORD` and grant the account write access to the `breakfast_book_club` schema. 
+
+#### 2. Set up backend
 
 Go to the backend folder
 ```
@@ -44,15 +48,17 @@ bc-adminsdk-svcacct.json
 
 Run backend
 ```
-./run-dev-server --mysql_addr 34.145.15.228 --svc_acct bc-adminsdk-svcacct.json
+./run-dev-server --mysql_addr <MYSQL_ADDR> --svc_acct bc-adminsdk-svcacct.json --mysql_username <MYSQL_USERNAME> --mysql_password <MYSQL_PASSWORD>
 ```
 
-#### 2. Set up frontend
+#### 3. Set up frontend
 
 In a seperate terminal, go to the frontend folder
 ```
 cd breakfastbookclub/frontend
 ```
+Then, change the `url` variable in the functions `handleGetFetch` and `handlePostFetch` of `webapp/components/Utils.js` to the address of the backend server.
+
 Install npm packages
 ```
 npm install 
@@ -68,7 +74,7 @@ npm start
 Run backend
 ```
 cd breakfastbookclub/backend/BCAPIServer
-./run-dev-server --mysql_addr 34.145.15.228 --svc_acct bc-adminsdk-svcacct.json
+./run-dev-server --mysql_addr <MYSQL_ADDR> --mysql_username <MYSQL_USERNAME> --mysql_password <MYSQL_PASSWORD> --svc_acct bc-adminsdk-svcacct.json 
 ```
 
 In a seperate terminal, run frontend
